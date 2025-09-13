@@ -55,58 +55,8 @@ require_once "../src/Models/Comensal.php";
       <!--end::App Content Header-->
       <!--begin::App Content-->
       <div class="app-content">
-        <!--begin::Container-->
-
-        <!-- Botones arriba de la tabla -->
-        <div class="d-flex justify-content-end mb-2">
-
-          <button class="btn btn-primary" onclick="location.href='add_alumno.php'">
-            Añadir alumno
-          </button>
-        </div>
-        <!-- ./Botones arriba de la tabla -->
 
 
-        <!-- begin::Tabla -->
-        <?php
-
-        $comensales = getComensales();
-        // print_r($comensales);
-
-        $index_comensales = 1;
-        ?>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width: 10px">#</th>
-              <th>Nombre</th>
-              <th>Apellidos</th>
-              <th>Menú</th>
-              <th>Mesa</th>
-            </tr>
-          </thead>
-          <tbody>
-
-            <?php foreach ($comensales as $comensal) {
-
-            ?>
-              <tr class="align-middle">
-                <td>
-                  <?= $index_comensales++ ?>.
-                </td>
-                <td><?= $comensal->getNombre() ?></td>
-                <td><?= $comensal->getApellidos()  ?></td>
-                <td></td>
-                <td></td>
-              </tr>
-            <?php } ?>
-
-          </tbody>
-        </table>
-        <!-- end::Tabla -->
-
-
-        <!--end::Container-->
       </div>
       <!--end::App Content-->
     </main>
