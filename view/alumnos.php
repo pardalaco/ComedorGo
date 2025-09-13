@@ -60,7 +60,7 @@ require_once "../src/Models/Comensal.php";
                 <!-- Botones arriba de la tabla -->
                 <div class="d-flex justify-content-end mb-2">
 
-                    <button class="btn btn-primary" onclick="location.href='add_alumno.php'">
+                    <button class="btn btn-primary" onclick="location.href='alumno_add.php'">
                         Añadir alumno
                     </button>
                 </div>

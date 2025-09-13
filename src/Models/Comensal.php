@@ -17,6 +17,18 @@ class Comensal
         $this->menu_id = $menu_id;
         $this->mesa_id = $mesa_id;
     }
+
+    public function save()
+    {
+        $conn = getConnection();
+        $stmt = $conn->prepare("INSERT INTO Comensales (Nombre, Apellidos, Menu_ID, Mesa_ID) VALUES (:nombre, :apellidos, :menu_id, :mesa_id)");
+        $stmt->bindParam(':nombre', $this->nombre);
+        $stmt->bindParam(':apellidos', $this->apellidos);
+        $stmt->bindParam(':menu_id', $this->menu_id);
+        $stmt->bindParam(':mesa_id', $this->mesa_id);
+        return $stmt->execute();
+    }
+
     // Getters
     public function getId()
     {
