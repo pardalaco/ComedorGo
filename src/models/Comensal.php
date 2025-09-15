@@ -21,13 +21,37 @@ class Comensal
     public function save()
     {
         $conn = getConnection();
-        $stmt = $conn->prepare("INSERT INTO Comensales (Nombre, Apellidos, Menu_ID, Mesa_ID) VALUES (:nombre, :apellidos, :menu_id, :mesa_id)");
+
+        if (isset($this->id) && !empty($this->id)) {
+            // Ya existe → UPDATE
+            $stmt = $conn->prepare("
+            UPDATE Comensales 
+            SET Nombre = :nombre, Apellidos = :apellidos, Menu_ID = :menu_id, Mesa_ID = :mesa_id
+            WHERE ID = :id
+        ");
+            $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+        } else {
+            // No existe → INSERT
+            $stmt = $conn->prepare("
+            INSERT INTO Comensales (Nombre, Apellidos, Menu_ID, Mesa_ID) 
+            VALUES (:nombre, :apellidos, :menu_id, :mesa_id)
+        ");
+        }
+
         $stmt->bindParam(':nombre', $this->nombre);
         $stmt->bindParam(':apellidos', $this->apellidos);
         $stmt->bindParam(':menu_id', $this->menu_id);
         $stmt->bindParam(':mesa_id', $this->mesa_id);
-        return $stmt->execute();
+
+        $resultado = $stmt->execute();
+
+        if (!isset($this->id) || empty($this->id)) {
+            $this->id = $conn->lastInsertId(); // asignar el id recién creado
+        }
+
+        return $resultado;
     }
+
 
     // Getters
     public function getId()
@@ -54,6 +78,47 @@ class Comensal
     {
         return $this->mesa_id;
     }
+
+    // Setters
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+    }
+
+    public function setApellidos($apellidos)
+    {
+        $this->apellidos = $apellidos;
+    }
+
+    public function setMenuId($menu_id)
+    {
+        $this->menu_id = $menu_id;
+    }
+
+    public function setMesaId($mesa_id)
+    {
+        $this->mesa_id = $mesa_id;
+    }
+}
+
+function getComensalById($id)
+{
+    $conn = getConnection();
+    $stmt = $conn->prepare("SELECT * FROM Comensales WHERE ID = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($row) {
+        return new Comensal(
+            $row['ID'],
+            $row['Nombre'],
+            $row['Apellidos'],
+            $row['Menu_ID'],
+            $row['Mesa_ID']
+        );
+    }
+    return null;
 }
 
 function getComensales()

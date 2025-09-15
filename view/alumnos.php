@@ -75,7 +75,7 @@ require_once "../src/models/Comensal.php";
 
                 $index_comensales = 1;
                 ?>
-                <table class="table table-bordered">
+                <table class="table table-bordered table-hover mi-tabla">
                     <thead>
                         <tr>
                             <th style="width: 10px">#</th>
@@ -90,7 +90,8 @@ require_once "../src/models/Comensal.php";
                         <?php foreach ($comensales as $comensal) {
 
                         ?>
-                            <tr class="align-middle">
+                            <tr class="align-middle"
+                                data-UserId="<?= $comensal->getId() ?>">
                                 <td>
                                     <?= $index_comensales++ ?>.
                                 </td>
@@ -118,37 +119,17 @@ require_once "../src/models/Comensal.php";
     <?php include './components/scripts.html'; ?>
 
     <script>
-        function printTable() {
-            // obtenemos el contenido de la tabla
-            var tabla = document.getElementById("tabla-comensales").outerHTML;
+        // Evento fila tbody
+        document.querySelectorAll('.mi-tabla tbody tr').forEach(row => {
+            row.addEventListener('click', function(e) {
 
-            // abrimos una nueva ventana solo con la tabla
-            var ventana = window.open("", "", "width=800,height=600");
-            ventana.document.write(`
-      <html>
-        <head>
-          <title>Imprimir tabla</title>
-          <style>
-            table {
-              border-collapse: collapse;
-              width: 100%;
-            }
-            table, th, td {
-              border: 1px solid black;
-              padding: 8px;
-            }
-          </style>
-        </head>
-        <body>
-          ${tabla}
-        </body>
-      </html>
-    `);
-            ventana.document.close();
-            ventana.print();
-        }
+                let UserId = this.getAttribute("data-UserId");
+                console.log("UserId: ", UserId);
+
+                window.location.href = "alumno_modify.php?userid=" + UserId;
+            });
+        });
     </script>
-
 
 </body>
 <!--end::Body-->

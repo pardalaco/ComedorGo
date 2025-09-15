@@ -4,6 +4,13 @@ require_once "../config/db.php";
 require_once "../src/models/Comensal.php";
 
 
+if (isset($_GET['userid'])) {
+    $userid = $_GET['userid'];
+    $UserId = intval($userid);
+}
+
+$comensal = getComensalById($UserId);
+
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"] ?? '';
@@ -12,8 +19,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mesa_id = $_POST["mesa"] ?? '';
 
     try {
-        $comensal = new Comensal(null, $nombre, $apellidos, $menu_id ?: null, $mesa_id ?: null);
+        $comensal->setNombre($nombre);
+        $comensal->setApellidos($apellidos);
+        $comensal->setMenuId($menu_id ?: null);
+        $comensal->setMesaId($mesa_id ?: null);
         $comensal->save();
+
+
+
         header("Location: alumnos.php");
         exit();
     } catch (PDOException $e) {
@@ -124,13 +137,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <!-- Nombre -->
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required />
+                                <input type="text"
+                                    class="form-control"
+                                    id="nombre"
+                                    name="nombre"
+                                    value="<?= $comensal->getNombre() ?>"
+                                    required />
                             </div>
 
                             <!-- Apellidos -->
                             <div class="mb-3">
                                 <label for="apellidos" class="form-label">Apellidos</label>
-                                <input type="text" class="form-control" id="apellidos" name="apellidos" required />
+                                <input type="text"
+                                    class="form-control"
+                                    id="apellidos"
+                                    name="apellidos"
+                                    value="<?= $comensal->getApellidos() ?>"
+                                    required />
                             </div>
 
                             <!-- Menú -->
@@ -160,7 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <!--end::Body-->
                         <!--begin::Footer-->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
+                            <button type="submit" class="btn btn-primary">Modificar</button>
                         </div>
                         <!--end::Footer-->
                     </form>
