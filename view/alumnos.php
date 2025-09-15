@@ -1,7 +1,7 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/Models/Comensal.php";
+require_once "../src/models/Comensal.php";
 ?>
 
 <!doctype html>
