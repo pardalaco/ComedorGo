@@ -34,11 +34,8 @@ if (isset($_POST['id'], $_POST['asistencia'])) {
     }
 
     echo "Guardado correctamente: $id ($asistencia)";
-} else {
-    echo "Error: datos incompletos";
-}
-
-if (isset($_POST['saveAllAsistencia'])) {
+    exit;
+} elseif (isset($_POST['saveAllAsistencia'])) {
     $asistencia = $_POST['saveAllAsistencia']; // "1" o "0"
 
     // Aquí guardas en tu base de datos
@@ -54,6 +51,8 @@ if (isset($_POST['saveAllAsistencia'])) {
     }
 
     echo "Guardado correctamente para todos: ($asistencia)";
+    exit;
 } else {
     echo "Error: datos incompletos";
+    exit;
 }
