@@ -1,6 +1,7 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
+require_once "../src/models/Mesa.php";
 ?>
 
 <!doctype html>
@@ -54,7 +55,6 @@ require_once "../config/db.php";
             <!--end::App Content Header-->
             <!--begin::App Content-->
             <div class="app-content">
-                <!--begin::Container-->
 
                 <!-- Botones arriba de la tabla -->
                 <div class="d-flex justify-content-end mb-2">
@@ -65,9 +65,49 @@ require_once "../config/db.php";
                 </div>
                 <!-- ./Botones arriba de la tabla -->
 
+                <?php
 
+                $mesas = getAllMesas();
+                foreach ($mesas as $mesa) {
 
-                <!--end::Container-->
+                ?>
+
+                    <!--begin::Mesa-->
+                    <div class="card card-primary card-outline mb-4">
+                        <!--begin::Header-->
+                        <div class="card-header">
+                            <div class="card-title" style="margin-right: 10px;"><?= $mesa->getNombre() ?></div>
+
+                            <a href="mesa_modify.php?id=<?= $mesa->getId() ?>" class="text-secondary" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        </div>
+                        <!--end::Header--> <!--begin::Body-->
+                        <div class="card-body">
+                            <p class="muted">
+                                <?= $mesa->getDescripcion() ?>
+                            </p>
+                            <hr />
+                            <ul class="list-group">
+                                <?php
+
+                                $comensales = $mesa->getComensales();
+                                foreach ($comensales as $comensal) {
+
+                                ?>
+                                    <li class="list-group-item list-group-item-action"> <?php echo $comensal->getNombre() . " " . $comensal->getApellidos() ?></li>
+                                <?php
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Mesa-->
+                <?php
+                }
+                ?>
+
             </div>
             <!--end::App Content-->
         </main>

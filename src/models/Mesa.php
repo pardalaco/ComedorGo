@@ -1,16 +1,20 @@
 <?php
+require_once(__DIR__ . "/../../config/db.php");
+require_once 'Comensal.php';
 
 class Mesa
 {
     private $id;
     private $nombre;
     private $descripcion;
+    private array $comensales; // array de objetos Comensal
 
     public function __construct($id, $nombre, $descripcion = null)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
+        $this->comensales = $this->obtenerComensales();
     }
 
     public function save()
@@ -44,6 +48,19 @@ class Mesa
 
         return $resultado;
     }
+    private function obtenerComensales()
+    {
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT * FROM Comensales WHERE Mesa_ID = :mesaId");
+        $stmt->bindParam(':mesaId', $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+        $comensales = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $comensales[] = new Comensal($row['ID'], $row['Nombre'], $row['Apellidos'], $row['Menu_ID'], $row['Mesa_ID']);
+        }
+        return $comensales;
+    }
+
     // Getters
     public function getId()
     {
@@ -57,4 +74,21 @@ class Mesa
     {
         return $this->descripcion;
     }
+    public function getComensales()
+    {
+        return $this->comensales;
+    }
+}
+
+// Función para obtener todas las mesas
+function getAllMesas()
+{
+    $conn = getConnection();
+    $stmt = $conn->prepare("SELECT * FROM Mesa");
+    $stmt->execute();
+    $mesas = [];
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $mesas[] = new Mesa($row['ID'], $row['Nombre'], $row['Descripcion']);
+    }
+    return $mesas;
 }
