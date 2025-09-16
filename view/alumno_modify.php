@@ -13,37 +13,44 @@ $comensal = getComensalById($UserId);
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nombre = $_POST["nombre"] ?? '';
-    $apellidos = $_POST["apellidos"] ?? '';
-    $menu_id = $_POST["menu"] ?? '';
-    $mesa_id = $_POST["mesa"] ?? '';
+    if ($_POST['accion'] === 'modificar') {
+        $nombre = $_POST["nombre"] ?? '';
+        $apellidos = $_POST["apellidos"] ?? '';
+        $menu_id = $_POST["menu"] ?? '';
+        $mesa_id = $_POST["mesa"] ?? '';
 
-    try {
-        $comensal->setNombre($nombre);
-        $comensal->setApellidos($apellidos);
-        $comensal->setMenuId($menu_id ?: null);
-        $comensal->setMesaId($mesa_id ?: null);
-        $comensal->save();
+        try {
+            $comensal->setNombre($nombre);
+            $comensal->setApellidos($apellidos);
+            $comensal->setMenuId($menu_id ?: null);
+            $comensal->setMesaId($mesa_id ?: null);
+            $comensal->save();
 
 
 
-        header("Location: alumnos.php");
-        exit();
-    } catch (PDOException $e) {
-        // Código SQLSTATE 23000 indica violación de restricción (duplicado)
-        if ($e->getCode() === '23000') {
-            echo "<script>alert('Error: el alumno ya está registrado.');</script>";
-        } else {
+            header("Location: alumnos.php");
+            exit();
+        } catch (PDOException $e) {
+            // Código SQLSTATE 23000 indica violación de restricción (duplicado)
+            if ($e->getCode() === '23000') {
+                echo "<script>alert('Error: el alumno ya está registrado.');</script>";
+            } else {
+                $mensaje = addslashes($e->getMessage());
+                echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
+            }
+            // Volver a la página anterior
+            echo "<script>window.history.back();</script>";
+            exit();
+        } catch (Exception $e) {
             $mensaje = addslashes($e->getMessage());
-            echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
+            echo "<script>alert('Error inesperado: $mensaje');</script>";
+            echo "<script>window.history.back();</script>";
+            exit();
         }
-        // Volver a la página anterior
-        echo "<script>window.history.back();</script>";
-        exit();
-    } catch (Exception $e) {
-        $mensaje = addslashes($e->getMessage());
-        echo "<script>alert('Error inesperado: $mensaje');</script>";
-        echo "<script>window.history.back();</script>";
+    } elseif ($_POST['accion'] === 'eliminar') {
+        // Código para eliminar el alumno
+        $comensal->delete(); // Asumiendo que tienes un método delete() en tu modelo
+        header("Location: alumnos.php");
         exit();
     }
 }
@@ -183,9 +190,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <!--end::Body-->
                         <!--begin::Footer-->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Modificar</button>
+                            <!-- Botón modificar -->
+                            <button type="submit" name="accion" value="modificar" class="btn btn-primary" style="margin-right: 10px">
+                                Modificar
+                            </button>
+
+                            <!-- Botón eliminar con confirmación -->
+                            <button type="submit" name="accion" value="eliminar" class="btn btn-danger"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar este alumno?');">
+                                Eliminar
+                            </button>
                         </div>
                         <!--end::Footer-->
+
                     </form>
                     <!--end::Form-->
                 </div>
@@ -201,38 +218,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
     <!--end::App Wrapper-->
     <?php include './components/scripts.html'; ?>
-
-    <script>
-        function printTable() {
-            // obtenemos el contenido de la tabla
-            var tabla = document.getElementById("tabla-comensales").outerHTML;
-
-            // abrimos una nueva ventana solo con la tabla
-            var ventana = window.open("", "", "width=800,height=600");
-            ventana.document.write(`
-      <html>
-        <head>
-          <title>Imprimir tabla</title>
-          <style>
-            table {
-              border-collapse: collapse;
-              width: 100%;
-            }
-            table, th, td {
-              border: 1px solid black;
-              padding: 8px;
-            }
-          </style>
-        </head>
-        <body>
-          ${tabla}
-        </body>
-      </html>
-    `);
-            ventana.document.close();
-            ventana.print();
-        }
-    </script>
 
 
 </body>

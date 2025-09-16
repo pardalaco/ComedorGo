@@ -51,6 +51,17 @@ class Comensal
 
         return $resultado;
     }
+    public function delete()
+    {
+        if (!isset($this->id) || empty($this->id)) {
+            throw new Exception("No se puede eliminar un comensal sin ID.");
+        }
+
+        $conn = getConnection();
+        $stmt = $conn->prepare("DELETE FROM Comensales WHERE ID = :id");
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 
 
     // Getters
