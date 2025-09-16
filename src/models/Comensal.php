@@ -208,3 +208,12 @@ function guardarTodosAsistencias($asistencia)
         return $stmt->execute();
     }
 }
+
+function getAsistenciasFecha($fecha)
+{
+    $conn = getConnection();
+    $stmt = $conn->prepare("SELECT Comensal_ID FROM Asistencia WHERE fecha = :fecha");
+    $stmt->bindParam(':fecha', $fecha);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Devuelve un array con los IDs de comensales que asistieron
+}

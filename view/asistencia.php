@@ -3,6 +3,15 @@
 require_once "../config/db.php";
 require_once "../src/models/Comensal.php";
 
+
+$dateSelected = date('Y-m-d');
+
+
+$comensales = getComensales();
+// print_r($comensales);
+
+$asistencias = getAsistenciasFecha($dateSelected);
+// echo "<script>console.log('Asistencias para $dateSelected: " . json_encode($asistencias) . "');</script>";
 ?>
 
 
@@ -59,18 +68,23 @@ require_once "../src/models/Comensal.php";
             <div class="app-content">
                 <!--begin::Container-->
 
-
                 <div class="d-flex justify-content-end align-items-center mb-2 gap-2">
                     <label for="fecha" class="mb-0">Seleccionar fecha:</label>
-                    <input type="date" id="fecha" class="form-control form-control-sm" style="width: 150px; height: 45px;">
+                    <input type="date"
+                        id="fecha"
+                        class="form-control form-control-sm"
+                        style="width: 150px; height: 45px;"
+                        max="<?= $dateSelected ?>"
+                        value="<?= $dateSelected ?>">
                 </div>
+
+
 
 
                 <!-- begin::Tabla -->
                 <?php
 
-                $comensales = getComensales();
-                // print_r($comensales);
+
 
                 $index_comensales = 1;
                 ?>
@@ -84,7 +98,8 @@ require_once "../src/models/Comensal.php";
                                 <input type="checkbox"
                                     class="form-check-input"
                                     id="selectAllCheckboxes"
-                                    onchange="toggleAll(this); saveAllAsistencia(this)" />
+                                    onchange="toggleAll(this); saveAllAsistencia(this)"
+                                    <?php if (count($comensales) == count($asistencias)) echo 'checked' ?> />
                             </th>
                         </tr>
                     </thead>
@@ -105,7 +120,8 @@ require_once "../src/models/Comensal.php";
                                         onchange="updateMaster(); saveAsistencia(this);"
                                         data-nombre="<?= $comensal->getNombre() ?>"
                                         data-apellidos="<?= $comensal->getApellidos() ?>"
-                                        data-comensalID="<?= $comensal->getId() ?>" />
+                                        data-comensalID="<?= $comensal->getId() ?>"
+                                        <?php if (in_array($comensal->getId(), $asistencias)) echo 'checked'; ?> />
                                 </td>
                             </tr>
                         <?php } ?>
