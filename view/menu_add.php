@@ -8,9 +8,10 @@ require_once "../src/models/Menu.php";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"] ?? '';
     $descripcion = $_POST["descripcion"] ?? '';
+    $especial = isset($_POST["especial"]) ? 1 : 0;
 
     try {
-        $menu = new Menu(null, $nombre, $descripcion);
+        $menu = new Menu(null, $nombre, $descripcion, $especial);
         $menu->save();
         header("Location: menus.php");
         exit();
@@ -111,6 +112,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <div class="mb-3">
                                 <label for="descripcion" class="form-label">Descripción</label>
                                 <textarea type="text" class="form-control" id="descripcion" name="descripcion"></textarea>
+                            </div>
+
+                            <!-- Especial -->
+                            <div class="mb-3">
+                                <label for="especial" class="form-label">Especial</label>
+                                <!-- Checkbox -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="especial" name="especial">
+                                    <label class="form-check-label" for="especial">
+                                        Marcar si es un menú especial
+                                    </label>
+                                </div>
                             </div>
 
                             <!--end::Body-->

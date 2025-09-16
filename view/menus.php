@@ -73,10 +73,18 @@ require_once "../src/models/Menu.php";
                 ?>
 
                     <!--begin::Menu-->
-                    <div class="card card-primary card-outline mb-4">
+                    <div class="card card-info card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
                             <div class="card-title" style="margin-right: 10px;"><?= $menu->getNombre() ?></div>
+
+                            <?php
+                            if ($menu->isEspecial()) {
+                            ?>
+                                <span class="badge text-bg-success" style="margin-right: 10px;">Especial</span>
+                            <?php
+                            }
+                            ?>
 
                             <a href="menu_modify.php?menuid=<?= $menu->getId() ?>" class="text-secondary" title="Editar">
                                 <i class="bi bi-pencil-square"></i>
