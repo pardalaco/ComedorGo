@@ -10,7 +10,7 @@ require_once "../src/models/Mesa.php";
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Alumnos</title>
+    <title>ComedorGo - Mesas</title>
 
     <?php include './components/head.html'; ?>
 
@@ -39,7 +39,7 @@ require_once "../src/models/Mesa.php";
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Dashboard</h3>
+                            <h3 class="mb-0">Mesas</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
