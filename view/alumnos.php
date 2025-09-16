@@ -97,8 +97,8 @@ require_once "../src/models/Comensal.php";
                                 </td>
                                 <td><?= $comensal->getNombre() ?></td>
                                 <td><?= $comensal->getApellidos()  ?></td>
-                                <td></td>
-                                <td></td>
+                                <td><?= $comensal->getMenuName()  ?></td>
+                                <td><?= $comensal->getMesaName()  ?></td>
                             </tr>
                         <?php } ?>
 

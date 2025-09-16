@@ -2,7 +2,8 @@
 <?php
 require_once "../config/db.php";
 require_once "../src/models/Comensal.php";
-
+require_once "../src/models/Menu.php";
+require_once "../src/models/Mesa.php";
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -34,6 +35,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 }
+
+$menus = getAllMenus();
+$mesas = getAllMesas();
+
 ?>
 
 
@@ -89,27 +94,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <!--begin::App Content-->
             <div class="app-content">
 
-
-
-                <?php
-                // Supongamos que tienes las opciones de menú y mesa en arrays.
-                // En un caso real podrías obtenerlos de la base de datos.
-                $menus = [
-                    1 => "Vegetariano",
-                    2 => "Normal",
-                    3 => "Sin gluten",
-                    4 => "Infantil"
-                ];
-
-                $mesas = [
-                    1 => "Mesa 1",
-                    2 => "Mesa 2",
-                    3 => "Mesa 3",
-                    4 => "Mesa 4"
-                ];
-
-                ?>
-
                 <!--begin::Quick Example-->
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
@@ -138,10 +122,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <label for="menu" class="form-label">Menú</label>
                                 <select class="form-select" id="menu" name="menu">
                                     <option value="">-- Selecciona un menú --</option>
-                                    <option value="1">Vegetariano</option>
-                                    <option value="2">Normal</option>
-                                    <option value="3">Sin gluten</option>
-                                    <option value="4">Infantil</option>
+                                    <?php
+                                    foreach ($menus as $menu) {
+                                    ?>
+                                        <option value="<?php echo $menu->getId() ?>">
+                                            <?php echo $menu->getNombre();
+                                            if ($menu->isEspecial()) echo " (Especial)" ?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                             </div>
 
@@ -150,10 +140,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <label for="mesa" class="form-label">Mesa</label>
                                 <select class="form-select" id="mesa" name="mesa">
                                     <option value="">-- Selecciona una mesa --</option>
-                                    <option value="1">Mesa 1</option>
-                                    <option value="2">Mesa 2</option>
-                                    <option value="3">Mesa 3</option>
-                                    <option value="4">Mesa 4</option>
+                                    <?php
+                                    foreach ($mesas as $mesa) {
+                                    ?>
+                                        <option value="<?php echo $mesa->getId() ?>">
+                                            <?php echo $mesa->getNombre(); ?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
                                 </select>
                             </div>
                         </div>
@@ -178,38 +173,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
     <!--end::App Wrapper-->
     <?php include './components/scripts.html'; ?>
-
-    <script>
-        function printTable() {
-            // obtenemos el contenido de la tabla
-            var tabla = document.getElementById("tabla-comensales").outerHTML;
-
-            // abrimos una nueva ventana solo con la tabla
-            var ventana = window.open("", "", "width=800,height=600");
-            ventana.document.write(`
-      <html>
-        <head>
-          <title>Imprimir tabla</title>
-          <style>
-            table {
-              border-collapse: collapse;
-              width: 100%;
-            }
-            table, th, td {
-              border: 1px solid black;
-              padding: 8px;
-            }
-          </style>
-        </head>
-        <body>
-          ${tabla}
-        </body>
-      </html>
-    `);
-            ventana.document.close();
-            ventana.print();
-        }
-    </script>
 
 
 </body>

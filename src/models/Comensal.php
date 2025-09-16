@@ -8,6 +8,8 @@ class Comensal
     private $apellidos;
     private $menu_id;
     private $mesa_id;
+    private $menu_name;
+    private $mesa_name;
 
     public function __construct($id, $nombre, $apellidos, $menu_id = null, $mesa_id = null)
     {
@@ -16,6 +18,8 @@ class Comensal
         $this->apellidos = $apellidos;
         $this->menu_id = $menu_id;
         $this->mesa_id = $mesa_id;
+        $this->menu_name = $this->menu_id ? getMenuNameById($this->menu_id) : null;
+        $this->mesa_name = $this->mesa_id ? getMesaNameById($this->mesa_id) : null;
     }
 
     public function save()
@@ -88,6 +92,14 @@ class Comensal
     public function getMesaId()
     {
         return $this->mesa_id;
+    }
+    public function getMenuName()
+    {
+        return $this->menu_name;
+    }
+    public function getMesaName()
+    {
+        return $this->mesa_name;
     }
 
     // Setters
@@ -216,4 +228,21 @@ function getAsistenciasFecha($fecha)
     $stmt->bindParam(':fecha', $fecha);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Devuelve un array con los IDs de comensales que asistieron
+}
+
+function getMenuNameById($id)
+{
+    $conn = getConnection();
+    $stmt = $conn->prepare("SELECT Nombre FROM Menu WHERE ID = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+function getMesaNameById($id)
+{
+    $conn = getConnection();
+    $stmt = $conn->prepare("SELECT Nombre FROM Mesa WHERE ID = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchColumn();
 }
