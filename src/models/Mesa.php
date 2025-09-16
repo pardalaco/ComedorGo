@@ -48,6 +48,26 @@ class Mesa
 
         return $resultado;
     }
+
+    public function delete()
+    {
+        if (!isset($this->id) || empty($this->id)) {
+            throw new Exception("No se puede eliminar una mesa sin ID.");
+        }
+
+        $conn = getConnection();
+
+        // Primero, eliminar los comensales asociados a esta mesa
+        $stmtComensales = $conn->prepare("DELETE FROM Comensales WHERE Mesa_ID = :mesaId");
+        $stmtComensales->bindParam(':mesaId', $this->id, PDO::PARAM_INT);
+        $stmtComensales->execute();
+
+        // Luego, eliminar la mesa
+        $stmtMesa = $conn->prepare("DELETE FROM Mesa WHERE ID = :id");
+        $stmtMesa->bindParam(':id', $this->id, PDO::PARAM_INT);
+        return $stmtMesa->execute();
+    }
+
     private function obtenerComensales()
     {
         $conn = getConnection();

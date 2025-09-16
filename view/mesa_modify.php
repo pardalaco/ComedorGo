@@ -12,30 +12,37 @@ $mesa = getMesaById($MesaId);
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nombre = $_POST["nombre"] ?? '';
-    $descripcion = $_POST["descripcion"] ?? '';
+    if ($_POST['accion'] === 'modificar') {
+        $nombre = $_POST["nombre"] ?? '';
+        $descripcion = $_POST["descripcion"] ?? '';
 
-    try {
-        $mesa->setNombre($nombre);
-        $mesa->setDescripcion($descripcion);
-        $mesa->save();
-        header("Location: mesas.php");
-        exit();
-    } catch (PDOException $e) {
-        // Código SQLSTATE 23000 indica violación de restricción (duplicado)
-        if ($e->getCode() === '23000') {
-            echo "<script>alert('Error: la mesa ya está registrado.');</script>";
-        } else {
+        try {
+            $mesa->setNombre($nombre);
+            $mesa->setDescripcion($descripcion);
+            $mesa->save();
+            header("Location: mesas.php");
+            exit();
+        } catch (PDOException $e) {
+            // Código SQLSTATE 23000 indica violación de restricción (duplicado)
+            if ($e->getCode() === '23000') {
+                echo "<script>alert('Error: la mesa ya está registrado.');</script>";
+            } else {
+                $mensaje = addslashes($e->getMessage());
+                echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
+            }
+            // Volver a la página anterior
+            echo "<script>window.history.back();</script>";
+            exit();
+        } catch (Exception $e) {
             $mensaje = addslashes($e->getMessage());
-            echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
+            echo "<script>alert('Error inesperado: $mensaje');</script>";
+            echo "<script>window.history.back();</script>";
+            exit();
         }
-        // Volver a la página anterior
-        echo "<script>window.history.back();</script>";
-        exit();
-    } catch (Exception $e) {
-        $mensaje = addslashes($e->getMessage());
-        echo "<script>alert('Error inesperado: $mensaje');</script>";
-        echo "<script>window.history.back();</script>";
+    } elseif ($_POST['accion'] === 'eliminar') {
+        // Código para eliminar el alumno
+        $mesa->delete(); // Asumiendo que tienes un método delete() en tu modelo
+        header("Location: mesas.php");
         exit();
     }
 }
@@ -131,9 +138,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <!--end::Body-->
                             <!--begin::Footer-->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                <!-- Botón modificar -->
+                                <button type="submit" name="accion" value="modificar" class="btn btn-primary" style="margin-right: 10px">
+                                    Modificar
+                                </button>
+
+                                <!-- Botón eliminar con confirmación -->
+                                <button type="submit" name="accion" value="eliminar" class="btn btn-danger"
+                                    onclick="return confirm('¿Estás seguro de que quieres eliminar este alumno?');">
+                                    Eliminar
+                                </button>
                             </div>
                             <!--end::Footer-->
+
                     </form>
                     <!--end::Form-->
                 </div>
