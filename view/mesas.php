@@ -78,7 +78,7 @@ require_once "../src/models/Mesa.php";
                         <div class="card-header">
                             <div class="card-title" style="margin-right: 10px;"><?= $mesa->getNombre() ?></div>
 
-                            <a href="mesa_modify.php?id=<?= $mesa->getId() ?>" class="text-secondary" title="Editar">
+                            <a href="mesa_modify.php?mesaid=<?= $mesa->getId() ?>" class="text-secondary" title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         </div>

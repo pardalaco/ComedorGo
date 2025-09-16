@@ -3,6 +3,12 @@
 require_once "../config/db.php";
 require_once "../src/models/Mesa.php";
 
+if (isset($_GET['mesaid'])) {
+    $mesaid = $_GET['mesaid'];
+    $MesaId = intval($mesaid);
+}
+
+$mesa = getMesaById($MesaId);
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -10,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $descripcion = $_POST["descripcion"] ?? '';
 
     try {
-        $mesa = new Mesa(null, $nombre, $descripcion);
+        $mesa->setNombre($nombre);
+        $mesa->setDescripcion($descripcion);
         $mesa->save();
         header("Location: mesas.php");
         exit();
@@ -20,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo "<script>alert('Error: la mesa ya está registrado.');</script>";
         } else {
             $mensaje = addslashes($e->getMessage());
-            echo "<script>alert('Error al guardar la mesa: $mensaje');</script>";
+            echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
         }
         // Volver a la página anterior
         echo "<script>window.history.back();</script>";
@@ -104,13 +111,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <!-- Nombre -->
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required />
+                                <input type="text"
+                                    class="form-control"
+                                    id="nombre"
+                                    name="nombre"
+                                    value="<?= $mesa->getNombre() ?>"
+                                    required />
                             </div>
 
                             <!-- Apellidos -->
                             <div class="mb-3">
                                 <label for="descripcion" class="form-label">Descripción</label>
-                                <textarea type="text" class="form-control" id="descripcion" name="descripcion"></textarea>
+                                <textarea type="text"
+                                    class="form-control"
+                                    id="descripcion"
+                                    name="descripcion"><?= $mesa->getDescripcion() ?></textarea>
                             </div>
 
                             <!--end::Body-->
@@ -135,6 +150,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!--end::App Wrapper-->
     <?php include './components/scripts.html'; ?>
 
+    <script>
+        function printTable() {
+            // obtenemos el contenido de la tabla
+            var tabla = document.getElementById("tabla-comensales").outerHTML;
+
+            // abrimos una nueva ventana solo con la tabla
+            var ventana = window.open("", "", "width=800,height=600");
+            ventana.document.write(`
+      <html>
+        <head>
+          <title>Imprimir tabla</title>
+          <style>
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            table, th, td {
+              border: 1px solid black;
+              padding: 8px;
+            }
+          </style>
+        </head>
+        <body>
+          ${tabla}
+        </body>
+      </html>
+    `);
+            ventana.document.close();
+            ventana.print();
+        }
+    </script>
 
 
 </body>

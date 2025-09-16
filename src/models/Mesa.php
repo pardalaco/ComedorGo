@@ -78,6 +78,15 @@ class Mesa
     {
         return $this->comensales;
     }
+    // Setters
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+    }
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
 }
 
 // Función para obtener todas las mesas
@@ -91,4 +100,16 @@ function getAllMesas()
         $mesas[] = new Mesa($row['ID'], $row['Nombre'], $row['Descripcion']);
     }
     return $mesas;
+}
+
+function getMesaById($id)
+{
+    $conn = getConnection();
+    $stmt = $conn->prepare("SELECT * FROM Mesa WHERE ID = :id");
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        return new Mesa($row['ID'], $row['Nombre'], $row['Descripcion']);
+    }
+    return null; // Si no se encuentra la mesa
 }
