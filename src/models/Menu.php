@@ -53,6 +53,26 @@ class Menu
 
         return $resultado;
     }
+
+    public function delete()
+    {
+        if (!isset($this->id) || empty($this->id)) {
+            throw new Exception("No se puede eliminar un menú sin ID.");
+        }
+
+        $conn = getConnection();
+
+        // Primero, eliminar los comensales asociados a este menú
+        $stmt = $conn->prepare("DELETE FROM Comensales WHERE Menu_ID = :menuId");
+        $stmt->bindParam(':menuId', $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Luego, eliminar el menú
+        $stmt = $conn->prepare("DELETE FROM Menu WHERE ID = :id");
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     private function obtenerComensales()
     {
         $conn = getConnection();
