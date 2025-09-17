@@ -1,0 +1,140 @@
+<?php
+require_once(__DIR__ . "/../../config/db.php");
+require_once 'Comensal.php';
+require_once 'Menu.php';
+require_once 'Mesa.php';
+
+// require_once(__DIR__ . '../src/models/Comensal.php');
+// require_once(__DIR__ . '../src/models/Menu.php');
+// require_once(__DIR__ . '../src/models/Mesa.php');
+
+class DatosDia
+{
+    private $fecha;
+    private $comensales;
+    private $comensalesTotales; // Número total de comensales en la base de datos
+    private $asistentes; // Número de comensales que asisten
+    private array $asistentesIDs; // IDs de comensales que asisten
+    private array $menus; // array de objetos Menu
+    private $menusTotales; // Array con el MenuID y Número total de menús en la base de datos
+    private $asistentesMenus; // Array con el MenuID y NumeroAsistentes
+    private array $mesas; // array de objetos Mesa
+    private $mesasTotales; // Número total de mesas en la base de datos
+    private $asistentesMesas; // Array con el MesaID y NumeroAsistentes
+
+    function __construct($fecha)
+    {
+        $this->fecha = $fecha;
+
+        // Comensales
+        $this->comensales = getComensales();
+        $this->comensalesTotales = count($this->comensales);
+
+        // Asistentes
+        $this->asistentes = count(getAsistenciasFecha($fecha));
+
+        // Menús
+        $this->menus = getAllMenus();
+        $this->menusTotales = $this->getTotalMenus();
+        $this->asistentesMenus = $this->getAsistentesPorMenu($fecha);
+
+        // Mesas
+        $this->mesas = getAllMesas();
+        $this->mesasTotales = $this->getTotalMesas();
+        $this->asistentesMesas = $this->getAsistentesPorMesa($fecha);
+    }
+
+    private function getTotalMenus()
+    {
+        // MenuID => Número de comensales con ese menú
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT Menu_ID, COUNT(*) AS NumComensales FROM Comensales GROUP BY Menu_ID");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
+    }
+
+    private function getAsistentesPorMenu($fecha)
+    {
+        $conn = getConnection();
+        $stmt = $conn->prepare("
+        SELECT m.ID as MenuID, COUNT(a.Comensal_ID) AS NumAsistentes
+        FROM Menu m
+        LEFT JOIN Comensales c ON c.Menu_ID = m.ID
+        LEFT JOIN Asistencia a ON a.Comensal_ID = c.ID AND a.fecha = :fecha
+        GROUP BY m.ID
+    ");
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Ahora sí funciona
+    }
+
+    private function getTotalMesas()
+    {
+        // MesaID => Número de comensales en esa mesa
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT Mesa_ID, COUNT(*) AS NumComensales FROM Comensales GROUP BY Mesa_ID");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Mesa_ID => NumComensales]
+    }
+
+    private function getAsistentesPorMesa($fecha)
+    {
+        $conn = getConnection();
+        $stmt = $conn->prepare("
+            SELECT ms.ID as MesaID, COUNT(a.Comensal_ID) AS NumAsistentes
+            FROM Mesa ms
+            LEFT JOIN Comensales c ON c.Mesa_ID = ms.ID
+            LEFT JOIN Asistencia a ON a.Comensal_ID = c.ID AND a.fecha = :fecha
+            GROUP BY ms.ID, ms.Nombre
+        ");
+        $stmt->bindParam(':fecha', $fecha);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Mesa_ID => NumAsistentes]
+    }
+
+    // Getters
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+    public function getComensales()
+    {
+        return $this->comensales;
+    }
+    public function getComensalesTotales()
+    {
+        return $this->comensalesTotales;
+    }
+    public function getAsistentes()
+    {
+        return $this->asistentes;
+    }
+    public function getAsistentesIDs()
+    {
+        return $this->asistentesIDs;
+    }
+    public function getMenus()
+    {
+        return $this->menus;
+    }
+    public function getMenusTotales()
+    {
+        return $this->menusTotales;
+    }
+    public function getAsistentesMenus()
+    {
+        return $this->asistentesMenus;
+    }
+    public function getMesas()
+    {
+        return $this->mesas;
+    }
+    public function getMesasTotales()
+    {
+        return $this->mesasTotales;
+    }
+    public function getAsistentesMesas()
+    {
+        return $this->asistentesMesas;
+    }
+}

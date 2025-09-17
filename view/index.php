@@ -1,7 +1,9 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Comensal.php";
+require_once "../src/models/DatosDia.php";
+
+$datosHoy = new DatosDia(date('Y-m-d'));
 ?>
 
 <!doctype html>
@@ -115,15 +117,24 @@ require_once "../src/models/Comensal.php";
                 <div class="card text-center">
                   <div class="card-header">
                     <h3 class="card-title">Asistencia</h3>
+                    <?= $datosHoy->getAsistentes() . " de " . $datosHoy->getComensalesTotales() . " comensales" ?>
                   </div>
                   <div class="card-body">
-                    <input type="text" class="knob" value="60" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
+                    <input type="text" class="knob" value="<?= ($datosHoy->getAsistentes() / $datosHoy->getComensalesTotales() * 100) ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
                   </div>
                 </div>
               </div>
 
 
-              <!-- begin::Table -->
+
+
+              <!-- begin::Table Menús-->
+              <?php
+              $menus = $datosHoy->getMenus();
+              $menusAsistentes = $datosHoy->getAsistentesMenus();
+              $index_menus = 1;
+              ?>
+
               <div class="col-md-4">
                 <div class="card ">
                   <div class="card-header">
@@ -135,61 +146,47 @@ require_once "../src/models/Comensal.php";
                       <thead>
                         <tr>
                           <th style="width: 10px">#</th>
-                          <th>Task</th>
-                          <th>Progress</th>
-                          <th style="width: 40px">Label</th>
+                          <th>Menús</th>
+                          <th>Porcentajes</th>
+                          <th>Asistentes</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="align-middle">
-                          <td>1.</td>
-                          <td>Update software</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div
-                                class="progress-bar progress-bar-danger"
-                                style="width: 55%" data-bs-toggle="tooltip" title="55%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge text-bg-danger">55%</span></td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>2.</td>
-                          <td>Clean database</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar text-bg-warning" style="width: 70%" data-bs-toggle="tooltip" title="70%"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <span class="badge text-bg-warning" data-bs-toggle="tooltip" title="70%">70%</span>
-                          </td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>3.</td>
-                          <td>Cron job running</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar text-bg-primary" style="width: 30%;" data-bs-toggle="tooltip" title="30%"></div>
-                            </div>
-                          </td>
 
-                          <td>
-                            <span class="badge text-bg-primary" data-bs-toggle="tooltip" title="60%">30%</span>
-                          </td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>4.</td>
-                          <td>Fix and squish bugs</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar text-bg-success" style="width: 90%" data-bs-toggle="tooltip" title="90%"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <span class="badge text-bg-success">90%</span>
-                          </td>
-                        </tr>
+                        <?php
+                        foreach ($menus as $menu) {
+                          $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
+
+                          // Determinar color según porcentaje
+                          if ($porcentaje <= 20) {
+                            $color = 'bg-danger';
+                          } elseif ($porcentaje <= 80) {
+                            $color = 'bg-warning';
+                          } else {
+                            $color = 'bg-success';
+                          }
+                        ?>
+                          <tr class="align-middle">
+                            <td><?= $index_menus++; ?></td>
+                            <td><?= $menu->getNombre(); ?></td>
+                            <td>
+                              <div class="progress progress-xs">
+                                <div class="progress-bar <?= $color ?>"
+                                  style="width: <?= $porcentaje; ?>%"
+                                  title="<?= $porcentaje; ?>%"
+                                  data-bs-toggle="tooltip"></div>
+                              </div>
+                            </td>
+                            <td class="text-center">
+                              <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
+                                <?= $menusAsistentes[$menu->getId()] . "/" . $datosHoy->getMenusTotales()[$menu->getId()]; ?>
+                              </span>
+                            </td>
+                          </tr>
+                        <?php
+                        }
+                        ?>
+
                       </tbody>
                     </table>
                   </div>
@@ -200,11 +197,17 @@ require_once "../src/models/Comensal.php";
 
 
 
-              <!-- begin::Table -->
+              <!-- begin::Table Mesas-->
+              <?php
+              $mesas = $datosHoy->getMesas();
+              $mesasAsistentes = $datosHoy->getAsistentesMesas();
+              $index_mesas = 1;
+              ?>
+
               <div class="col-md-4">
                 <div class="card ">
                   <div class="card-header">
-                    <h3 class="card-title">Menús</h3>
+                    <h3 class="card-title">Mesas</h3>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body p-0">
@@ -212,60 +215,47 @@ require_once "../src/models/Comensal.php";
                       <thead>
                         <tr>
                           <th style="width: 10px">#</th>
-                          <th>Task</th>
-                          <th>Progress</th>
-                          <th style="width: 40px">Label</th>
+                          <th>Mesas</th>
+                          <th>Porcentajes</th>
+                          <th>Asistentes</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr class="align-middle">
-                          <td>1.</td>
-                          <td>Update software</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div
-                                class="progress-bar progress-bar-danger"
-                                style="width: 55%"></div>
-                            </div>
-                          </td>
-                          <td><span class="badge text-bg-danger">55%</span></td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>2.</td>
-                          <td>Clean database</td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar text-bg-warning" style="width: 70%"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <span class="badge text-bg-warning">70%</span>
-                          </td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>3.</td>
-                          <td>Cron job running</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar text-bg-primary" style="width: 30%"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <span class="badge text-bg-primary">30%</span>
-                          </td>
-                        </tr>
-                        <tr class="align-middle">
-                          <td>4.</td>
-                          <td>Fix and squish bugs</td>
-                          <td>
-                            <div class="progress progress-xs progress-striped active">
-                              <div class="progress-bar text-bg-success" style="width: 90%"></div>
-                            </div>
-                          </td>
-                          <td>
-                            <span class="badge text-bg-success">90%</span>
-                          </td>
-                        </tr>
+
+                        <?php
+                        foreach ($mesas as $menu) {
+                          $porcentaje = round($mesasAsistentes[$menu->getId()] / $datosHoy->getMesasTotales()[$menu->getId()] * 100);
+
+                          // Determinar color según porcentaje
+                          if ($porcentaje <= 20) {
+                            $color = 'bg-danger';
+                          } elseif ($porcentaje <= 80) {
+                            $color = 'bg-warning';
+                          } else {
+                            $color = 'bg-success';
+                          }
+                        ?>
+                          <tr class="align-middle">
+                            <td><?= $index_mesas++; ?></td>
+                            <td><?= $menu->getNombre(); ?></td>
+                            <td>
+                              <div class="progress progress-xs">
+                                <div class="progress-bar <?= $color ?>"
+                                  style="width: <?= $porcentaje; ?>%"
+                                  title="<?= $porcentaje; ?>%"
+                                  data-bs-toggle="tooltip"></div>
+                              </div>
+                            </td>
+                            <td class="text-center">
+                              <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
+                                <?= $mesasAsistentes[$menu->getId()] . "/" . $datosHoy->getMesasTotales()[$menu->getId()]; ?>
+                              </span>
+                            </td>
+                          </tr>
+                        <?php
+                        }
+                        ?>
+
                       </tbody>
                     </table>
                   </div>
@@ -273,6 +263,8 @@ require_once "../src/models/Comensal.php";
                 </div>
               </div>
               <!-- /.card -->
+
+
 
             </div>
             <!-- end::Row -->
@@ -299,8 +291,9 @@ require_once "../src/models/Comensal.php";
   <?php include './components/scripts.html'; ?>
 
 
-
+  <!-- Gráfica datos generales -->
   <script>
+    // Datos de ejemplo
     document.addEventListener("DOMContentLoaded", function() {
       const sales_chart_options = {
         series: [{
@@ -348,6 +341,7 @@ require_once "../src/models/Comensal.php";
         },
       };
 
+      // Render the chart
       const sales_chart = new ApexCharts(
         document.querySelector('#sales-chart'),
         sales_chart_options
@@ -356,7 +350,7 @@ require_once "../src/models/Comensal.php";
     });
   </script>
 
-
+  <!-- Gráfica menús -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -396,6 +390,7 @@ require_once "../src/models/Comensal.php";
     });
   </script>
 
+  <!-- Porcentajed de asistencia -->
   <!-- jQuery y jQuery Knob -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-knob/dist/jquery.knob.min.js"></script>

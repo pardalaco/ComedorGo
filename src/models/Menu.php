@@ -11,6 +11,7 @@ class Menu
     private $descripcion;
     private bool $especial;
     private array $comensales; // array de objetos Comensal
+    private int $numeroComensales;
 
     public function __construct($id, $nombre, $descripcion = null, $especial = false)
     {
@@ -19,6 +20,7 @@ class Menu
         $this->descripcion = $descripcion;
         $this->especial = $especial;
         $this->comensales = $this->obtenerComensales();
+        $this->numeroComensales = count($this->comensales);
     }
 
     public function save()
@@ -106,6 +108,10 @@ class Menu
     public function isEspecial()
     {
         return $this->especial;
+    }
+    public function getNumeroComensales()
+    {
+        return $this->numeroComensales;
     }
     // Setters
     public function setNombre($nombre)
