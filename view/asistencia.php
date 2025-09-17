@@ -4,7 +4,8 @@ require_once "../config/db.php";
 require_once "../src/models/Comensal.php";
 
 
-$dateSelected = date('Y-m-d');
+// $dateSelected = date('Y-m-d');
+$dateSelected = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
 
 
 $comensales = getComensales();
@@ -70,12 +71,16 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
                 <div class="d-flex justify-content-end align-items-center mb-2 gap-2">
                     <label for="fecha" class="mb-0">Seleccionar fecha:</label>
-                    <input type="date"
-                        id="fecha"
-                        class="form-control form-control-sm"
-                        style="width: 150px; height: 45px;"
-                        max="<?= $dateSelected ?>"
-                        value="<?= $dateSelected ?>">
+                    <form method="GET" id="formFecha">
+                        <input type="date"
+                            id="fecha"
+                            name="fecha"
+                            class="form-control form-control-sm"
+                            style="width: 150px; height: 45px;"
+                            max="<?= date('Y-m-d') ?>"
+                            value="<?= $dateSelected ?>"
+                            onchange="document.getElementById('formFecha').submit();">
+                    </form>
                 </div>
 
 
@@ -99,21 +104,19 @@ $asistencias = getAsistenciasFecha($dateSelected);
                                     class="form-check-input"
                                     id="selectAllCheckboxes"
                                     onchange="toggleAll(this); saveAllAsistencia(this)"
-                                    <?php if (count($comensales) == count($asistencias)) echo 'checked' ?> />
+                                    <?php if (count($comensales) == count($asistencias)) echo 'checked'; ?>
+                                    <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
+
                             </th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        <?php foreach ($comensales as $comensal) {
-
-                        ?>
+                        <?php foreach ($comensales as $comensal) { ?>
                             <tr class="align-middle">
-                                <td>
-                                    <?= $index_comensales++ ?>.
-                                </td>
+                                <td><?= $index_comensales++ ?>.</td>
                                 <td><?= $comensal->getNombre() ?></td>
-                                <td><?= $comensal->getApellidos()  ?></td>
+                                <td><?= $comensal->getApellidos() ?></td>
                                 <td class="text-center">
                                     <input type="checkbox"
                                         class="form-check-input fila"
@@ -121,7 +124,8 @@ $asistencias = getAsistenciasFecha($dateSelected);
                                         data-nombre="<?= $comensal->getNombre() ?>"
                                         data-apellidos="<?= $comensal->getApellidos() ?>"
                                         data-comensalID="<?= $comensal->getId() ?>"
-                                        <?php if (in_array($comensal->getId(), $asistencias)) echo 'checked'; ?> />
+                                        <?php if (in_array($comensal->getId(), $asistencias)) echo 'checked'; ?>
+                                        <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
                                 </td>
                             </tr>
                         <?php } ?>
@@ -208,26 +212,27 @@ $asistencias = getAsistenciasFecha($dateSelected);
         // Evento fila thead
         document.querySelectorAll('.mi-tabla thead tr').forEach(row => {
             row.addEventListener('click', function(e) {
-                // Evitar que al clicar la propia checkbox se doble el cambio
-                if (e.target.type !== 'checkbox') {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
-                    toggleAll(checkbox);
-                    saveAllAsistencia(checkbox);
-                }
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                // Evitar acción si clic en el propio checkbox o si está deshabilitado
+                if (e.target.type === 'checkbox' || checkbox.disabled) return;
+
+                checkbox.checked = !checkbox.checked;
+                toggleAll(checkbox);
+                saveAllAsistencia(checkbox);
             });
         });
+
 
         // Evento fila tbody
         document.querySelectorAll('.mi-tabla tbody tr').forEach(row => {
             row.addEventListener('click', function(e) {
-                // Evitar que al clicar la propia checkbox se doble el cambio
-                if (e.target.type !== 'checkbox') {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
-                    updateMaster();
-                    saveAsistencia(checkbox);
-                }
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                // Evitar acción si clic en el propio checkbox o si está deshabilitado
+                if (e.target.type === 'checkbox' || checkbox.disabled) return;
+
+                checkbox.checked = !checkbox.checked;
+                updateMaster();
+                saveAsistencia(checkbox);
             });
         });
     </script>
