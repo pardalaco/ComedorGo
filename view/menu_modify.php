@@ -3,6 +3,8 @@
 require_once "../config/db.php";
 require_once "../src/models/Menu.php";
 
+$activePage = 'menus'; // Para resaltar la página activa en el sidebar
+
 if (isset($_GET['menuid'])) {
     $menuid = $_GET['menuid'];
     $MenuId = intval($menuid);
@@ -74,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         //include './components/header.html'; 
         ?>
         <?php include './components/header.html'; ?>
-        <?php include './components/sidebar.html'; ?>
+        <?php include './components/sidebar.php'; ?>
 
 
         <!--begin::App Main-->

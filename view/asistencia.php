@@ -3,6 +3,7 @@
 require_once "../config/db.php";
 require_once "../src/models/Comensal.php";
 
+$activePage = 'asistencia'; // Para resaltar la página activa en el sidebar
 
 // $dateSelected = date('Y-m-d');
 $dateSelected = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
@@ -39,7 +40,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
         //include './components/header.html'; 
         ?>
         <?php include './components/header.html'; ?>
-        <?php include './components/sidebar.html'; ?>
+        <?php include './components/sidebar.php'; ?>
 
 
         <!--begin::App Main-->

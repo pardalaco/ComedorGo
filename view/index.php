@@ -3,6 +3,8 @@
 require_once "../config/db.php";
 require_once "../src/models/DatosDia.php";
 
+$activePage = 'index'; // Para resaltar la página activa en el sidebar
+
 $datosHoy = new DatosDia(date('Y-m-d'));
 ?>
 
@@ -33,7 +35,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
     //include './components/header.html'; 
     ?>
     <?php include './components/header.html'; ?>
-    <?php include './components/sidebar.html'; ?>
+    <?php include './components/sidebar.php'; ?>
 
 
     <!--begin::App Main-->

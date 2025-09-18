@@ -5,6 +5,8 @@ require_once "../src/models/Comensal.php";
 require_once "../src/models/Menu.php";
 require_once "../src/models/Mesa.php";
 
+$activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
+
 if (isset($_GET['userid'])) {
     $userid = $_GET['userid'];
     $UserId = intval($userid);
@@ -84,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         //include './components/header.html'; 
         ?>
         <?php include './components/header.html'; ?>
-        <?php include './components/sidebar.html'; ?>
+        <?php include './components/sidebar.php'; ?>
 
 
         <!--begin::App Main-->

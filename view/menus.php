@@ -2,6 +2,9 @@
 <?php
 require_once "../config/db.php";
 require_once "../src/models/Menu.php";
+
+$activePage = 'menus'; // Para resaltar la página activa en el sidebar
+
 ?>
 
 <!doctype html>
@@ -27,7 +30,7 @@ require_once "../src/models/Menu.php";
         //include './components/header.html'; 
         ?>
         <?php include './components/header.html'; ?>
-        <?php include './components/sidebar.html'; ?>
+        <?php include './components/sidebar.php'; ?>
 
 
         <!--begin::App Main-->

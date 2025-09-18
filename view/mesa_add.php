@@ -3,6 +3,7 @@
 require_once "../config/db.php";
 require_once "../src/models/Mesa.php";
 
+$activePage = 'mesas'; // Para resaltar la página activa en el sidebar
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -58,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         //include './components/header.html'; 
         ?>
         <?php include './components/header.html'; ?>
-        <?php include './components/sidebar.html'; ?>
+        <?php include './components/sidebar.php'; ?>
 
 
         <!--begin::App Main-->

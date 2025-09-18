@@ -5,6 +5,8 @@ require_once "../src/models/Comensal.php";
 require_once "../src/models/Menu.php";
 require_once "../src/models/Mesa.php";
 
+$activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
+
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"] ?? '';
@@ -65,7 +67,7 @@ $mesas = getAllMesas();
         //include './components/header.html'; 
         ?>
         <?php include './components/header.html'; ?>
-        <?php include './components/sidebar.html'; ?>
+        <?php include './components/sidebar.php'; ?>
 
 
         <!--begin::App Main-->
