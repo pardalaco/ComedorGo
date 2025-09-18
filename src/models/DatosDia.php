@@ -22,6 +22,8 @@ class DatosDia
     private $mesasTotales; // Número total de mesas en la base de datos
     private $asistentesMesas; // Array con el MesaID y NumeroAsistentes
 
+    private $historialAsistencias; // Array con la historia de asistencias (fecha => numAsistentes)
+
     function __construct($fecha)
     {
         $this->fecha = $fecha;
@@ -32,6 +34,7 @@ class DatosDia
 
         // Asistentes
         $this->asistentes = count(getAsistenciasFecha($fecha));
+        $this->historialAsistencias = $this->getHistoricoAsistencias();
 
         // Menús
         $this->menus = getAllMenus();
@@ -92,6 +95,29 @@ class DatosDia
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Mesa_ID => NumAsistentes]
     }
 
+    private function getHistoricoAsistencias()
+    {
+        $conn = getConnection();
+        // $stmt = $conn->prepare("
+        //     SELECT fecha, COUNT(Comensal_ID) AS NumAsistentes
+        //     FROM Asistencia
+        //     GROUP BY fecha
+        //     ORDER BY fecha DESC
+        //     LIMIT 30
+        // ");
+        $stmt = $conn->prepare("
+        SELECT fecha, COUNT(Comensal_ID) AS NumAsistentes
+        FROM Asistencia
+        WHERE DAYOFWEEK(fecha) NOT IN (1, 7)
+        GROUP BY fecha
+        ORDER BY fecha DESC
+        LIMIT 30
+    ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [fecha => NumAsistentes]
+
+    }
+
     // Getters
     public function getFecha()
     {
@@ -108,6 +134,10 @@ class DatosDia
     public function getAsistentes()
     {
         return $this->asistentes;
+    }
+    public function getHistorialAsistencias()
+    {
+        return $this->historialAsistencias;
     }
     public function getAsistentesIDs()
     {

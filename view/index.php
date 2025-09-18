@@ -295,16 +295,18 @@ $datosHoy = new DatosDia(date('Y-m-d'));
   <script>
     // Datos de ejemplo
     document.addEventListener("DOMContentLoaded", function() {
+
+      <?php
+      $historial = $datosHoy->getHistorialAsistencias();
+      $fechas = array_keys($historial);
+      $asistentes = array_values($historial);
+      ?>
+
       const sales_chart_options = {
         series: [{
-            name: 'Digital Goods',
-            data: [28, 48, 40, 19, 86, 27, 90],
-          },
-          {
-            name: 'Electronics',
-            data: [65, 59, 80, 81, 56, 55, 40],
-          },
-        ],
+          name: 'Asistentes',
+          data: [<?= implode(", ", $asistentes) ?>],
+        }, ],
         chart: {
           height: 300,
           type: 'area',
@@ -315,7 +317,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
         legend: {
           show: true
         },
-        colors: ['#0d6efd', '#20c997'],
+        colors: ['#0d6efd'],
         dataLabels: {
           enabled: false
         },
@@ -325,18 +327,21 @@ $datosHoy = new DatosDia(date('Y-m-d'));
         xaxis: {
           type: 'datetime',
           categories: [
-            '2023-01-01',
-            '2023-02-01',
-            '2023-03-01',
-            '2023-04-01',
-            '2023-05-01',
-            '2023-06-01',
-            '2023-07-01',
+            <?php
+            foreach ($fechas as $fecha) {
+              echo "'" . date('Y-m-d', strtotime($fecha)) . "', ";
+            }
+            ?>
           ],
+        },
+        yaxis: {
+          min: 0,
+          max: <?= $datosHoy->getComensalesTotales() ?>,
+          tickAmount: 5 // opcional, fuerza 5 divisiones
         },
         tooltip: {
           x: {
-            format: 'MMMM yyyy'
+            format: 'dd/MM/yyyy'
           },
         },
       };
@@ -357,16 +362,46 @@ $datosHoy = new DatosDia(date('Y-m-d'));
       var pieChartCanvas = document.getElementById('pieChart').getContext('2d');
 
       var pieData = {
-        labels: ['Chrome', 'Edge', 'Firefox', 'Safari', 'Opera', 'IE'],
+        labels: [
+          <?php
+          $menus = $datosHoy->getMenus();
+          $labels = [];
+          $data = [];
+          $colors = [];
+          $i = 0;
+
+          $colorsPalette = [
+            '#FF6384', // rojo rosado
+            '#36A2EB', // azul
+            '#FFCE56', // amarillo
+            '#4BC0C0', // turquesa
+            '#9966FF', // violeta
+            '#FF9F40', // naranja
+            '#C9CBCF', // gris
+            '#8BC34A', // verde claro
+            '#E91E63', // rosa fuerte
+            '#3F51B5'  // azul oscuro
+          ];
+
+          foreach ($menus as $menu) {
+            $labels[] = "'" . $menu->getNombre() . "'";
+            $data[] = $datosHoy->getMenusTotales()[$menu->getId()];
+            $colors[] = "'" . $colorsPalette[$i % count($colorsPalette)] . "'";
+            $i++;
+          }
+          echo implode(", ", $labels);
+          ?>
+        ],
         datasets: [{
-          data: [700, 500, 400, 600, 300, 100],
+          data: [
+            <?php
+            echo implode(", ", $data);
+            ?>
+          ],
           backgroundColor: [
-            '#0d6efd', // azul
-            '#20c997', // verde
-            '#ffc107', // amarillo
-            '#d63384', // rosa
-            '#6f42c1', // morado
-            '#adb5bd' // gris
+            <?php
+            echo implode(", ", $colors);
+            ?>
           ],
         }]
       };
