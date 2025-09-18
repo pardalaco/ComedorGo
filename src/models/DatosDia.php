@@ -15,9 +15,16 @@ class DatosDia
     private $comensalesTotales; // Número total de comensales en la base de datos
     private $asistentes; // Número de comensales que asisten
     private array $asistentesIDs; // IDs de comensales que asisten
+
+    // Menús
     private array $menus; // array de objetos Menu
+    private array $menusNormales;
+    private array $menusEspeciales;
     private $menusTotales; // Array con el MenuID y Número total de menús en la base de datos
     private $asistentesMenus; // Array con el MenuID y NumeroAsistentes
+    private $menusEspecialesTotales;
+
+    // Mesas
     private array $mesas; // array de objetos Mesa
     private $mesasTotales; // Número total de mesas en la base de datos
     private $asistentesMesas; // Array con el MesaID y NumeroAsistentes
@@ -40,6 +47,9 @@ class DatosDia
         $this->menus = getAllMenus();
         $this->menusTotales = $this->getTotalMenus();
         $this->asistentesMenus = $this->getAsistentesPorMenu($fecha);
+        $this->menusNormales = array_filter($this->menus, fn($menu) => !$menu->isEspecial());
+        $this->menusEspeciales = array_filter($this->menus, fn($menu) => $menu->isEspecial());
+        $this->menusEspecialesTotales = $this->getTotalMenusEspeciales();
 
         // Mesas
         $this->mesas = getAllMesas();
@@ -52,6 +62,20 @@ class DatosDia
         // MenuID => Número de comensales con ese menú
         $conn = getConnection();
         $stmt = $conn->prepare("SELECT Menu_ID, COUNT(*) AS NumComensales FROM Comensales GROUP BY Menu_ID");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
+    }
+    private function getTotalMenusEspeciales()
+    {
+        // MenuID => Número de comensales con ese menú especial
+        $conn = getConnection();
+        $stmt = $conn->prepare("
+            SELECT m.ID AS Menu_ID, COUNT(c.ID) AS NumComensales
+            FROM Menu m
+            LEFT JOIN Comensales c ON c.Menu_ID = m.ID
+            WHERE m.Especial = 1
+            GROUP BY m.ID
+        ");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
     }
@@ -147,6 +171,19 @@ class DatosDia
     {
         return $this->menus;
     }
+    public function getMenusNormales()
+    {
+        return $this->menusNormales;
+    }
+    public function getMenusEspeciales()
+    {
+        return $this->menusEspeciales;
+    }
+    public function getMenusEspecialesTotales()
+    {
+        return $this->menusEspecialesTotales;
+    }
+
     public function getMenusTotales()
     {
         return $this->menusTotales;
