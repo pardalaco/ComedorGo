@@ -22,6 +22,11 @@ $datosHoy = new DatosDia(date('Y-m-d'));
   <!-- ApexCharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+
+  <!-- PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -102,74 +107,111 @@ $datosHoy = new DatosDia(date('Y-m-d'));
             <!-- end::Row -->
             <!-- end::Datos generales -->
 
+            <!-- Datos a imprimir -->
+            <div id="pdf-menus">
 
-
-            <div class="row">
-              <div class="col-sm-6" style="margin-bottom: 15px;">
-                <h4 class="mb-0">Datos de hoy</h4>
-              </div>
-            </div>
-
-
-            <!--begin::Row-->
-            <div class="row">
-
-              <!-- Knob Card -->
-              <div class="col-md-4">
-                <div class="card text-center">
-                  <div class="card-header">
-                    <h3 class="card-title">Asistencia</h3>
-                    <?= $datosHoy->getAsistentes() . " de " . $datosHoy->getComensalesTotales() . " comensales" ?>
-                  </div>
-                  <div class="card-body">
-                    <input type="text" class="knob" value="<?= ($datosHoy->getAsistentes() / $datosHoy->getComensalesTotales() * 100) ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
+              <div class="row mb-3">
+                <div class="col-12">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Datos de hoy</h4>
+                    <button class="btn btn-primary" onclick="descargarPDF()">Descargar PDF</button>
                   </div>
                 </div>
               </div>
 
 
 
+              <!--begin::Row-->
+              <div class="row">
 
-              <!-- begin::Table Menús-->
-              <?php
-              $menusNormales = $datosHoy->getMenusNormales();
-              $menusEspeciales = $datosHoy->getMenusEspeciales();
-              $menusAsistentes = $datosHoy->getAsistentesMenus();
-              $index_menus = 1;
-
-              $totalMenusEspeciales = 0;
-              foreach ($datosHoy->getMenusEspecialesTotales() as $menu) {
-                $totalMenusEspeciales += $menu;
-              }
-              $totalAsistentesEspeciales = 0;
-              foreach ($menusEspeciales as $menu) {
-                $totalAsistentesEspeciales += $menusAsistentes[$menu->getId()];
-              }
-
-              ?>
-
-              <div class="col-md-4">
-                <div class="card ">
-                  <div class="card-header">
-                    <h3 class="card-title">Menús</h3>
+                <!-- Knob Card -->
+                <div class="col-md-4">
+                  <div class="card text-center">
+                    <div class="card-header">
+                      <h3 class="card-title">Asistencia</h3>
+                      <?= $datosHoy->getAsistentes() . " de " . $datosHoy->getComensalesTotales() . " comensales" ?>
+                    </div>
+                    <div class="card-body">
+                      <input type="text" class="knob" value="<?= ($datosHoy->getAsistentes() / $datosHoy->getComensalesTotales() * 100) ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
+                    </div>
                   </div>
-                  <!-- /.card-header -->
-                  <div class="card-body p-0">
-                    <table class="table table-sm" style="margin-bottom: 20px;">
-                      <thead>
-                        <tr>
-                          <th style="width: 10px">#</th>
-                          <th>Menús Normales</th>
-                          <th>Porcentajes</th>
-                          <th>Asistentes</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                </div>
 
-                        <?php
-                        foreach ($menusNormales as $menu) {
-                          $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
 
+
+
+                <!-- begin::Table Menús-->
+                <?php
+                $menusNormales = $datosHoy->getMenusNormales();
+                $menusEspeciales = $datosHoy->getMenusEspeciales();
+                $menusAsistentes = $datosHoy->getAsistentesMenus();
+                $index_menus = 1;
+
+                $totalMenusEspeciales = 0;
+                foreach ($datosHoy->getMenusEspecialesTotales() as $menu) {
+                  $totalMenusEspeciales += $menu;
+                }
+                $totalAsistentesEspeciales = 0;
+                foreach ($menusEspeciales as $menu) {
+                  $totalAsistentesEspeciales += $menusAsistentes[$menu->getId()];
+                }
+
+                ?>
+
+                <div class="col-md-4">
+                  <div class="card ">
+                    <div class="card-header">
+                      <h3 class="card-title">Menús</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                      <table class="table table-sm" style="margin-bottom: 20px;">
+                        <thead>
+                          <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Menús Normales</th>
+                            <th>Porcentajes</th>
+                            <th>Asistentes</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <?php
+                          foreach ($menusNormales as $menu) {
+                            $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
+
+                            // Determinar color según porcentaje
+                            if ($porcentaje <= 20) {
+                              $color = 'bg-danger';
+                            } elseif ($porcentaje <= 80) {
+                              $color = 'bg-warning';
+                            } else {
+                              $color = 'bg-success';
+                            }
+                          ?>
+                            <tr class="align-middle">
+                              <td><?= $index_menus++; ?></td>
+                              <td><?= $menu->getNombre(); ?></td>
+                              <td>
+                                <div class="progress progress-xs">
+                                  <div class="progress-bar <?= $color ?>"
+                                    style="width: <?= $porcentaje; ?>%"
+                                    title="<?= $porcentaje; ?>%"
+                                    data-bs-toggle="tooltip"></div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
+                                  <?= $menusAsistentes[$menu->getId()] . "/" . $datosHoy->getMenusTotales()[$menu->getId()]; ?>
+                                </span>
+                              </td>
+                            </tr>
+                          <?php
+                          }
+                          ?>
+                          <?php
+                          // Menús especiales
+                          $porcentaje = round($totalAsistentesEspeciales / $totalMenusEspeciales * 100);
                           // Determinar color según porcentaje
                           if ($porcentaje <= 20) {
                             $color = 'bg-danger';
@@ -178,10 +220,10 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                           } else {
                             $color = 'bg-success';
                           }
-                        ?>
+                          ?>
                           <tr class="align-middle">
                             <td><?= $index_menus++; ?></td>
-                            <td><?= $menu->getNombre(); ?></td>
+                            <td><span class="badge <?= $color ?>" data-bs-toggle="tooltip">Especiales </span></td>
                             <td>
                               <div class="progress progress-xs">
                                 <div class="progress-bar <?= $color ?>"
@@ -192,169 +234,138 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                             </td>
                             <td class="text-center">
                               <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                                <?= $menusAsistentes[$menu->getId()] . "/" . $datosHoy->getMenusTotales()[$menu->getId()]; ?>
+                                <?= $totalAsistentesEspeciales . "/" . $totalMenusEspeciales ?>
                               </span>
                             </td>
                           </tr>
-                        <?php
-                        }
-                        ?>
-                        <?php
-                        // Menús especiales
-                        $porcentaje = round($totalAsistentesEspeciales / $totalMenusEspeciales * 100);
-                        // Determinar color según porcentaje
-                        if ($porcentaje <= 20) {
-                          $color = 'bg-danger';
-                        } elseif ($porcentaje <= 80) {
-                          $color = 'bg-warning';
-                        } else {
-                          $color = 'bg-success';
-                        }
-                        ?>
-                        <tr class="align-middle">
-                          <td><?= $index_menus++; ?></td>
-                          <td><span class="badge <?= $color ?>" data-bs-toggle="tooltip">Especiales </span></td>
-                          <td>
-                            <div class="progress progress-xs">
-                              <div class="progress-bar <?= $color ?>"
-                                style="width: <?= $porcentaje; ?>%"
-                                title="<?= $porcentaje; ?>%"
-                                data-bs-toggle="tooltip"></div>
-                            </div>
-                          </td>
-                          <td class="text-center">
-                            <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                              <?= $totalAsistentesEspeciales . "/" . $totalMenusEspeciales ?>
-                            </span>
-                          </td>
-                        </tr>
 
-                      </tbody>
-                    </table>
-                    <?php $index_menus = 1; ?>
-                    <table class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th style="width: 10px">#</th>
-                          <th>Menús Especiales</th>
-                          <th>Porcentajes</th>
-                          <th>Asistentes</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                        </tbody>
+                      </table>
+                      <?php $index_menus = 1; ?>
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Menús Especiales</th>
+                            <th>Porcentajes</th>
+                            <th>Asistentes</th>
+                          </tr>
+                        </thead>
+                        <tbody>
 
-                        <?php
-                        foreach ($menusEspeciales as $menu) {
-                          $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
+                          <?php
+                          foreach ($menusEspeciales as $menu) {
+                            $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
 
-                          // Determinar color según porcentaje
-                          if ($porcentaje <= 20) {
-                            $color = 'bg-danger';
-                          } elseif ($porcentaje <= 80) {
-                            $color = 'bg-warning';
-                          } else {
-                            $color = 'bg-success';
+                            // Determinar color según porcentaje
+                            if ($porcentaje <= 20) {
+                              $color = 'bg-danger';
+                            } elseif ($porcentaje <= 80) {
+                              $color = 'bg-warning';
+                            } else {
+                              $color = 'bg-success';
+                            }
+                          ?>
+                            <tr class="align-middle">
+                              <td><?= $index_menus++; ?></td>
+                              <td><?= $menu->getNombre(); ?></td>
+                              <td>
+                                <div class="progress progress-xs">
+                                  <div class="progress-bar <?= $color ?>"
+                                    style="width: <?= $porcentaje; ?>%"
+                                    title="<?= $porcentaje; ?>%"
+                                    data-bs-toggle="tooltip"></div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
+                                  <?= $menusAsistentes[$menu->getId()] . "/" . $datosHoy->getMenusTotales()[$menu->getId()]; ?>
+                                </span>
+                              </td>
+                            </tr>
+                          <?php
                           }
-                        ?>
-                          <tr class="align-middle">
-                            <td><?= $index_menus++; ?></td>
-                            <td><?= $menu->getNombre(); ?></td>
-                            <td>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar <?= $color ?>"
-                                  style="width: <?= $porcentaje; ?>%"
-                                  title="<?= $porcentaje; ?>%"
-                                  data-bs-toggle="tooltip"></div>
-                              </div>
-                            </td>
-                            <td class="text-center">
-                              <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                                <?= $menusAsistentes[$menu->getId()] . "/" . $datosHoy->getMenusTotales()[$menu->getId()]; ?>
-                              </span>
-                            </td>
-                          </tr>
-                        <?php
-                        }
-                        ?>
+                          ?>
 
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
                   </div>
-                  <!-- /.card-body -->
                 </div>
-              </div>
-              <!-- /.card -->
+                <!-- /.card -->
 
 
 
-              <!-- begin::Table Mesas-->
-              <?php
-              $mesas = $datosHoy->getMesas();
-              $mesasAsistentes = $datosHoy->getAsistentesMesas();
-              $index_mesas = 1;
-              ?>
+                <!-- begin::Table Mesas-->
+                <?php
+                $mesas = $datosHoy->getMesas();
+                $mesasAsistentes = $datosHoy->getAsistentesMesas();
+                $index_mesas = 1;
+                ?>
 
-              <div class="col-md-4">
-                <div class="card ">
-                  <div class="card-header">
-                    <h3 class="card-title">Mesas</h3>
-                  </div>
-                  <!-- /.card-header -->
-                  <div class="card-body p-0">
-                    <table class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th style="width: 10px">#</th>
-                          <th>Mesas</th>
-                          <th>Porcentajes</th>
-                          <th>Asistentes</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                <div class="col-md-4">
+                  <div class="card ">
+                    <div class="card-header">
+                      <h3 class="card-title">Mesas</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body p-0">
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Mesas</th>
+                            <th>Porcentajes</th>
+                            <th>Asistentes</th>
+                          </tr>
+                        </thead>
+                        <tbody>
 
-                        <?php
-                        foreach ($mesas as $menu) {
-                          $porcentaje = round($mesasAsistentes[$menu->getId()] / $datosHoy->getMesasTotales()[$menu->getId()] * 100);
+                          <?php
+                          foreach ($mesas as $menu) {
+                            $porcentaje = round($mesasAsistentes[$menu->getId()] / $datosHoy->getMesasTotales()[$menu->getId()] * 100);
 
-                          // Determinar color según porcentaje
-                          if ($porcentaje <= 20) {
-                            $color = 'bg-danger';
-                          } elseif ($porcentaje <= 80) {
-                            $color = 'bg-warning';
-                          } else {
-                            $color = 'bg-success';
+                            // Determinar color según porcentaje
+                            if ($porcentaje <= 20) {
+                              $color = 'bg-danger';
+                            } elseif ($porcentaje <= 80) {
+                              $color = 'bg-warning';
+                            } else {
+                              $color = 'bg-success';
+                            }
+                          ?>
+                            <tr class="align-middle">
+                              <td><?= $index_mesas++; ?></td>
+                              <td><?= $menu->getNombre(); ?></td>
+                              <td>
+                                <div class="progress progress-xs">
+                                  <div class="progress-bar <?= $color ?>"
+                                    style="width: <?= $porcentaje; ?>%"
+                                    title="<?= $porcentaje; ?>%"
+                                    data-bs-toggle="tooltip"></div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
+                                  <?= $mesasAsistentes[$menu->getId()] . "/" . $datosHoy->getMesasTotales()[$menu->getId()]; ?>
+                                </span>
+                              </td>
+                            </tr>
+                          <?php
                           }
-                        ?>
-                          <tr class="align-middle">
-                            <td><?= $index_mesas++; ?></td>
-                            <td><?= $menu->getNombre(); ?></td>
-                            <td>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar <?= $color ?>"
-                                  style="width: <?= $porcentaje; ?>%"
-                                  title="<?= $porcentaje; ?>%"
-                                  data-bs-toggle="tooltip"></div>
-                              </div>
-                            </td>
-                            <td class="text-center">
-                              <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                                <?= $mesasAsistentes[$menu->getId()] . "/" . $datosHoy->getMesasTotales()[$menu->getId()]; ?>
-                              </span>
-                            </td>
-                          </tr>
-                        <?php
-                        }
-                        ?>
+                          ?>
 
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
                   </div>
-                  <!-- /.card-body -->
                 </div>
+                <!-- /.card -->
+
               </div>
-              <!-- /.card -->
-
-
+              <!-- end::Datos a imprimir -->
 
             </div>
             <!-- end::Row -->
@@ -537,6 +548,35 @@ $datosHoy = new DatosDia(date('Y-m-d'));
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
   </script>
+
+  <script>
+    function descargarPDF() {
+      const contenedor = document.getElementById('pdf-menus');
+
+      // Seleccionamos el botón dentro del contenedor y lo ocultamos
+      const boton = contenedor.querySelector('button');
+      if (boton) boton.style.display = 'none';
+
+      html2canvas(contenedor).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const {
+          jsPDF
+        } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('menus_asistencia.pdf');
+
+        // Volvemos a mostrar el botón
+        if (boton) boton.style.display = 'block';
+      });
+    }
+  </script>
+
 
 </body>
 <!--end::Body-->
