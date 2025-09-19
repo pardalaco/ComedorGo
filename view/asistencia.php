@@ -27,8 +27,26 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
     <?php include './components/head.html'; ?>
 
+    <!-- Tabla -->
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+
+
 </head>
 <!--end::Head-->
+
+<!-- jQuery (AdminLTE ya lo usa, pero si no lo tienes, añádelo) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+
+
 <!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
@@ -88,51 +106,55 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
 
                 <!-- begin::Tabla -->
-                <?php
+                <div class="card">
+                    <div class="card-body">
 
 
+                        <?php
+                        $index_comensales = 1;
+                        ?>
+                        <table class="table table-bordered table-hover mi-tabla" id="mi-tabla">
+                            <thead>
+                                <tr>
+                                    <!-- <th style="width: 10px">#</th> -->
+                                    <th>Nombre</th>
+                                    <th>Apellidos</th>
+                                    <th class="text-center">
+                                        <input type="checkbox"
+                                            class="form-check-input"
+                                            id="selectAllCheckboxes"
+                                            onchange="toggleAll(this); saveAllAsistencia(this)"
+                                            <?php if (count($comensales) == count($asistencias)) echo 'checked'; ?>
+                                            <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
 
-                $index_comensales = 1;
-                ?>
-                <table class="table table-bordered table-hover mi-tabla">
-                    <thead>
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th class="text-center">
-                                <input type="checkbox"
-                                    class="form-check-input"
-                                    id="selectAllCheckboxes"
-                                    onchange="toggleAll(this); saveAllAsistencia(this)"
-                                    <?php if (count($comensales) == count($asistencias)) echo 'checked'; ?>
-                                    <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                                <?php foreach ($comensales as $comensal) { ?>
+                                    <tr class="align-middle">
+                                        <!-- <td><?= $index_comensales++ ?>.</td> -->
+                                        <td><?= $comensal->getNombre() ?></td>
+                                        <td><?= $comensal->getApellidos() ?></td>
+                                        <td class="text-center">
+                                            <input type="checkbox"
+                                                class="form-check-input fila"
+                                                onchange="updateMaster(); saveAsistencia(this);"
+                                                data-nombre="<?= $comensal->getNombre() ?>"
+                                                data-apellidos="<?= $comensal->getApellidos() ?>"
+                                                data-comensalID="<?= $comensal->getId() ?>"
+                                                <?php if (in_array($comensal->getId(), $asistencias)) echo 'checked'; ?>
+                                                <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
+                                        </td>
+                                    </tr>
+                                <?php } ?>
 
-                        <?php foreach ($comensales as $comensal) { ?>
-                            <tr class="align-middle">
-                                <td><?= $index_comensales++ ?>.</td>
-                                <td><?= $comensal->getNombre() ?></td>
-                                <td><?= $comensal->getApellidos() ?></td>
-                                <td class="text-center">
-                                    <input type="checkbox"
-                                        class="form-check-input fila"
-                                        onchange="updateMaster(); saveAsistencia(this);"
-                                        data-nombre="<?= $comensal->getNombre() ?>"
-                                        data-apellidos="<?= $comensal->getApellidos() ?>"
-                                        data-comensalID="<?= $comensal->getId() ?>"
-                                        <?php if (in_array($comensal->getId(), $asistencias)) echo 'checked'; ?>
-                                        <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
-                                </td>
-                            </tr>
-                        <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                    </tbody>
-                </table>
                 <!-- end::Tabla -->
 
 
@@ -234,6 +256,18 @@ $asistencias = getAsistenciasFecha($dateSelected);
                 checkbox.checked = !checkbox.checked;
                 updateMaster();
                 saveAsistencia(checkbox);
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#mi-tabla').DataTable({
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                }
             });
         });
     </script>

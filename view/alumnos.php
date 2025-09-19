@@ -17,8 +17,24 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 
     <?php include './components/head.html'; ?>
 
+    <!-- Tabla -->
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+
 </head>
 <!--end::Head-->
+
+<!-- jQuery (AdminLTE ya lo usa, pero si no lo tienes, añádelo) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+
+
 <!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
@@ -71,46 +87,51 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 
 
                 <!-- begin::Tabla -->
-                <?php
+                <div class="card">
+                    <div class="card-body">
 
-                $comensales = getComensales();
-                // print_r($comensales);
+                        <?php
 
-                $index_comensales = 1;
-                ?>
-                <table class="table table-bordered table-hover mi-tabla">
-                    <thead>
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>Menú</th>
-                            <th>Mesa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        $comensales = getComensales();
+                        // print_r($comensales);
 
-                        <?php foreach ($comensales as $comensal) {
-
+                        // $index_comensales = 1;
                         ?>
-                            <tr class="align-middle"
-                                data-UserId="<?= $comensal->getId() ?>">
-                                <td>
+                        <table class="table table-bordered table-hover mi-tabla" id="mi-tabla">
+                            <thead>
+                                <tr>
+                                    <!-- <th style="width: 10px">#</th> -->
+                                    <th>Nombre</th>
+                                    <th>Apellidos</th>
+                                    <th>Menú</th>
+                                    <th>Mesa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <?php foreach ($comensales as $comensal) {
+
+                                ?>
+                                    <tr class="align-middle"
+                                        data-UserId="<?= $comensal->getId() ?>">
+                                        <!-- <td>
                                     <?= $index_comensales++ ?>.
-                                </td>
-                                <td><?= $comensal->getNombre() ?></td>
-                                <td><?= $comensal->getApellidos()  ?></td>
-                                <td><?= $comensal->getMenuName()  ?></td>
-                                <td><?= $comensal->getMesaName()  ?></td>
-                            </tr>
-                        <?php } ?>
+                                </td> -->
+                                        <td><?= $comensal->getNombre() ?></td>
+                                        <td><?= $comensal->getApellidos()  ?></td>
+                                        <td><?= $comensal->getMenuName()  ?></td>
+                                        <td><?= $comensal->getMesaName()  ?></td>
+                                    </tr>
+                                <?php } ?>
 
-                    </tbody>
-                </table>
-                <!-- end::Tabla -->
+                            </tbody>
+                        </table>
+                        <!-- end::Tabla -->
 
 
-                <!--end::Container-->
+                        <!--end::Container-->
+                    </div>
+                </div>
             </div>
             <!--end::App Content-->
         </main>
@@ -130,6 +151,18 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
                 console.log("UserId: ", UserId);
 
                 window.location.href = "alumno_modify.php?userid=" + UserId;
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#mi-tabla').DataTable({
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                }
             });
         });
     </script>
