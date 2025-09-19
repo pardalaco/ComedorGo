@@ -569,7 +569,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('menus_asistencia.pdf');
+        pdf.save('<?= date("Y-m-d") ?>_menus_asistencia.pdf');
 
         // Volvemos a mostrar el botón
         if (boton) boton.style.display = 'block';
