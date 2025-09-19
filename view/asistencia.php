@@ -46,6 +46,11 @@ $asistencias = getAsistenciasFecha($dateSelected);
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 
 
+<!-- Imprimir tabla -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
 
 <!--begin::Body-->
 
@@ -88,21 +93,25 @@ $asistencias = getAsistenciasFecha($dateSelected);
             <div class="app-content">
                 <!--begin::Container-->
 
-                <div class="d-flex justify-content-end align-items-center mb-2 gap-2">
-                    <label for="fecha" class="mb-0">Seleccionar fecha:</label>
-                    <form method="GET" id="formFecha">
-                        <input type="date"
-                            id="fecha"
-                            name="fecha"
-                            class="form-control form-control-sm"
-                            style="width: 150px; height: 45px;"
-                            max="<?= date('Y-m-d') ?>"
-                            value="<?= $dateSelected ?>"
-                            onchange="document.getElementById('formFecha').submit();">
-                    </form>
+                <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
+                    <!-- Botón a la izquierda -->
+                    <button type="button" class="btn btn-primary" onclick="descargarPDF()">Descargar PDF</button>
+
+                    <!-- Selector de fecha a la derecha -->
+                    <div class="d-flex align-items-center gap-2">
+                        <label for="fecha" class="mb-0">Seleccionar fecha:</label>
+                        <form method="GET" id="formFecha">
+                            <input type="date"
+                                id="fecha"
+                                name="fecha"
+                                class="form-control form-control-sm"
+                                style="width: 150px; height: 45px;"
+                                max="<?= date('Y-m-d') ?>"
+                                value="<?= $dateSelected ?>"
+                                onchange="document.getElementById('formFecha').submit();">
+                        </form>
+                    </div>
                 </div>
-
-
 
 
                 <!-- begin::Tabla -->
@@ -272,6 +281,27 @@ $asistencias = getAsistenciasFecha($dateSelected);
         });
     </script>
 
+    <!-- Imprimir Tabla -->
+    <script>
+        async function descargarPDF() {
+            const {
+                jsPDF
+            } = window.jspdf;
+
+            const tabla = document.getElementById("mi-tabla");
+
+            const canvas = await html2canvas(tabla);
+            const imgData = canvas.toDataURL("image/png");
+
+            const pdf = new jsPDF("p", "mm", "a4");
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            pdf.save("tabla.pdf");
+        }
+    </script>
 
 
 </body>
