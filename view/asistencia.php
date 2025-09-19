@@ -128,7 +128,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                                     <!-- <th style="width: 10px">#</th> -->
                                     <th>Nombre</th>
                                     <th>Apellidos</th>
-                                    <th class="text-center">
+                                    <th class="text-center" id="checkboxAll">
                                         <input type="checkbox"
                                             class="form-check-input"
                                             id="selectAllCheckboxes"
@@ -242,16 +242,29 @@ $asistencias = getAsistenciasFecha($dateSelected);
         }
 
         // Evento fila thead
-        document.querySelectorAll('.mi-tabla thead tr').forEach(row => {
-            row.addEventListener('click', function(e) {
-                const checkbox = this.querySelector('input[type="checkbox"]');
-                // Evitar acción si clic en el propio checkbox o si está deshabilitado
-                if (e.target.type === 'checkbox' || checkbox.disabled) return;
+        // document.querySelectorAll('.mi-tabla thead tr').forEach(row => {
+        //     row.addEventListener('click', function(e) {
+        //         const checkbox = this.querySelector('input[type="checkbox"]');
+        //         // Evitar acción si clic en el propio checkbox o si está deshabilitado
+        //         if (e.target.type === 'checkbox' || checkbox.disabled) return;
 
-                checkbox.checked = !checkbox.checked;
-                toggleAll(checkbox);
-                saveAllAsistencia(checkbox);
-            });
+        //         checkbox.checked = !checkbox.checked;
+        //         toggleAll(checkbox);
+        //         saveAllAsistencia(checkbox);
+        //     });
+        // });
+        const thCheckbox = document.getElementById('checkboxAll');
+
+        thCheckbox.addEventListener('click', function(e) {
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            if (!checkbox || checkbox.disabled) return;
+
+            // Evitar cambiar si el clic es directamente sobre el input (para que el checkbox funcione normal)
+            if (e.target === checkbox) return;
+
+            checkbox.checked = !checkbox.checked;
+            toggleAll(checkbox);
+            saveAllAsistencia(checkbox);
         });
 
 
