@@ -75,8 +75,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="mesas.php">Mesas</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Añadir Mesa</li>
                             </ol>
                         </div>
                     </div>

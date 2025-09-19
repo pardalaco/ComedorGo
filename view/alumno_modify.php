@@ -98,12 +98,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Añadir Alumno</h3>
+                            <h3 class="mb-0">Modificar Alumno</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="alumnos.php">Alumnos</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Modificar Alumno</li>
                             </ol>
                         </div>
                     </div>
