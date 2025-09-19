@@ -17,6 +17,7 @@ class Mesa
         $this->comensales = $this->obtenerComensales();
     }
 
+    // Guarda o actualiza el menú en la base de datos
     public function save()
     {
         $conn = getConnection();
@@ -49,6 +50,7 @@ class Mesa
         return $resultado;
     }
 
+    // Elimina el menú de la base de datos
     public function delete()
     {
         if (!isset($this->id) || empty($this->id)) {
@@ -68,6 +70,7 @@ class Mesa
         return $stmtMesa->execute();
     }
 
+    // Obtener los comensales asociados a esta mesa
     private function obtenerComensales()
     {
         $conn = getConnection();
@@ -122,6 +125,7 @@ function getAllMesas()
     return $mesas;
 }
 
+// Obtener una mesa por su ID
 function getMesaById($id)
 {
     $conn = getConnection();

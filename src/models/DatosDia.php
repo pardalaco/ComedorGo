@@ -57,6 +57,7 @@ class DatosDia
         $this->asistentesMesas = $this->getAsistentesPorMesa($fecha);
     }
 
+    // Funciones privadas para obtener datos adicionales
     private function getTotalMenus()
     {
         // MenuID => Número de comensales con ese menú
@@ -65,6 +66,8 @@ class DatosDia
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
     }
+
+    // Obtener el total de menús especiales
     private function getTotalMenusEspeciales()
     {
         // MenuID => Número de comensales con ese menú especial
@@ -80,6 +83,7 @@ class DatosDia
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
     }
 
+    // Obtener el número de asistentes por menú
     private function getAsistentesPorMenu($fecha)
     {
         $conn = getConnection();
@@ -95,6 +99,7 @@ class DatosDia
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Ahora sí funciona
     }
 
+    // Obtener el total de mesas
     private function getTotalMesas()
     {
         // MesaID => Número de comensales en esa mesa
@@ -104,6 +109,7 @@ class DatosDia
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Mesa_ID => NumComensales]
     }
 
+    // Obtener el número de asistentes por mesa
     private function getAsistentesPorMesa($fecha)
     {
         $conn = getConnection();
@@ -119,6 +125,7 @@ class DatosDia
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Mesa_ID => NumAsistentes]
     }
 
+    // Obtener el histórico de asistencias (últimos 30 días, excluyendo fines de semana)
     private function getHistoricoAsistencias()
     {
         $conn = getConnection();

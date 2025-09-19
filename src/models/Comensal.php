@@ -22,6 +22,7 @@ class Comensal
         $this->mesa_name = $this->mesa_id ? getMesaNameById($this->mesa_id) : null;
     }
 
+    // Guarda o actualiza el comensal en la base de datos
     public function save()
     {
         $conn = getConnection();
@@ -55,6 +56,8 @@ class Comensal
 
         return $resultado;
     }
+
+    // Elimina el comensal de la base de datos
     public function delete()
     {
         if (!isset($this->id) || empty($this->id)) {
@@ -144,6 +147,7 @@ function getComensalById($id)
     return null;
 }
 
+// Obtiene todos los comensales de la base de datos
 function getComensales()
 {
     $conn = getConnection();
@@ -164,6 +168,9 @@ function getComensales()
     return $comensales;
 }
 
+// Guarda la asistencia de un comensal para hoy
+// $id: ID del comensal
+// $asistencia: 1 para todos asisten, 0 para ninguno asiste
 function guardarAsistencia($id, $asistencia)
 {
     $conn = getConnection();
@@ -184,6 +191,8 @@ function guardarAsistencia($id, $asistencia)
     }
 }
 
+// Guarda la asistencia de todos los comensales para hoy
+// $asistencia: 1 para todos asisten, 0 para ninguno asiste
 function guardarTodosAsistencias($asistencia)
 {
     $conn = getConnection();
@@ -221,6 +230,8 @@ function guardarTodosAsistencias($asistencia)
     }
 }
 
+
+// Obtiene los IDs de los comensales que asistieron en una fecha específica
 function getAsistenciasFecha($fecha)
 {
     $conn = getConnection();
@@ -230,6 +241,7 @@ function getAsistenciasFecha($fecha)
     return $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Devuelve un array con los IDs de comensales que asistieron
 }
 
+// Funciones auxiliares para obtener nombres de Menu y Mesa por ID
 function getMenuNameById($id)
 {
     $conn = getConnection();
@@ -238,6 +250,8 @@ function getMenuNameById($id)
     $stmt->execute();
     return $stmt->fetchColumn();
 }
+
+// Función para obtener el nombre de la mesa por su ID
 function getMesaNameById($id)
 {
     $conn = getConnection();

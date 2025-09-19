@@ -23,6 +23,7 @@ class Menu
         $this->numeroComensales = count($this->comensales);
     }
 
+    // Guarda o actualiza el menú en la base de datos
     public function save()
     {
         $conn = getConnection();
@@ -56,6 +57,7 @@ class Menu
         return $resultado;
     }
 
+    // Elimina el menú de la base de datos
     public function delete()
     {
         if (!isset($this->id) || empty($this->id)) {
@@ -75,6 +77,7 @@ class Menu
         return $stmt->execute();
     }
 
+    // Obtener los comensales asociados a este menú
     private function obtenerComensales()
     {
         $conn = getConnection();
@@ -128,6 +131,7 @@ class Menu
     }
 }
 
+// Funciones para manejar menús
 function getAllMenus()
 {
     $conn = getConnection();
@@ -139,6 +143,8 @@ function getAllMenus()
     }
     return $menus;
 }
+
+// Obtener un menú por su ID
 function getMenuById($id)
 {
     $conn = getConnection();
