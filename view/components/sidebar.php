@@ -40,8 +40,8 @@
                         <p>Asistencia</p>
                     </a>
                 </li>
-                <li class="nav-item <?= ($activePage == 'alumnos' || $activePage == 'menus' || $activePage == 'mesas') ? 'menu-open' : '' ?>">
-                    <a href="#" class="nav-link <?= ($activePage == 'alumnos' || $activePage == 'menus' || $activePage == 'mesas') ? 'active' : '' ?>">
+                <li class="nav-item <?= ($activePage == 'alumnos' || $activePage == 'menus' || $activePage == 'mesas' || $activePage == 'autobuses') ? 'menu-open' : '' ?>">
+                    <a href="#" class="nav-link <?= ($activePage == 'alumnos' || $activePage == 'menus' || $activePage == 'mesas' || $activePage == 'autobuses') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-gear"></i>
                         <p>
                             Gestión
@@ -65,6 +65,12 @@
                             <a href="mesas.php" class="nav-link <?= ($activePage == 'mesas') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-border-all"></i>
                                 <p>Mesas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="autobuses.php" class="nav-link <?= ($activePage == 'autobuses') ? 'active' : '' ?>">
+                                <i class="nav-icon bi bi-car-front-fill"></i>
+                                <p>Autobuses</p>
                             </a>
                         </li>
                     </ul>
