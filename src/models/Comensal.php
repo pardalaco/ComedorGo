@@ -47,15 +47,15 @@ class Comensal
             // Ya existe → UPDATE
             $stmt = $conn->prepare("
             UPDATE Comensales 
-            SET Nombre = :nombre, Apellidos = :apellidos, Menu_ID = :menu_id, Mesa_ID = :mesa_id
+            SET Nombre = :nombre, Apellidos = :apellidos, Menu_ID = :menu_id, Mesa_ID = :mesa_id, Autobus_ID = :autobus_id
             WHERE ID = :id
         ");
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         } else {
             // No existe → INSERT
             $stmt = $conn->prepare("
-            INSERT INTO Comensales (Nombre, Apellidos, Menu_ID, Mesa_ID) 
-            VALUES (:nombre, :apellidos, :menu_id, :mesa_id)
+            INSERT INTO Comensales (Nombre, Apellidos, Menu_ID, Mesa_ID, Autobus_ID) 
+            VALUES (:nombre, :apellidos, :menu_id, :mesa_id, :autobus_id)
         ");
         }
 
@@ -63,6 +63,7 @@ class Comensal
         $stmt->bindParam(':apellidos', $this->apellidos);
         $stmt->bindParam(':menu_id', $this->menu_id);
         $stmt->bindParam(':mesa_id', $this->mesa_id);
+        $stmt->bindParam(':autobus_id', $this->autobus_id);
 
         $resultado = $stmt->execute();
 

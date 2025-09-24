@@ -4,6 +4,7 @@ require_once "../config/db.php";
 require_once "../src/models/Comensal.php";
 require_once "../src/models/Menu.php";
 require_once "../src/models/Mesa.php";
+require_once "../src/models/Autobus.php";
 
 $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 
@@ -13,9 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $apellidos = $_POST["apellidos"] ?? '';
     $menu_id = $_POST["menu"] ?? '';
     $mesa_id = $_POST["mesa"] ?? '';
+    $autobus_id = $_POST["autobus"] ?? '';
+
+
 
     try {
-        $comensal = new Comensal(null, $nombre, $apellidos, $menu_id ?: null, $mesa_id ?: null);
+        $comensal = new Comensal(null, $nombre, $apellidos, $menu_id ?: null, $mesa_id ?: null, $autobus_id ?: null);
         $comensal->save();
         header("Location: alumnos.php");
         exit();
@@ -40,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 $menus = getAllMenus();
 $mesas = getAllMesas();
+$autobuses = getAllAutobuses();
 
 ?>
 
@@ -154,6 +159,24 @@ $mesas = getAllMesas();
                                     ?>
                                 </select>
                             </div>
+
+                            <!-- Autobus -->
+                            <div class="mb-3">
+                                <label for="autobus" class="form-label">Autobus</label>
+                                <select class="form-select" id="autobus" name="autobus">
+                                    <option value="">-- Selecciona un autobus --</option>
+                                    <?php
+                                    foreach ($autobuses as $autobus) {
+                                    ?>
+                                        <option value="<?php echo $autobus->getId() ?>">
+                                            <?php echo $autobus->getNombre(); ?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
                         </div>
                         <!--end::Body-->
                         <!--begin::Footer-->
