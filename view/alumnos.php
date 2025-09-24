@@ -105,6 +105,7 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
                                     <th>Apellidos</th>
                                     <th>Menú</th>
                                     <th>Mesa</th>
+                                    <th>Autobus</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,6 +122,7 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
                                         <td><?= $comensal->getApellidos()  ?></td>
                                         <td><?= $comensal->getMenuName()  ?></td>
                                         <td><?= $comensal->getMesaName()  ?></td>
+                                        <td><?= $comensal->getAutobusName()  ?></td>
                                     </tr>
                                 <?php } ?>
 

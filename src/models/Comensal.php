@@ -6,20 +6,36 @@ class Comensal
     private $id;
     private $nombre;
     private $apellidos;
+
+    // Menus
     private $menu_id;
-    private $mesa_id;
     private $menu_name;
+
+    // Mesas
+    private $mesa_id;
     private $mesa_name;
 
-    public function __construct($id, $nombre, $apellidos, $menu_id = null, $mesa_id = null)
+    // Autobus
+    private $autobus_id;
+    private $autobus_name;
+
+    public function __construct($id, $nombre, $apellidos, $menu_id = null, $mesa_id = null, $autobus_id = null)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->apellidos = $apellidos;
+
+        // Menus
         $this->menu_id = $menu_id;
-        $this->mesa_id = $mesa_id;
         $this->menu_name = $this->menu_id ? getMenuNameById($this->menu_id) : null;
+
+        // Mesas
+        $this->mesa_id = $mesa_id;
         $this->mesa_name = $this->mesa_id ? getMesaNameById($this->mesa_id) : null;
+
+        // Autobus
+        $this->autobus_id = $autobus_id;
+        $this->autobus_name = $this->autobus_id ? getAutobusNameById($this->autobus_id) : null;
     }
 
     // Guarda o actualiza el comensal en la base de datos
@@ -104,6 +120,15 @@ class Comensal
     {
         return $this->mesa_name;
     }
+    // Autobuses
+    public function getAutobusId()
+    {
+        return $this->autobus_id;
+    }
+    public function getAutobusName()
+    {
+        return $this->autobus_name;
+    }
 
     // Setters
     public function setNombre($nombre)
@@ -124,6 +149,10 @@ class Comensal
     public function setMesaId($mesa_id)
     {
         $this->mesa_id = $mesa_id;
+    }
+    public function setAutobusId($autobus_id)
+    {
+        $this->autobus_id = $autobus_id;
     }
 }
 
@@ -162,7 +191,8 @@ function getComensales()
             $row['Nombre'],
             $row['Apellidos'],
             $row['Menu_ID'],
-            $row['Mesa_ID']
+            $row['Mesa_ID'],
+            $row['Autobus_ID'],
         );
     }
     return $comensales;
@@ -256,6 +286,16 @@ function getMesaNameById($id)
 {
     $conn = getConnection();
     $stmt = $conn->prepare("SELECT Nombre FROM Mesa WHERE ID = :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetchColumn();
+}
+
+// Función para obtener el nombre del autobus por su ID
+function getAutobusNameById($id)
+{
+    $conn = getConnection();
+    $stmt = $conn->prepare("SELECT Nombre FROM Autobus WHERE ID = :id");
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     return $stmt->fetchColumn();
