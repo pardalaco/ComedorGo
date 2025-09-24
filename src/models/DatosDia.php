@@ -40,6 +40,7 @@ class DatosDia
         $this->comensalesTotales = count($this->comensales);
 
         // Asistentes
+        $this->asistentesIDs = getAsistenciasFecha($fecha);
         $this->asistentes = count(getAsistenciasFecha($fecha));
         $this->historialAsistencias = $this->getHistoricoAsistencias();
 

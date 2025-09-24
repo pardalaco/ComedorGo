@@ -370,6 +370,88 @@ $datosHoy = new DatosDia(date('Y-m-d'));
             </div>
             <!-- end::Row -->
 
+            <!-- Datos a imprimir -->
+            <div>
+
+              <div class="row mb-3">
+                <div class="col-12">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Mesas asistentes</h4>
+                    <button class="btn btn-primary" onclick="descargarPDFMesas()">Descargar PDF</button>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!--begin::Row-->
+              <div class="row">
+
+
+
+
+                <!-- begin::Table Mesa Alumnos -->
+                <?php
+                $mesas = $datosHoy->getMesas();
+                foreach ($mesas as $mesa) {
+                ?>
+
+                  <div class="col-md-6">
+                    <div class="card mesa-asistentes">
+                      <div class="card-header">
+                        <h3 class="card-title"><?= $mesa->getNombre() ?></h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <div class="card-body p-0">
+                        <table class="table table-sm table-hover" style="margin-bottom: 20px;">
+                          <thead>
+                            <tr>
+                              <th style="width: 10px">#</th>
+                              <th>Alumne</th>
+                              <th>Menú</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <?php
+                            $comensales = $mesa->getComensales();
+                            $index_menus = 1;
+                            foreach ($comensales as $comensal) {
+
+                              if (in_array($comensal->getId(), $datosHoy->getAsistentesIDs())) {
+                            ?>
+                                <tr class="align-middle">
+                                  <td><?= $index_menus++; ?></td>
+                                  <td><?= $comensal->getNombre(); ?></td>
+                                  <td><?= $comensal->getMenuName(); ?></td>
+
+                                </tr>
+                            <?php
+                              }
+                            }
+                            ?>
+
+
+                          </tbody>
+                        </table>
+
+                      </div>
+                      <!-- /.card-body -->
+                    </div>
+                  </div>
+                  <!-- /.card -->
+
+                <?php
+                }
+                ?>
+
+
+              </div>
+              <!-- end::Datos a imprimir -->
+
+
+            </div>
+            <!-- end::Row -->
 
           </div>
           <!--end::Row-->
@@ -577,6 +659,64 @@ $datosHoy = new DatosDia(date('Y-m-d'));
     }
   </script>
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script>
+    function descargarPDFMesas() {
+      // 1. Obtén todas las tarjetas de mesa
+      const mesas = document.querySelectorAll('.mesa-asistentes');
+
+      if (mesas.length === 0) {
+        alert("No hay mesas para descargar.");
+        return;
+      }
+
+      // 2. Inicializa jsPDF
+      const {
+        jsPDF
+      } = window.jspdf;
+      const doc = new jsPDF();
+      let firstPage = true;
+
+      // 3. Itera sobre cada mesa
+      const promises = Array.from(mesas).map(mesa => {
+        return html2canvas(mesa, {
+          scale: 2, // Aumenta la escala para mejor calidad de imagen
+          logging: true,
+          useCORS: true
+        }).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          const imgWidth = 210; // Ancho A4 en mm
+          const pageHeight = 295; // Alto A4 en mm
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+          let heightLeft = imgHeight;
+
+          if (!firstPage) {
+            doc.addPage();
+          }
+          doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+
+          while (heightLeft >= 0) {
+            doc.addPage();
+            doc.addImage(imgData, 'PNG', 0, -(imgHeight - heightLeft), imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+          }
+          firstPage = false;
+        });
+      });
+
+      // 4. Espera a que todas las conversiones de canvas terminen y guarda el PDF
+      Promise.all(promises).then(() => {
+        doc.save('mesas_asistentes.pdf');
+      }).catch(error => {
+        console.error("Error al generar el PDF:", error);
+        alert("Hubo un error al generar el PDF.");
+      });
+    }
+  </script>
 
 </body>
 <!--end::Body-->
