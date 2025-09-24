@@ -75,7 +75,7 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
                 ?>
 
                     <!--begin::Autobus-->
-                    <div class="card card-primary card-outline mb-4">
+                    <div class="card card-warning card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
                             <div class="card-title" style="margin-right: 10px;"><?= $autobus->getNombre() ?></div>
