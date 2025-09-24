@@ -169,7 +169,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                         <thead>
                           <tr>
                             <th style="width: 10px">#</th>
-                            <th>Menús Normales</th>
+                            <th>Tipos de menús</th>
                             <th>Porcentajes</th>
                             <th>Asistentes</th>
                           </tr>
@@ -538,40 +538,46 @@ $datosHoy = new DatosDia(date('Y-m-d'));
     });
   </script>
 
-  <!-- Gráfica menús -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+      // Registrar el plugin de datalabels
+      Chart.register(ChartDataLabels);
+
       var pieChartCanvas = document.getElementById('pieChart').getContext('2d');
 
       var pieData = {
         labels: [
           <?php
-          $menus = $datosHoy->getMenus();
+          $menus = $datosHoy->getMenusNormales();
           $labels = [];
           $data = [];
           $colors = [];
           $i = 0;
 
           $colorsPalette = [
-            '#FF6384', // rojo rosado
-            '#36A2EB', // azul
-            '#FFCE56', // amarillo
-            '#4BC0C0', // turquesa
-            '#9966FF', // violeta
-            '#FF9F40', // naranja
-            '#C9CBCF', // gris
-            '#8BC34A', // verde claro
-            '#E91E63', // rosa fuerte
-            '#3F51B5'  // azul oscuro
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0',
+            '#9966FF',
+            '#FF9F40',
+            '#C9CBCF',
+            '#8BC34A',
+            '#E91E63',
+            '#3F51B5'
           ];
 
           foreach ($menus as $menu) {
             $labels[] = "'" . $menu->getNombre() . "'";
             $data[] = $datosHoy->getMenusTotales()[$menu->getId()];
-            $colors[] = "'" . $colorsPalette[$i % count($colorsPalette)] . "'";
-            $i++;
+            $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
           }
+          $labels[] = "'Especiales'";
+          $data[] = $totalMenusEspeciales;
+          $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
+
           echo implode(", ", $labels);
           ?>
         ],
@@ -596,6 +602,17 @@ $datosHoy = new DatosDia(date('Y-m-d'));
           legend: {
             display: true,
             position: 'bottom'
+          },
+          datalabels: {
+            formatter: (value, context) => {
+              const label = context.chart.data.labels[context.dataIndex];
+              return `${label}: ${value}`;
+            },
+            color: '#fff',
+            font: {
+              weight: 'bold'
+            },
+            padding: 6
           }
         }
       };
