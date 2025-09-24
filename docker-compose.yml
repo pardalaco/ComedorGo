@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    container_name: mi_app_php
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: mi_app_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ComedorGo
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

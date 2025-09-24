@@ -1,7 +1,8 @@
 <?php
 function getConnection()
 {
-    $host = "127.0.0.1";    // o el nombre de tu contenedor si usas Docker
+    // $host = "127.0.0.1";    // o el nombre de tu contenedor si usas Docker
+    $host = "db";    // o el nombre de tu contenedor si usas Docker
     $port = 3306;
     $user = "root";
     $pass = "root";

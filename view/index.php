@@ -1,7 +1,7 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
-require_once "../config/db.php";
-require_once "../src/models/DatosDia.php";
+require_once(__DIR__ . '/../config/db.php');
+require_once(__DIR__ . '/../src/models/DatosDia.php');
 
 $activePage = 'index'; // Para resaltar la página activa en el sidebar
 
@@ -16,8 +16,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>ComedorGo - Alumnos</title>
 
-  <?php include './components/head.html'; ?>
-
+  <?php include __DIR__ . '/components/head.html'; ?>
 
   <!-- ApexCharts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -39,8 +38,8 @@ $datosHoy = new DatosDia(date('Y-m-d'));
     <?php
     //include './components/header.html'; 
     ?>
-    <?php include './components/header.html'; ?>
-    <?php include './components/sidebar.php'; ?>
+    <?php include __DIR__ . '/components/header.html'; ?>
+    <?php include __DIR__ . '/components/sidebar.php'; ?>
 
 
     <!--begin::App Main-->
@@ -132,7 +131,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                       <?= $datosHoy->getAsistentes() . " de " . $datosHoy->getComensalesTotales() . " comensales" ?>
                     </div>
                     <div class="card-body">
-                      <input type="text" class="knob" value="<?= ($datosHoy->getAsistentes() / $datosHoy->getComensalesTotales() * 100) ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
+                      <input type="text" class="knob" value="<?= round($datosHoy->getAsistentes() / $datosHoy->getComensalesTotales() * 100); ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
                     </div>
                   </div>
                 </div>
@@ -467,11 +466,11 @@ $datosHoy = new DatosDia(date('Y-m-d'));
       <!--end::App Content-->
     </main>
     <!--end::App Main-->
-    <?php include './components/footer.html'; ?>
+    <?php include __DIR__ . '/components/footer.html'; ?>
 
   </div>
   <!--end::App Wrapper-->
-  <?php include './components/scripts.html'; ?>
+  <?php include __DIR__ . '/components/scripts.html'; ?>
 
 
   <!-- Gráfica datos generales -->
