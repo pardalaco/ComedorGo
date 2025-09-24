@@ -128,6 +128,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                                     <!-- <th style="width: 10px">#</th> -->
                                     <th>Nombre</th>
                                     <th>Apellidos</th>
+                                    <th>Autobus</th>
                                     <th class="text-center" id="checkboxAll">
                                         <input type="checkbox"
                                             class="form-check-input"
@@ -146,6 +147,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                                         <!-- <td><?= $index_comensales++ ?>.</td> -->
                                         <td><?= $comensal->getNombre() ?></td>
                                         <td><?= $comensal->getApellidos() ?></td>
+                                        <td><?= $comensal->getAutobusName() ?></td>
                                         <td class="text-center">
                                             <input type="checkbox"
                                                 class="form-check-input fila"
