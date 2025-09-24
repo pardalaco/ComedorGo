@@ -4,6 +4,7 @@ require_once "../config/db.php";
 require_once "../src/models/Comensal.php";
 require_once "../src/models/Menu.php";
 require_once "../src/models/Mesa.php";
+require_once "../src/models/Autobus.php";
 
 $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 
@@ -16,6 +17,7 @@ $comensal = getComensalById($UserId);
 
 $menus = getAllMenus();
 $mesas = getAllMesas();
+$autobuses = getAllAutobuses();
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -24,12 +26,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $apellidos = $_POST["apellidos"] ?? '';
         $menu_id = $_POST["menu"] ?? '';
         $mesa_id = $_POST["mesa"] ?? '';
+        $autobus_id = $_POST["autobus"] ?? '';
 
         try {
             $comensal->setNombre($nombre);
             $comensal->setApellidos($apellidos);
             $comensal->setMenuId($menu_id ?: null);
             $comensal->setMesaId($mesa_id ?: null);
+            $comensal->setAutobusId($autobus_id ?: null);
             $comensal->save();
 
 
@@ -185,6 +189,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     ?>
                                 </select>
                             </div>
+
+                            <!-- Autobus -->
+                            <div class="mb-3">
+                                <label for="autobus" class="form-label">Autobus</label>
+                                <select class="form-select" id="autobus" name="autobus">
+                                    <option value="">-- Selecciona un autobus --</option>
+                                    <?php
+                                    foreach ($autobuses as $autobus) {
+                                    ?>
+                                        <option value="<?php echo $autobus->getId() ?>"
+                                            <?php if ($comensal->getMesaId() == $autobus->getId()) echo 'selected'; ?>>
+
+                                            <?php echo $autobus->getNombre(); ?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
                         </div>
                         <!--end::Body-->
                         <!--begin::Footer-->
