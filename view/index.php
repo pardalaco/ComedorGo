@@ -421,7 +421,22 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                             ?>
                                 <tr class="align-middle">
                                   <td><?= $index_menus++; ?></td>
-                                  <td><?= $comensal->getNombre(); ?></td>
+                                  <td><?= $comensal->getNombre() . " " . $comensal->getApellidos();  ?></td>
+                                  <td><?= $comensal->getMenuName(); ?></td>
+
+                                </tr>
+                            <?php
+                              }
+                            }
+                            ?>
+                            <?php
+                            foreach ($comensales as $comensal) {
+
+                              if (!in_array($comensal->getId(), $datosHoy->getAsistentesIDs())) {
+                            ?>
+                                <tr class="align-middle table-secondary"> <!-- fila con fondo gris -->
+                                  <td><?= $index_menus++; ?></td>
+                                  <td><?= $comensal->getNombre() . " " . $comensal->getApellidos();  ?></td>
                                   <td><?= $comensal->getMenuName(); ?></td>
 
                                 </tr>
