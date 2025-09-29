@@ -412,6 +412,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                               <th style="width: 10px">#</th>
                               <th>Alumne</th>
                               <th>Menú</th>
+                              <th>Autobus</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -420,13 +421,13 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                             $comensales = $mesa->getComensales();
                             $index_menus = 1;
                             foreach ($comensales as $comensal) {
-
                               if (in_array($comensal->getId(), $datosHoy->getAsistentesIDs())) {
                             ?>
                                 <tr class="align-middle">
                                   <td><?= $index_menus++; ?></td>
                                   <td><?= $comensal->getNombre() . " " . $comensal->getApellidos();  ?></td>
                                   <td><?= $comensal->getMenuName(); ?></td>
+                                  <td><?= $comensal->getAutobusName(); ?></td>
 
                                 </tr>
                             <?php
@@ -442,7 +443,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                                   <td><?= $index_menus++; ?></td>
                                   <td><?= $comensal->getNombre() . " " . $comensal->getApellidos();  ?></td>
                                   <td><?= $comensal->getMenuName(); ?></td>
-
+                                  <td><?= $comensal->getAutobusName(); ?></td>
                                 </tr>
                             <?php
                               }

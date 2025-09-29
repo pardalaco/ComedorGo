@@ -79,7 +79,7 @@ class Mesa
         $stmt->execute();
         $comensales = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $comensales[] = new Comensal($row['ID'], $row['Nombre'], $row['Apellidos'], $row['Menu_ID'], $row['Mesa_ID']);
+            $comensales[] = new Comensal($row['ID'], $row['Nombre'], $row['Apellidos'], $row['Menu_ID'], $row['Mesa_ID'], $row['Autobus_ID']);
         }
         return $comensales;
     }

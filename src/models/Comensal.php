@@ -171,7 +171,8 @@ function getComensalById($id)
             $row['Nombre'],
             $row['Apellidos'],
             $row['Menu_ID'],
-            $row['Mesa_ID']
+            $row['Mesa_ID'],
+            $row['Autobus_ID']
         );
     }
     return null;

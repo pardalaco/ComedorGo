@@ -230,6 +230,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
                 <!--end::Quick Example-->
 
+                <?php
+                // echo "<pre>";
+                // print_r($comensal);
+                // echo "</pre>";
+                ?>
+
+
 
             </div>
             <!--end::App Content-->
