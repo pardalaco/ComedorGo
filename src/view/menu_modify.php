@@ -1,33 +1,35 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Autobus.php";
+require_once "../models/Menu.php";
 
-$activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
+$activePage = 'menus'; // Para resaltar la página activa en el sidebar
 
-if (isset($_GET['autobusid'])) {
-    $autobusid = $_GET['autobusid'];
-    $AutobusId = intval($autobusid);
+if (isset($_GET['menuid'])) {
+    $menuid = $_GET['menuid'];
+    $MenuId = intval($menuid);
 }
 
-$autobus = getAutobusById($AutobusId);
+$menu = getMenuById($MenuId);
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($_POST['accion'] === 'modificar') {
         $nombre = $_POST["nombre"] ?? '';
         $descripcion = $_POST["descripcion"] ?? '';
+        $especial = isset($_POST["especial"]) ? 1 : 0;
 
         try {
-            $autobus->setNombre($nombre);
-            $autobus->setDescripcion($descripcion);
-            $autobus->save();
-            header("Location: autobuses.php");
+            $menu->setNombre($nombre);
+            $menu->setDescripcion($descripcion);
+            $menu->setEspecial($especial);
+            $menu->save();
+            header("Location: menus.php");
             exit();
         } catch (PDOException $e) {
             // Código SQLSTATE 23000 indica violación de restricción (duplicado)
             if ($e->getCode() === '23000') {
-                echo "<script>alert('Error: la autobus ya está registrado.');</script>";
+                echo "<script>alert('Error: la menu ya está registrado.');</script>";
             } else {
                 $mensaje = addslashes($e->getMessage());
                 echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
@@ -43,8 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     } elseif ($_POST['accion'] === 'eliminar') {
         // Código para eliminar el alumno
-        $autobus->delete(); // Asumiendo que tienes un método delete() en tu modelo
-        header("Location: autobuses.php");
+        $menu->delete(); // Asumiendo que tienes un método delete() en tu modelo
+        header("Location: menus.php");
         exit();
     }
 }
@@ -57,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Autobuses</title>
+    <title>ComedorGo - Menus</title>
 
     <?php include './components/head.html'; ?>
 
@@ -86,13 +88,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Modificar Autobus</h3>
+                            <h3 class="mb-0">Modificar Menú</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="autobuses.php">Autobuses</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Modificar Autobus</li>
+                                <li class="breadcrumb-item"><a href="menus.php">Menús</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Modificar Menú</li>
                             </ol>
                         </div>
                     </div>
@@ -111,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <div class="card-title">Formulario Autobus</div>
+                        <div class="card-title">Formulario Menu</div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
@@ -125,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     class="form-control"
                                     id="nombre"
                                     name="nombre"
-                                    value="<?= $autobus->getNombre() ?>"
+                                    value="<?= $menu->getNombre() ?>"
                                     required />
                             </div>
 
@@ -135,10 +137,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <textarea type="text"
                                     class="form-control"
                                     id="descripcion"
-                                    name="descripcion"><?= $autobus->getDescripcion() ?></textarea>
+                                    name="descripcion"><?= $menu->getDescripcion() ?></textarea>
                             </div>
 
-                            <!--end::Body-->
+                            <!-- Especial -->
+                            <div class="mb-3">
+                                <label for="especial" class="form-label">Especial</label>
+                                <!-- Checkbox -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="especial" name="especial" <?php if ($menu->isEspecial()) echo 'checked'; ?>>
+                                    <label class="form-check-label" for="especial">
+                                        Marcar si es un menú especial
+                                    </label>
+                                </div>
+                            </div>
+
                             <!--begin::Footer-->
                             <div class="card-footer">
                                 <!-- Botón modificar -->
@@ -162,6 +175,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             </div>
             <!--end::App Content-->
+
+            <?php
+            // echo "<pre>";
+            // print_r($menu);
+            // echo "</pre>";
+            ?>
+
         </main>
         <!--end::App Main-->
         <?php include './components/footer.html'; ?>

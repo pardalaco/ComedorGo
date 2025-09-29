@@ -1,7 +1,7 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Menu.php";
+require_once "../models/Menu.php";
 
 $activePage = 'menus'; // Para resaltar la página activa en el sidebar
 

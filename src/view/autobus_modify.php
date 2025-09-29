@@ -1,16 +1,16 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Mesa.php";
+require_once "../models/Autobus.php";
 
-$activePage = 'mesas'; // Para resaltar la página activa en el sidebar
+$activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
 
-if (isset($_GET['mesaid'])) {
-    $mesaid = $_GET['mesaid'];
-    $MesaId = intval($mesaid);
+if (isset($_GET['autobusid'])) {
+    $autobusid = $_GET['autobusid'];
+    $AutobusId = intval($autobusid);
 }
 
-$mesa = getMesaById($MesaId);
+$autobus = getAutobusById($AutobusId);
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -19,15 +19,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $descripcion = $_POST["descripcion"] ?? '';
 
         try {
-            $mesa->setNombre($nombre);
-            $mesa->setDescripcion($descripcion);
-            $mesa->save();
-            header("Location: mesas.php");
+            $autobus->setNombre($nombre);
+            $autobus->setDescripcion($descripcion);
+            $autobus->save();
+            header("Location: autobuses.php");
             exit();
         } catch (PDOException $e) {
             // Código SQLSTATE 23000 indica violación de restricción (duplicado)
             if ($e->getCode() === '23000') {
-                echo "<script>alert('Error: la mesa ya está registrado.');</script>";
+                echo "<script>alert('Error: la autobus ya está registrado.');</script>";
             } else {
                 $mensaje = addslashes($e->getMessage());
                 echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
@@ -43,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     } elseif ($_POST['accion'] === 'eliminar') {
         // Código para eliminar el alumno
-        $mesa->delete(); // Asumiendo que tienes un método delete() en tu modelo
-        header("Location: mesas.php");
+        $autobus->delete(); // Asumiendo que tienes un método delete() en tu modelo
+        header("Location: autobuses.php");
         exit();
     }
 }
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Mesas</title>
+    <title>ComedorGo - Autobuses</title>
 
     <?php include './components/head.html'; ?>
 
@@ -86,13 +86,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Modificar Mesa</h3>
+                            <h3 class="mb-0">Modificar Autobus</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="mesas.php">Mesas</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Modificar Mesa</li>
+                                <li class="breadcrumb-item"><a href="autobuses.php">Autobuses</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Modificar Autobus</li>
                             </ol>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <div class="card-title">Formulario Mesa</div>
+                        <div class="card-title">Formulario Autobus</div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
@@ -125,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     class="form-control"
                                     id="nombre"
                                     name="nombre"
-                                    value="<?= $mesa->getNombre() ?>"
+                                    value="<?= $autobus->getNombre() ?>"
                                     required />
                             </div>
 
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <textarea type="text"
                                     class="form-control"
                                     id="descripcion"
-                                    name="descripcion"><?= $mesa->getDescripcion() ?></textarea>
+                                    name="descripcion"><?= $autobus->getDescripcion() ?></textarea>
                             </div>
 
                             <!--end::Body-->

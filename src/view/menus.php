@@ -1,9 +1,10 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Autobus.php";
+require_once "../models/Menu.php";
 
-$activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
+$activePage = 'menus'; // Para resaltar la página activa en el sidebar
+
 ?>
 
 <!doctype html>
@@ -12,7 +13,7 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Autobuses</title>
+    <title>ComedorGo - Menús</title>
 
     <?php include './components/head.html'; ?>
 
@@ -41,12 +42,12 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Autobuses</h3>
+                            <h3 class="mb-0">Menús</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Autobus</li>
+                                <li class="breadcrumb-item active" aria-current="page">Menú</li>
                             </ol>
                         </div>
                     </div>
@@ -61,39 +62,47 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
                 <!-- Botones arriba de la tabla -->
                 <div class="d-flex justify-content-end mb-2">
 
-                    <button class="btn btn-primary" onclick="location.href='autobus_add.php'">
-                        Añadir autobus
+                    <button class="btn btn-primary" onclick="location.href='menu_add.php'">
+                        Añadir menú
                     </button>
                 </div>
                 <!-- ./Botones arriba de la tabla -->
 
                 <?php
 
-                $autobuses = getAllAutobuses();
-                foreach ($autobuses as $autobus) {
+                $menus = getAllMenus();
+                foreach ($menus as $menu) {
 
                 ?>
 
-                    <!--begin::Autobus-->
-                    <div class="card card-warning card-outline mb-4">
+                    <!--begin::Menu-->
+                    <div class="card card-info card-outline mb-4">
                         <!--begin::Header-->
                         <div class="card-header">
-                            <div class="card-title" style="margin-right: 10px;"><?= $autobus->getNombre() ?></div>
+                            <div class="card-title" style="margin-right: 10px;"><?= $menu->getNombre() ?></div>
 
-                            <a href="autobus_modify.php?autobusid=<?= $autobus->getId() ?>" class="text-secondary" title="Editar">
+                            <?php
+                            if ($menu->isEspecial()) {
+                            ?>
+                                <span class="badge text-bg-success" style="margin-right: 10px;">Especial</span>
+                            <?php
+                            }
+                            ?>
+
+                            <a href="menu_modify.php?menuid=<?= $menu->getId() ?>" class="text-secondary" title="Editar">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         </div>
                         <!--end::Header--> <!--begin::Body-->
                         <div class="card-body">
                             <p class="muted">
-                                <?= $autobus->getDescripcion() ?>
+                                <?= $menu->getDescripcion() ?>
                             </p>
                             <hr />
                             <ul class="list-group">
                                 <?php
 
-                                $comensales = $autobus->getComensales();
+                                $comensales = $menu->getComensales();
                                 foreach ($comensales as $comensal) {
 
                                 ?>
@@ -105,7 +114,7 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
                         </div>
                         <!--end::Body-->
                     </div>
-                    <!--end::Autobus-->
+                    <!--end::Menu-->
                 <?php
                 }
                 ?>

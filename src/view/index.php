@@ -1,7 +1,7 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once(__DIR__ . '/../config/db.php');
-require_once(__DIR__ . '/../src/models/DatosDia.php');
+require_once(__DIR__ . '/../models/DatosDia.php');
 
 $activePage = 'index'; // Para resaltar la página activa en el sidebar
 

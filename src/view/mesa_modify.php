@@ -1,35 +1,33 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Menu.php";
+require_once "../models/Mesa.php";
 
-$activePage = 'menus'; // Para resaltar la página activa en el sidebar
+$activePage = 'mesas'; // Para resaltar la página activa en el sidebar
 
-if (isset($_GET['menuid'])) {
-    $menuid = $_GET['menuid'];
-    $MenuId = intval($menuid);
+if (isset($_GET['mesaid'])) {
+    $mesaid = $_GET['mesaid'];
+    $MesaId = intval($mesaid);
 }
 
-$menu = getMenuById($MenuId);
+$mesa = getMesaById($MesaId);
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($_POST['accion'] === 'modificar') {
         $nombre = $_POST["nombre"] ?? '';
         $descripcion = $_POST["descripcion"] ?? '';
-        $especial = isset($_POST["especial"]) ? 1 : 0;
 
         try {
-            $menu->setNombre($nombre);
-            $menu->setDescripcion($descripcion);
-            $menu->setEspecial($especial);
-            $menu->save();
-            header("Location: menus.php");
+            $mesa->setNombre($nombre);
+            $mesa->setDescripcion($descripcion);
+            $mesa->save();
+            header("Location: mesas.php");
             exit();
         } catch (PDOException $e) {
             // Código SQLSTATE 23000 indica violación de restricción (duplicado)
             if ($e->getCode() === '23000') {
-                echo "<script>alert('Error: la menu ya está registrado.');</script>";
+                echo "<script>alert('Error: la mesa ya está registrado.');</script>";
             } else {
                 $mensaje = addslashes($e->getMessage());
                 echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
@@ -45,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     } elseif ($_POST['accion'] === 'eliminar') {
         // Código para eliminar el alumno
-        $menu->delete(); // Asumiendo que tienes un método delete() en tu modelo
-        header("Location: menus.php");
+        $mesa->delete(); // Asumiendo que tienes un método delete() en tu modelo
+        header("Location: mesas.php");
         exit();
     }
 }
@@ -59,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Menus</title>
+    <title>ComedorGo - Mesas</title>
 
     <?php include './components/head.html'; ?>
 
@@ -88,13 +86,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Modificar Menú</h3>
+                            <h3 class="mb-0">Modificar Mesa</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="menus.php">Menús</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Modificar Menú</li>
+                                <li class="breadcrumb-item"><a href="mesas.php">Mesas</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Modificar Mesa</li>
                             </ol>
                         </div>
                     </div>
@@ -113,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <div class="card-title">Formulario Menu</div>
+                        <div class="card-title">Formulario Mesa</div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
@@ -127,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     class="form-control"
                                     id="nombre"
                                     name="nombre"
-                                    value="<?= $menu->getNombre() ?>"
+                                    value="<?= $mesa->getNombre() ?>"
                                     required />
                             </div>
 
@@ -137,21 +135,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <textarea type="text"
                                     class="form-control"
                                     id="descripcion"
-                                    name="descripcion"><?= $menu->getDescripcion() ?></textarea>
+                                    name="descripcion"><?= $mesa->getDescripcion() ?></textarea>
                             </div>
 
-                            <!-- Especial -->
-                            <div class="mb-3">
-                                <label for="especial" class="form-label">Especial</label>
-                                <!-- Checkbox -->
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="especial" name="especial" <?php if ($menu->isEspecial()) echo 'checked'; ?>>
-                                    <label class="form-check-label" for="especial">
-                                        Marcar si es un menú especial
-                                    </label>
-                                </div>
-                            </div>
-
+                            <!--end::Body-->
                             <!--begin::Footer-->
                             <div class="card-footer">
                                 <!-- Botón modificar -->
@@ -175,13 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             </div>
             <!--end::App Content-->
-
-            <?php
-            // echo "<pre>";
-            // print_r($menu);
-            // echo "</pre>";
-            ?>
-
         </main>
         <!--end::App Main-->
         <?php include './components/footer.html'; ?>

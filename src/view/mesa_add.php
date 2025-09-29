@@ -1,9 +1,9 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Autobus.php";
+require_once "../models/Mesa.php";
 
-$activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
+$activePage = 'mesas'; // Para resaltar la página activa en el sidebar
 
 // Si envían el formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -11,17 +11,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $descripcion = $_POST["descripcion"] ?? '';
 
     try {
-        $autobus = new Autobus(null, $nombre, $descripcion);
-        $autobus->save();
-        header("Location: autobuses.php");
+        $mesa = new Mesa(null, $nombre, $descripcion);
+        $mesa->save();
+        header("Location: mesas.php");
         exit();
     } catch (PDOException $e) {
         // Código SQLSTATE 23000 indica violación de restricción (duplicado)
         if ($e->getCode() === '23000') {
-            echo "<script>alert('Error: la autobus ya está registrado.');</script>";
+            echo "<script>alert('Error: la mesa ya está registrado.');</script>";
         } else {
             $mensaje = addslashes($e->getMessage());
-            echo "<script>alert('Error al guardar la autobus: $mensaje');</script>";
+            echo "<script>alert('Error al guardar la mesa: $mensaje');</script>";
         }
         // Volver a la página anterior
         echo "<script>window.history.back();</script>";
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Autobuses</title>
+    <title>ComedorGo - Mesas</title>
 
     <?php include './components/head.html'; ?>
 
@@ -71,13 +71,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Añadir Autobus</h3>
+                            <h3 class="mb-0">Añadir Mesa</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="autobuses.php">Autobuses</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Añadir Autobus</li>
+                                <li class="breadcrumb-item"><a href="mesas.php">Mesas</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Añadir Mesa</li>
                             </ol>
                         </div>
                     </div>
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <div class="card-title">Formulario Autobus</div>
+                        <div class="card-title">Formulario Mesa</div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->

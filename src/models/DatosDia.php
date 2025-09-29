@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . "/../../config/db.php");
+require_once(__DIR__ . "/../config/db.php");
 require_once 'Comensal.php';
 require_once 'Menu.php';
 require_once 'Mesa.php';

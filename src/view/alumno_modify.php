@@ -1,51 +1,69 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Comensal.php";
-require_once "../src/models/Menu.php";
-require_once "../src/models/Mesa.php";
-require_once "../src/models/Autobus.php";
+require_once "../models/Comensal.php";
+require_once "../models/Menu.php";
+require_once "../models/Mesa.php";
+require_once "../models/Autobus.php";
 
 $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 
-// Si envían el formulario
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nombre = $_POST["nombre"] ?? '';
-    $apellidos = $_POST["apellidos"] ?? '';
-    $menu_id = $_POST["menu"] ?? '';
-    $mesa_id = $_POST["mesa"] ?? '';
-    $autobus_id = $_POST["autobus"] ?? '';
-
-
-
-    try {
-        $comensal = new Comensal(null, $nombre, $apellidos, $menu_id ?: null, $mesa_id ?: null, $autobus_id ?: null);
-        $comensal->save();
-        header("Location: alumnos.php");
-        exit();
-    } catch (PDOException $e) {
-        // Código SQLSTATE 23000 indica violación de restricción (duplicado)
-        if ($e->getCode() === '23000') {
-            echo "<script>alert('Error: el alumno ya está registrado.');</script>";
-        } else {
-            $mensaje = addslashes($e->getMessage());
-            echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
-        }
-        // Volver a la página anterior
-        echo "<script>window.history.back();</script>";
-        exit();
-    } catch (Exception $e) {
-        $mensaje = addslashes($e->getMessage());
-        echo "<script>alert('Error inesperado: $mensaje');</script>";
-        echo "<script>window.history.back();</script>";
-        exit();
-    }
+if (isset($_GET['userid'])) {
+    $userid = $_GET['userid'];
+    $UserId = intval($userid);
 }
+
+$comensal = getComensalById($UserId);
 
 $menus = getAllMenus();
 $mesas = getAllMesas();
 $autobuses = getAllAutobuses();
 
+// Si envían el formulario
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if ($_POST['accion'] === 'modificar') {
+        $nombre = $_POST["nombre"] ?? '';
+        $apellidos = $_POST["apellidos"] ?? '';
+        $menu_id = $_POST["menu"] ?? '';
+        $mesa_id = $_POST["mesa"] ?? '';
+        $autobus_id = $_POST["autobus"] ?? '';
+
+        try {
+            $comensal->setNombre($nombre);
+            $comensal->setApellidos($apellidos);
+            $comensal->setMenuId($menu_id ?: null);
+            $comensal->setMesaId($mesa_id ?: null);
+            $comensal->setAutobusId($autobus_id ?: null);
+            $comensal->save();
+
+
+
+            header("Location: alumnos.php");
+            exit();
+        } catch (PDOException $e) {
+            // Código SQLSTATE 23000 indica violación de restricción (duplicado)
+            if ($e->getCode() === '23000') {
+                echo "<script>alert('Error: el alumno ya está registrado.');</script>";
+            } else {
+                $mensaje = addslashes($e->getMessage());
+                echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
+            }
+            // Volver a la página anterior
+            echo "<script>window.history.back();</script>";
+            exit();
+        } catch (Exception $e) {
+            $mensaje = addslashes($e->getMessage());
+            echo "<script>alert('Error inesperado: $mensaje');</script>";
+            echo "<script>window.history.back();</script>";
+            exit();
+        }
+    } elseif ($_POST['accion'] === 'eliminar') {
+        // Código para eliminar el alumno
+        $comensal->delete(); // Asumiendo que tienes un método delete() en tu modelo
+        header("Location: alumnos.php");
+        exit();
+    }
+}
 ?>
 
 
@@ -84,13 +102,13 @@ $autobuses = getAllAutobuses();
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Añadir Alumno</h3>
+                            <h3 class="mb-0">Modificar Alumno</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                                 <li class="breadcrumb-item"><a href="alumnos.php">Alumnos</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Añadir Alumno</li>
+                                <li class="breadcrumb-item active" aria-current="page">Modificar Alumno</li>
                             </ol>
                         </div>
                     </div>
@@ -116,13 +134,23 @@ $autobuses = getAllAutobuses();
                             <!-- Nombre -->
                             <div class="mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" required />
+                                <input type="text"
+                                    class="form-control"
+                                    id="nombre"
+                                    name="nombre"
+                                    value="<?= $comensal->getNombre() ?>"
+                                    required />
                             </div>
 
                             <!-- Apellidos -->
                             <div class="mb-3">
                                 <label for="apellidos" class="form-label">Apellidos</label>
-                                <input type="text" class="form-control" id="apellidos" name="apellidos" required />
+                                <input type="text"
+                                    class="form-control"
+                                    id="apellidos"
+                                    name="apellidos"
+                                    value="<?= $comensal->getApellidos() ?>"
+                                    required />
                             </div>
 
                             <!-- Menú -->
@@ -133,7 +161,8 @@ $autobuses = getAllAutobuses();
                                     <?php
                                     foreach ($menus as $menu) {
                                     ?>
-                                        <option value="<?php echo $menu->getId() ?>">
+                                        <option value="<?php echo $menu->getId() ?>"
+                                            <?php if ($comensal->getMenuId() == $menu->getId()) echo 'selected'; ?>>
                                             <?php echo $menu->getNombre();
                                             if ($menu->isEspecial()) echo " (Especial)" ?>
                                         </option>
@@ -151,7 +180,8 @@ $autobuses = getAllAutobuses();
                                     <?php
                                     foreach ($mesas as $mesa) {
                                     ?>
-                                        <option value="<?php echo $mesa->getId() ?>">
+                                        <option value="<?php echo $mesa->getId() ?>"
+                                            <?php if ($comensal->getMesaId() == $mesa->getId()) echo 'selected'; ?>>
                                             <?php echo $mesa->getNombre(); ?>
                                         </option>
                                     <?php
@@ -168,7 +198,9 @@ $autobuses = getAllAutobuses();
                                     <?php
                                     foreach ($autobuses as $autobus) {
                                     ?>
-                                        <option value="<?php echo $autobus->getId() ?>">
+                                        <option value="<?php echo $autobus->getId() ?>"
+                                            <?php if ($comensal->getMesaId() == $autobus->getId()) echo 'selected'; ?>>
+
                                             <?php echo $autobus->getNombre(); ?>
                                         </option>
                                     <?php
@@ -181,9 +213,19 @@ $autobuses = getAllAutobuses();
                         <!--end::Body-->
                         <!--begin::Footer-->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
+                            <!-- Botón modificar -->
+                            <button type="submit" name="accion" value="modificar" class="btn btn-primary" style="margin-right: 10px">
+                                Modificar
+                            </button>
+
+                            <!-- Botón eliminar con confirmación -->
+                            <button type="submit" name="accion" value="eliminar" class="btn btn-danger"
+                                onclick="return confirm('¿Estás seguro de que quieres eliminar este alumno?');">
+                                Eliminar
+                            </button>
                         </div>
                         <!--end::Footer-->
+
                     </form>
                     <!--end::Form-->
                 </div>

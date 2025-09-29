@@ -1,7 +1,7 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Mesa.php";
+require_once "../models/Mesa.php";
 
 $activePage = 'mesas'; // Para resaltar la página activa en el sidebar
 ?>

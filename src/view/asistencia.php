@@ -1,7 +1,7 @@
 <!-- PAGINA PRINCIPAL -->
 <?php
 require_once "../config/db.php";
-require_once "../src/models/Comensal.php";
+require_once "../models/Comensal.php";
 
 $activePage = 'asistencia'; // Para resaltar la página activa en el sidebar
 
@@ -191,7 +191,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
             console.log("Seleccionado:", nombre, apellidos, id, asiste);
 
-            fetch("../src/models/ajax/guardar_asistencia.php", {
+            fetch("../models/ajax/guardar_asistencia.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
@@ -213,7 +213,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
             let asiste = checkbox.checked ? 1 : 0;
 
 
-            fetch("../src/models/ajax/guardar_asistencia.php", {
+            fetch("../models/ajax/guardar_asistencia.php", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
