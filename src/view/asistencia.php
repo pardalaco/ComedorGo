@@ -403,7 +403,8 @@ $asistencias = getAsistenciasFecha($dateSelected);
     <script>
         $(document).ready(function() {
             $('#mi-tabla').DataTable({
-                responsive: true,
+                responsive: false,
+                scrollX: true, // <- scroll horizontal
                 autoWidth: false,
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
@@ -424,13 +425,21 @@ $asistencias = getAsistenciasFecha($dateSelected);
                     url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 },
                 columnDefs: [{
-                        orderable: true,
-                        targets: [0, 1, 2]
-                    }, // Solo Nombre, Apellidos, Autobus
+                        width: "150px",
+                        targets: 0
+                    }, // Nombre
                     {
-                        orderable: false,
+                        width: "200px",
+                        targets: 1
+                    }, // Apellidos
+                    {
+                        width: "100px",
+                        targets: 2
+                    }, // Autobus
+                    {
+                        width: "30px",
                         targets: "_all"
-                    } // El resto no ordenable
+                    } // Los días
                 ]
             });
         });
