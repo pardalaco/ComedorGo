@@ -176,7 +176,9 @@ $datosHoy = new DatosDia(date('Y-m-d'));
 
                           <?php
                           foreach ($menusNormales as $menu) {
-                            $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
+                            $porcentaje = 0;
+                            if ($datosHoy->getMenusTotales()[$menu->getId()] != 0)
+                              $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
 
                             // Determinar color según porcentaje
                             if ($porcentaje <= 20) {
@@ -253,7 +255,10 @@ $datosHoy = new DatosDia(date('Y-m-d'));
 
                           <?php
                           foreach ($menusEspeciales as $menu) {
-                            $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
+
+                            $porcentaje = 0;
+                            if ($datosHoy->getMenusTotales()[$menu->getId()] != 0)
+                              $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
 
                             // Determinar color según porcentaje
                             if ($porcentaje <= 20) {

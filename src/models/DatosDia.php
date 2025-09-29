@@ -63,7 +63,13 @@ class DatosDia
     {
         // MenuID => Número de comensales con ese menú
         $conn = getConnection();
-        $stmt = $conn->prepare("SELECT Menu_ID, COUNT(*) AS NumComensales FROM Comensales GROUP BY Menu_ID");
+        $stmt = $conn->prepare(
+            "SELECT m.ID, COUNT(c.ID) AS NumComensales
+            FROM Menu m
+            LEFT JOIN Comensales c ON m.ID = c.Menu_ID
+            GROUP BY m.ID;
+            "
+        );
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
     }
