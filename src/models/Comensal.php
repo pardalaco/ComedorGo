@@ -273,6 +273,42 @@ function getAsistenciasFecha($fecha)
     return $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Devuelve un array con los IDs de comensales que asistieron
 }
 
+// Obtener un diccionario clave valor con los IDs de los comensales y los días que han venido durante el mes
+function getAsistenciasMes($mes, $anio)
+{
+    $conn = getConnection();
+
+    // Fecha de inicio y fin del mes
+    $fecha_inicio = "$anio-$mes-01";
+    $fecha_fin = date("Y-m-t", strtotime($fecha_inicio)); // Último día del mes
+
+    $stmt = $conn->prepare("SELECT Comensal_ID, DAY(fecha) AS dia FROM Asistencia WHERE fecha BETWEEN :inicio AND :fin");
+    $stmt->bindParam(':inicio', $fecha_inicio);
+    $stmt->bindParam(':fin', $fecha_fin);
+    $stmt->execute();
+
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $asistencias = [];
+
+    foreach ($result as $fila) {
+        $id = $fila['Comensal_ID'];
+        $dia = $fila['dia'];
+        if (!isset($asistencias[$id])) {
+            $asistencias[$id] = [];
+        }
+        $asistencias[$id][] = (int)$dia;
+    }
+
+    // Ordenar los días de cada comensal
+    foreach ($asistencias as $id => $dias) {
+        sort($asistencias[$id]);
+    }
+
+    return $asistencias;
+}
+
+
 // Funciones auxiliares para obtener nombres de Menu y Mesa por ID
 function getMenuNameById($id)
 {

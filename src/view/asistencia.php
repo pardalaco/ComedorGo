@@ -6,6 +6,10 @@ $activePage = 'asistencia'; // Para resaltar la página activa en el sidebar
 
 // $dateSelected = date('Y-m-d');
 $dateSelected = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');
+$mesSeleccionado = isset($_GET['mes']) ? $_GET['mes'] : date('Y-m');
+
+
+$activeTab = isset($_GET['mes']) ? 'mensual' : 'diaria';
 
 
 $comensales = getComensales();
@@ -67,6 +71,9 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
         <!--begin::App Main-->
         <main class="app-main">
+
+
+
             <!--begin::App Content Header-->
             <div class="app-content-header">
                 <!--begin::Container-->
@@ -88,89 +95,199 @@ $asistencias = getAsistenciasFecha($dateSelected);
                 <!--end::Container-->
             </div>
             <!--end::App Content Header-->
-            <!--begin::App Content-->
-            <div class="app-content">
-                <!--begin::Container-->
+            <div class="card" style="margin-left: 10px; margin-right: 10px">
 
-                <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
-                    <!-- Botón a la izquierda -->
-                    <button type="button" class="btn btn-primary" onclick="descargarPDF()">Descargar PDF</button>
+                <!-- Asistencia diaria -->
+                <div class="card-header p-2">
+                    <ul class="nav nav-pills" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link <?= $activeTab == 'diaria' ? 'active' : '' ?>" id="asistencia-diaria-tab" data-bs-toggle="tab" href="#asistencia-diaria" role="tab">Diaria</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?= $activeTab == 'mensual' ? 'active' : '' ?>" id="asistencia-mensual-tab" data-bs-toggle="tab" href="#asistencia-mensual" role="tab">Mensual</a>
+                        </li>
+                    </ul>
+                </div> <!-- ./Asistencia diaria -->
 
-                    <!-- Selector de fecha a la derecha -->
-                    <div class="d-flex align-items-center gap-2">
-                        <label for="fecha" class="mb-0">Seleccionar fecha:</label>
-                        <form method="GET" id="formFecha">
-                            <input type="date"
-                                id="fecha"
-                                name="fecha"
-                                class="form-control form-control-sm"
-                                style="width: 150px; height: 45px;"
-                                max="<?= date('Y-m-d') ?>"
-                                value="<?= $dateSelected ?>"
-                                onchange="document.getElementById('formFecha').submit();">
-                        </form>
+                <div class="card-body">
+                    <div class="tab-content">
+
+                        <!-- Pestaña 1: Asistencia Diaria -->
+                        <div class="tab-pane fade <?= $activeTab == 'diaria' ? 'show active' : '' ?>" id="asistencia-diaria" role="tabpanel">
+                            <!--begin::App Content-->
+                            <div class="app-content">
+                                <!--begin::Container-->
+
+                                <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
+                                    <!-- Botón a la izquierda -->
+                                    <button type="button" class="btn btn-primary" onclick="descargarPDF()">Descargar PDF</button>
+
+                                    <!-- Selector de fecha a la derecha -->
+                                    <div class="d-flex align-items-center gap-2">
+                                        <label for="fecha" class="mb-0">Seleccionar fecha:</label>
+                                        <form method="GET" id="formFecha">
+                                            <input type="date"
+                                                id="fecha"
+                                                name="fecha"
+                                                class="form-control form-control-sm"
+                                                style="width: 150px; height: 45px;"
+                                                max="<?= date('Y-m-d') ?>"
+                                                value="<?= $dateSelected ?>"
+                                                onchange="document.getElementById('formFecha').submit();">
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                                <!-- begin::Tabla -->
+                                <div class="card">
+                                    <div class="card-body">
+
+
+                                        <?php
+                                        $index_comensales = 1;
+                                        ?>
+                                        <table class="table table-bordered table-hover mi-tabla" id="mi-tabla">
+                                            <thead>
+                                                <tr>
+                                                    <!-- <th style="width: 10px">#</th> -->
+                                                    <th>Nombre</th>
+                                                    <th>Apellidos</th>
+                                                    <th>Autobus</th>
+                                                    <th class="text-center" id="checkboxAll">
+                                                        <input type="checkbox"
+                                                            class="form-check-input"
+                                                            id="selectAllCheckboxes"
+                                                            onchange="toggleAll(this); saveAllAsistencia(this)"
+                                                            <?php if (count($comensales) == count($asistencias)) echo 'checked'; ?>
+                                                            <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
+
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <?php foreach ($comensales as $comensal) { ?>
+                                                    <tr class="align-middle">
+                                                        <!-- <td><?= $index_comensales++ ?>.</td> -->
+                                                        <td><?= $comensal->getNombre() ?></td>
+                                                        <td><?= $comensal->getApellidos() ?></td>
+                                                        <td><?= $comensal->getAutobusName() ?></td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox"
+                                                                class="form-check-input fila"
+                                                                onchange="updateMaster(); saveAsistencia(this);"
+                                                                data-nombre="<?= $comensal->getNombre() ?>"
+                                                                data-apellidos="<?= $comensal->getApellidos() ?>"
+                                                                data-comensalID="<?= $comensal->getId() ?>"
+                                                                <?php if (in_array($comensal->getId(), $asistencias)) echo 'checked'; ?>
+                                                                <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- end::Tabla -->
+
+
+                                <!--end::Container-->
+                            </div>
+                            <!--end::App Content-->
+
+                        </div>
+                        <!-- ./Pestaña 1: Asistencia Diaria -->
+
+                        <!-- Pestaña 2: Asistencia Mensual -->
+                        <div class="tab-pane fade <?= $activeTab == 'mensual' ? 'show active' : '' ?>" id="asistencia-mensual" role="tabpanel">
+                            <div class="app-content">
+                                <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
+                                    <button type="button" class="btn btn-primary" onclick="descargarPDFMensual()">Descargar PDF</button>
+
+                                    <div class="d-flex align-items-center gap-2">
+                                        <label for="mes" class="mb-0">Seleccionar mes:</label>
+                                        <form method="GET" id="formMes">
+                                            <input type="month"
+                                                id="mes"
+                                                name="mes"
+                                                class="form-control form-control-sm"
+                                                style="width: 150px; height: 45px;"
+                                                max="<?= date('Y-m') ?>"
+                                                value="<?= isset($_GET['mes']) ? $_GET['mes'] : date('Y-m') ?>"
+                                                onchange="document.getElementById('formMes').submit();">
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <?php
+                                        $mesSeleccionado = isset($_GET['mes']) ? $_GET['mes'] : date('Y-m');
+                                        list($anio, $mes) = explode('-', $mesSeleccionado);
+                                        $diasDelMes = date('t', strtotime("$anio-$mes-01"));
+
+                                        $asistenciasMes = getAsistenciasMes($mes, $anio);
+                                        $hoy = date('Y-m-d');
+                                        ?>
+                                        <!-- Contenedor con scroll horizontal -->
+                                        <table class="table table-bordered table-hover mi-tabla" id="mi-tabla-mensual">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Apellidos</th>
+                                                    <th>Autobus</th>
+                                                    <?php for ($d = 1; $d <= $diasDelMes; $d++): ?>
+                                                        <th class="text-center"><?= $d ?></th>
+                                                    <?php endfor; ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($comensales as $comensal):
+                                                    $dias = isset($asistenciasMes[$comensal->getId()]) ? $asistenciasMes[$comensal->getId()] : [];
+                                                ?>
+                                                    <tr>
+                                                        <td><?= $comensal->getNombre() ?></td>
+                                                        <td><?= $comensal->getApellidos() ?></td>
+                                                        <td><?= $comensal->getAutobusName() ?></td>
+                                                        <?php for ($d = 1; $d <= $diasDelMes; $d++):
+                                                            $fechaActual = "$anio-$mes-" . str_pad($d, 2, '0', STR_PAD_LEFT);
+                                                        ?>
+                                                            <td class="text-center">
+                                                                <div style="
+                                                                    width: 15px; 
+                                                                    height: 15px; 
+                                                                    margin: 0 auto; 
+                                                                    <?= in_array($d, $dias) ? 'background-color:#98FC51;' : ($fechaActual <= $hoy ? 'background-color:#F75A3E;' : 'background-color:white;') ?>
+                                                                    border: 1px solid #ccc;
+                                                                    border-radius: 3px;
+                                                                "></div>
+                                                            </td>
+                                                        <?php endfor; ?>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ./Pestaña 2: Asistencia Mensual -->
+
                     </div>
+                    <!-- ./Tab-content -->
+
                 </div>
-
-
-                <!-- begin::Tabla -->
-                <div class="card">
-                    <div class="card-body">
-
-
-                        <?php
-                        $index_comensales = 1;
-                        ?>
-                        <table class="table table-bordered table-hover mi-tabla" id="mi-tabla">
-                            <thead>
-                                <tr>
-                                    <!-- <th style="width: 10px">#</th> -->
-                                    <th>Nombre</th>
-                                    <th>Apellidos</th>
-                                    <th>Autobus</th>
-                                    <th class="text-center" id="checkboxAll">
-                                        <input type="checkbox"
-                                            class="form-check-input"
-                                            id="selectAllCheckboxes"
-                                            onchange="toggleAll(this); saveAllAsistencia(this)"
-                                            <?php if (count($comensales) == count($asistencias)) echo 'checked'; ?>
-                                            <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
-
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <?php foreach ($comensales as $comensal) { ?>
-                                    <tr class="align-middle">
-                                        <!-- <td><?= $index_comensales++ ?>.</td> -->
-                                        <td><?= $comensal->getNombre() ?></td>
-                                        <td><?= $comensal->getApellidos() ?></td>
-                                        <td><?= $comensal->getAutobusName() ?></td>
-                                        <td class="text-center">
-                                            <input type="checkbox"
-                                                class="form-check-input fila"
-                                                onchange="updateMaster(); saveAsistencia(this);"
-                                                data-nombre="<?= $comensal->getNombre() ?>"
-                                                data-apellidos="<?= $comensal->getApellidos() ?>"
-                                                data-comensalID="<?= $comensal->getId() ?>"
-                                                <?php if (in_array($comensal->getId(), $asistencias)) echo 'checked'; ?>
-                                                <?php if ($dateSelected != date('Y-m-d')) echo 'disabled'; ?> />
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- end::Tabla -->
-
-
-                <!--end::Container-->
+                <!-- ./Cardbody -->
             </div>
-            <!--end::App Content-->
+            <!-- ./Card -->
+
+
         </main>
         <!--end::App Main-->
         <?php include './components/footer.html'; ?>
@@ -295,7 +412,32 @@ $asistencias = getAsistenciasFecha($dateSelected);
         });
     </script>
 
-    <!-- Imprimir Tabla -->
+    <script>
+        $(document).ready(function() {
+            $('#mi-tabla-mensual').DataTable({
+                responsive: false, // <- desactivado
+                scrollX: true, // <- scroll horizontal
+                scrollY: "600px", // <- opcional, scroll vertical si hay muchas filas
+                scrollCollapse: true,
+                autoWidth: false,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                },
+                columnDefs: [{
+                        orderable: true,
+                        targets: [0, 1, 2]
+                    }, // Solo Nombre, Apellidos, Autobus
+                    {
+                        orderable: false,
+                        targets: "_all"
+                    } // El resto no ordenable
+                ]
+            });
+        });
+    </script>
+
+
+    <!-- Imprimir Tabla Diaria -->
     <script>
         async function descargarPDF() {
             const {
@@ -307,13 +449,37 @@ $asistencias = getAsistenciasFecha($dateSelected);
             const canvas = await html2canvas(tabla);
             const imgData = canvas.toDataURL("image/png");
 
-            const pdf = new jsPDF("p", "mm", "a4");
+            const pdf = new jsPDF("l", "mm", "a4");
             const imgProps = pdf.getImageProperties(imgData);
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
             pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-            pdf.save("tabla.pdf");
+            pdf.save("<?= $dateSelected ?>_asistencia.pdf");
+        }
+    </script>
+
+    <!-- Imprimir Tabla Mensual -->
+    <script>
+        async function descargarPDFMensual() {
+            const {
+                jsPDF
+            } = window.jspdf;
+
+            const tabla = document.getElementById("mi-tabla-mensual");
+
+            const canvas = await html2canvas(tabla);
+            const imgData = canvas.toDataURL("image/png");
+
+            // Cambiamos "p" (vertical) por "l" (horizontal)
+            const pdf = new jsPDF("l", "mm", "a4");
+
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+            pdf.save("<?= $mesSeleccionado ?>_asistencia.pdf");
         }
     </script>
 
