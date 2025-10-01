@@ -163,7 +163,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         <option value="<?php echo $menu->getId() ?>"
                                             <?php if ($comensal->getMenuId() == $menu->getId()) echo 'selected'; ?>>
                                             <?php echo $menu->getNombre();
-                                            if ($menu->isEspecial()) echo " (Especial)" ?>
+                                            //if ($menu->isRegimen()) echo " (Especial)" 
+                                            ?>
                                         </option>
                                     <?php
                                     }

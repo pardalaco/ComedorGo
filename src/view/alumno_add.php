@@ -134,7 +134,7 @@ $autobuses = getAllAutobuses();
                                     ?>
                                         <option value="<?php echo $menu->getId() ?>">
                                             <?php echo $menu->getNombre();
-                                            if ($menu->isEspecial()) echo " (Especial)" ?>
+                                            if ($menu->isRegimen()) echo " (Especial)" ?>
                                         </option>
                                     <?php
                                     }

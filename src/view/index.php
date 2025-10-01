@@ -141,17 +141,17 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                 <!-- begin::Table Menús-->
                 <?php
                 $menusNormales = $datosHoy->getMenusNormales();
-                $menusEspeciales = $datosHoy->getMenusEspeciales();
+                $menusRegimenes = $datosHoy->getMenusRegimenes();
                 $menusAsistentes = $datosHoy->getAsistentesMenus();
                 $index_menus = 1;
 
-                $totalMenusEspeciales = 0;
-                foreach ($datosHoy->getMenusEspecialesTotales() as $menu) {
-                  $totalMenusEspeciales += $menu;
+                $totalMenusRegimenes = 0;
+                foreach ($datosHoy->getMenusRegimenesTotales() as $menu) {
+                  $totalMenusRegimenes += $menu;
                 }
-                $totalAsistentesEspeciales = 0;
-                foreach ($menusEspeciales as $menu) {
-                  $totalAsistentesEspeciales += $menusAsistentes[$menu->getId()];
+                $totalAsistentesRegimenes = 0;
+                foreach ($menusRegimenes as $menu) {
+                  $totalAsistentesRegimenes += $menusAsistentes[$menu->getId()];
                 }
 
                 ?>
@@ -210,8 +210,11 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                           }
                           ?>
                           <?php
-                          // Menús especiales
-                          $porcentaje = round($totalAsistentesEspeciales / $totalMenusEspeciales * 100);
+                          // Menús rspeciales
+                          $porcentaje = 0;
+                          if ($totalMenusRegimenes != 0)
+                            $porcentaje = round($totalAsistentesRegimenes / $totalMenusRegimenes * 100);
+
                           // Determinar color según porcentaje
                           if ($porcentaje <= 20) {
                             $color = 'bg-danger';
@@ -223,7 +226,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                           ?>
                           <tr class="align-middle">
                             <td><?= $index_menus++; ?></td>
-                            <td><span class="badge <?= $color ?>" data-bs-toggle="tooltip">Especiales </span></td>
+                            <td><span class="badge <?= $color ?>" data-bs-toggle="tooltip">Regimenes </span></td>
                             <td>
                               <div class="progress progress-xs">
                                 <div class="progress-bar <?= $color ?>"
@@ -234,7 +237,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                             </td>
                             <td class="text-center">
                               <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                                <?= $totalAsistentesEspeciales . "/" . $totalMenusEspeciales ?>
+                                <?= $totalAsistentesRegimenes . "/" . $totalMenusRegimenes ?>
                               </span>
                             </td>
                           </tr>
@@ -246,7 +249,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                         <thead>
                           <tr>
                             <th style="width: 10px">#</th>
-                            <th>Menús Especiales</th>
+                            <th>Menús Regimenes</th>
                             <th>Porcentajes</th>
                             <th>Asistentes</th>
                           </tr>
@@ -254,7 +257,7 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                         <tbody>
 
                           <?php
-                          foreach ($menusEspeciales as $menu) {
+                          foreach ($menusRegimenes as $menu) {
 
                             $porcentaje = 0;
                             if ($datosHoy->getMenusTotales()[$menu->getId()] != 0)
@@ -593,8 +596,8 @@ $datosHoy = new DatosDia(date('Y-m-d'));
             $data[] = $datosHoy->getMenusTotales()[$menu->getId()];
             $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
           }
-          $labels[] = "'Especiales'";
-          $data[] = $totalMenusEspeciales;
+          $labels[] = "'Regimenes'";
+          $data[] = $totalMenusRegimenes;
           $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
 
           echo implode(", ", $labels);
