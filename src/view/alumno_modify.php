@@ -199,7 +199,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     foreach ($autobuses as $autobus) {
                                     ?>
                                         <option value="<?php echo $autobus->getId() ?>"
-                                            <?php if ($comensal->getMesaId() == $autobus->getId()) echo 'selected'; ?>>
+                                            <?php if ($comensal->getAutobusId() == $autobus->getId()) echo 'selected'; ?>>
 
                                             <?php echo $autobus->getNombre(); ?>
                                         </option>
