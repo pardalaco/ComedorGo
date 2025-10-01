@@ -5,6 +5,20 @@ require_once(__DIR__ . '/../models/DatosDia.php');
 $activePage = 'index'; // Para resaltar la página activa en el sidebar
 
 $datosHoy = new DatosDia(date('Y-m-d'));
+
+function getColor($parte, $total)
+{
+
+  // Determinar color según porcentaje
+  if ($parte == 0) {
+    return 'bg-danger';
+  } elseif ($parte == $total) {
+    return 'bg-success';
+  } else {
+    return 'bg-warning';
+  }
+}
+
 ?>
 
 <!doctype html>
@@ -176,18 +190,9 @@ $datosHoy = new DatosDia(date('Y-m-d'));
 
                           <?php
                           foreach ($menusNormales as $menu) {
-                            $porcentaje = 0;
-                            if ($datosHoy->getMenusTotales()[$menu->getId()] != 0)
-                              $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
 
-                            // Determinar color según porcentaje
-                            if ($porcentaje <= 20) {
-                              $color = 'bg-danger';
-                            } elseif ($porcentaje <= 80) {
-                              $color = 'bg-warning';
-                            } else {
-                              $color = 'bg-success';
-                            }
+                            $color = getColor($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
+
                           ?>
                             <tr class="align-middle">
                               <td><?= $index_menus++; ?></td>
@@ -211,18 +216,9 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                           ?>
                           <?php
                           // Menús rspeciales
-                          $porcentaje = 0;
-                          if ($totalMenusRegimenes != 0)
-                            $porcentaje = round($totalAsistentesRegimenes / $totalMenusRegimenes * 100);
 
-                          // Determinar color según porcentaje
-                          if ($porcentaje <= 20) {
-                            $color = 'bg-danger';
-                          } elseif ($porcentaje <= 80) {
-                            $color = 'bg-warning';
-                          } else {
-                            $color = 'bg-success';
-                          }
+                          $color = getColor($totalAsistentesRegimenes, $totalMenusRegimenes);
+
                           ?>
                           <tr class="align-middle">
                             <td><?= $index_menus++; ?></td>
@@ -259,18 +255,8 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                           <?php
                           foreach ($menusRegimenes as $menu) {
 
-                            $porcentaje = 0;
-                            if ($datosHoy->getMenusTotales()[$menu->getId()] != 0)
-                              $porcentaje = round($menusAsistentes[$menu->getId()] / $datosHoy->getMenusTotales()[$menu->getId()] * 100);
+                            $color = getColor($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
 
-                            // Determinar color según porcentaje
-                            if ($porcentaje <= 20) {
-                              $color = 'bg-danger';
-                            } elseif ($porcentaje <= 80) {
-                              $color = 'bg-warning';
-                            } else {
-                              $color = 'bg-success';
-                            }
                           ?>
                             <tr class="align-middle">
                               <td><?= $index_menus++; ?></td>
@@ -330,16 +316,9 @@ $datosHoy = new DatosDia(date('Y-m-d'));
 
                           <?php
                           foreach ($mesas as $menu) {
-                            $porcentaje = round($mesasAsistentes[$menu->getId()] / $datosHoy->getMesasTotales()[$menu->getId()] * 100);
 
-                            // Determinar color según porcentaje
-                            if ($porcentaje <= 20) {
-                              $color = 'bg-danger';
-                            } elseif ($porcentaje <= 80) {
-                              $color = 'bg-warning';
-                            } else {
-                              $color = 'bg-success';
-                            }
+                            $color = getColor($mesasAsistentes[$menu->getId()], $datosHoy->getMesasTotales()[$menu->getId()]);
+
                           ?>
                             <tr class="align-middle">
                               <td><?= $index_mesas++; ?></td>
@@ -400,12 +379,20 @@ $datosHoy = new DatosDia(date('Y-m-d'));
                 <?php
                 $mesas = $datosHoy->getMesas();
                 foreach ($mesas as $mesa) {
+                  $asistentesMesa = $datosHoy->getAsistentesMesas()[$mesa->getId()];
+
+
+                  $color = getColor($asistentesMesa, count($mesa->getComensales()));
+
                 ?>
 
                   <div class="col-md-6">
                     <div class="card mesa-asistentes">
-                      <div class="card-header">
-                        <h3 class="card-title"><?= $mesa->getNombre() ?></h3>
+                      <div class="card-header row">
+                        <h3 class="card-title col-11"><?= $mesa->getNombre() ?></h3>
+                        <span class="badge <?= $color ?> col-1" data-bs-toggle="tooltip">
+                          <?= $asistentesMesa . "/" . count($mesa->getComensales())  ?>
+                        </span>
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body p-0">
