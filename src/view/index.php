@@ -395,11 +395,13 @@ function getPorcentaje($parte, $total)
 
                   <div class="col-md-6">
                     <div class="card mesa-asistentes">
-                      <div class="card-header row">
-                        <h3 class="card-title col-11"><?= $mesa->getNombre() ?></h3>
-                        <span class="badge <?= $color ?> col-1" data-bs-toggle="tooltip">
-                          <?= $asistentesMesa . "/" . count($mesa->getComensales())  ?>
-                        </span>
+                      <div class="card-header">
+                        <div class="row">
+                          <h3 class="card-title col-11"><?= $mesa->getNombre() ?></h3>
+                          <span class="badge <?= $color ?> col-1" data-bs-toggle="tooltip">
+                            <?= $asistentesMesa . "/" . count($mesa->getComensales())  ?>
+                          </span>
+                        </div>
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body p-0">
@@ -409,6 +411,7 @@ function getPorcentaje($parte, $total)
                               <th style="width: 10px">#</th>
                               <th>Alumne</th>
                               <th>Menú</th>
+                              <th>Intolerancias</th>
                               <th>Autobus</th>
                             </tr>
                           </thead>
@@ -424,6 +427,7 @@ function getPorcentaje($parte, $total)
                                   <td><?= $index_menus++; ?></td>
                                   <td><?= $comensal->getNombre() . " " . $comensal->getApellidos();  ?></td>
                                   <td><?= $comensal->getMenuName(); ?></td>
+                                  <td><?= $comensal->getIntolerancias(); ?></td>
                                   <td><?= $comensal->getAutobusName(); ?></td>
 
                                 </tr>
@@ -440,6 +444,7 @@ function getPorcentaje($parte, $total)
                                   <td><?= $index_menus++; ?></td>
                                   <td><?= $comensal->getNombre() . " " . $comensal->getApellidos();  ?></td>
                                   <td><?= $comensal->getMenuName(); ?></td>
+                                  <td><?= $comensal->getIntolerancias(); ?></td>
                                   <td><?= $comensal->getAutobusName(); ?></td>
                                 </tr>
                             <?php
