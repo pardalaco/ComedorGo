@@ -133,7 +133,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                                                 style="width: 150px; height: 45px;"
                                                 max="<?= date('Y-m-d') ?>"
                                                 value="<?= $dateSelected ?>"
-                                                onchange="document.getElementById('formFecha').submit();">
+                                                onchange="handleFechaChange()">
                                         </form>
                                     </div>
                                 </div>
@@ -296,6 +296,8 @@ $asistencias = getAsistenciasFecha($dateSelected);
     <!--end::App Wrapper-->
     <?php include './components/scripts.html'; ?>
 
+
+    <!-- Guardar asistencia checkboxes -->
     <script>
         function saveAsistencia(checkbox) {
             // Funcion para guardar en base de datos la asistencia, hace un post
@@ -400,6 +402,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
         });
     </script>
 
+    <!-- Tabla diaria -->
     <script>
         $(document).ready(function() {
             $('#mi-tabla').DataTable({
@@ -413,6 +416,8 @@ $asistencias = getAsistenciasFecha($dateSelected);
         });
     </script>
 
+
+    <!-- Tabla mensual -->
     <script>
         $(document).ready(function() {
             $('#mi-tabla-mensual').DataTable({
@@ -492,6 +497,18 @@ $asistencias = getAsistenciasFecha($dateSelected);
         }
     </script>
 
+
+    <script>
+        function handleFechaChange() {
+            const input = document.getElementById('fecha');
+            if (!input.value) {
+                // Si está vacío, poner la fecha de hoy
+                const hoy = new Date().toISOString().slice(0, 10);
+                input.value = hoy;
+            }
+            document.getElementById('formFecha').submit();
+        }
+    </script>
 
 </body>
 <!--end::Body-->
