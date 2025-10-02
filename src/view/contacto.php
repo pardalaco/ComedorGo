@@ -10,7 +10,8 @@
 
 
   <!-- ApexCharts -->
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <!-- ApexCharts -->
+  <script src="../assets/js/apexcharts.min.js"></script>
 
 </head>
 <!--end::Head-->
