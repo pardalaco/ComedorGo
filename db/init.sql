@@ -31,7 +31,7 @@ CREATE TABLE `Asistencia` (
   UNIQUE KEY `Asistencia_UNIQUE` (`fecha`,`Comensal_ID`),
   KEY `Asistencia_Comensales_FK` (`Comensal_ID`),
   CONSTRAINT `Asistencia_Comensales_FK` FOREIGN KEY (`Comensal_ID`) REFERENCES `Comensales` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `Asistencia` (
 
 LOCK TABLES `Asistencia` WRITE;
 /*!40000 ALTER TABLE `Asistencia` DISABLE KEYS */;
-INSERT INTO `Asistencia` VALUES (29,'2025-09-15',NULL,1),(54,'2025-09-16',NULL,1),(55,'2025-09-16',NULL,2),(57,'2025-09-16',NULL,32),(59,'2025-09-17',NULL,1),(65,'2025-09-17',NULL,2),(66,'2025-09-18',NULL,1),(67,'2025-09-18',NULL,32),(70,'2025-09-18',NULL,2),(129,'2025-09-19',NULL,2),(139,'2025-09-19',NULL,32),(150,'2025-09-21',NULL,32),(151,'2025-09-21',NULL,1),(162,'2025-09-24',NULL,32),(164,'2025-09-24',NULL,2),(165,'2025-09-24',NULL,34),(166,'2025-09-24',NULL,1),(167,'2025-09-29',NULL,32),(168,'2025-09-29',NULL,34),(169,'2025-09-29',NULL,1),(173,'2025-09-30',NULL,1),(174,'2025-09-30',NULL,34),(175,'2025-10-01',NULL,38),(176,'2025-10-01',NULL,32),(177,'2025-10-01',NULL,2);
+INSERT INTO `Asistencia` VALUES (29,'2025-09-15',NULL,1),(54,'2025-09-16',NULL,1),(55,'2025-09-16',NULL,2),(57,'2025-09-16',NULL,32),(59,'2025-09-17',NULL,1),(65,'2025-09-17',NULL,2),(66,'2025-09-18',NULL,1),(67,'2025-09-18',NULL,32),(70,'2025-09-18',NULL,2),(129,'2025-09-19',NULL,2),(139,'2025-09-19',NULL,32),(150,'2025-09-21',NULL,32),(151,'2025-09-21',NULL,1),(162,'2025-09-24',NULL,32),(164,'2025-09-24',NULL,2),(165,'2025-09-24',NULL,34),(166,'2025-09-24',NULL,1),(167,'2025-09-29',NULL,32),(168,'2025-09-29',NULL,34),(169,'2025-09-29',NULL,1),(173,'2025-09-30',NULL,1),(174,'2025-09-30',NULL,34),(175,'2025-10-01',NULL,38),(176,'2025-10-01',NULL,32),(177,'2025-10-01',NULL,2),(189,'2025-10-02',NULL,32),(191,'2025-10-02',NULL,1),(192,'2025-10-02',NULL,39),(193,'2025-10-02',NULL,38);
 /*!40000 ALTER TABLE `Asistencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `Comensales` (
 
 LOCK TABLES `Comensales` WRITE;
 /*!40000 ALTER TABLE `Comensales` DISABLE KEYS */;
-INSERT INTO `Comensales` VALUES (1,'Paco','Jones',NULL,1,4,1),(2,'Pepe','Martínez','Atun',NULL,9,3),(32,'Laura','GG',NULL,2,9,3),(34,'Jose','Castillas',NULL,NULL,9,1),(38,'bbb','b',NULL,3,9,1),(39,'aaa','b',NULL,4,4,1);
+INSERT INTO `Comensales` VALUES (1,'Paco','Jones',NULL,1,4,1),(2,'Pepe','Martínez','Atun',3,9,3),(32,'Laura','GG',NULL,2,9,3),(34,'Jose','Castillas',NULL,3,9,1),(38,'bbb','b',NULL,3,9,1),(39,'aaa','b','Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, ',4,4,1);
 /*!40000 ALTER TABLE `Comensales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +129,7 @@ CREATE TABLE `Menu` (
 
 LOCK TABLES `Menu` WRITE;
 /*!40000 ALTER TABLE `Menu` DISABLE KEYS */;
-INSERT INTO `Menu` VALUES (1,'Normal',NULL,0),(2,'Règim Mesclat','',1),(3,'Règim Triturat Molt		','',1),(4,'Règim Triturat Poc',NULL,1),(5,'Mexclat',NULL,0);
+INSERT INTO `Menu` VALUES (1,'Normal',NULL,0),(2,'Règim Mesclat','',1),(3,'Règim Triturat Molt		','',1),(4,'Règim Triturat Poc',NULL,1),(5,'Especial',NULL,0);
 /*!40000 ALTER TABLE `Menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,4 +168,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-02 11:40:57
+-- Dump completed on 2025-10-02 17:42:58
