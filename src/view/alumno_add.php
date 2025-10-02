@@ -27,6 +27,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Código SQLSTATE 23000 indica violación de restricción (duplicado)
         if ($e->getCode() === '23000') {
             echo "<script>alert('Error: el alumno ya está registrado.');</script>";
+        } elseif ($e->getCode() === '22001') {
+            // Demasiado largo para el campo
+            echo "<script>alert('Error: el campo Intolerancias admite un máximo de 300 caracteres.');</script>";
         } else {
             $mensaje = addslashes($e->getMessage());
             echo "<script>alert('Error al guardar el comensal: $mensaje');</script>";
