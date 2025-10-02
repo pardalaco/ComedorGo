@@ -38,12 +38,12 @@ function getPorcentaje($parte, $total)
   <?php include __DIR__ . '/components/head.html'; ?>
 
   <!-- ApexCharts -->
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
+  <script src="../assets/js/apexcharts.min.js"></script>
 
   <!-- PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="../assets/js/jspdf.umd.min.js"></script>
+  <script src="../assets/js/html2canvas.min.js"></script>
+
 
 </head>
 <!--end::Head-->
@@ -559,8 +559,10 @@ function getPorcentaje($parte, $total)
     });
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+
+  <!-- Grafico de tarta -->
+  <script src="../assets/js/chart.umd.min.js"></script>
+  <script src="../assets/js/chartjs-plugin-datalabels.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       // Registrar el plugin de datalabels
@@ -648,8 +650,8 @@ function getPorcentaje($parte, $total)
 
   <!-- Porcentajed de asistencia -->
   <!-- jQuery y jQuery Knob -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery-knob/dist/jquery.knob.min.js"></script>
+  <script src="../assets/js/jquery-3.6.0.min.js"></script>
+  <script src="../assets/js/jquery.knob.min.js"></script>
   <script>
     $(function() {
       $(".knob").knob({
@@ -697,9 +699,10 @@ function getPorcentaje($parte, $total)
     }
   </script>
 
+  <!-- Descargar tablas -->
+  <script src="../assets/js/jspdf.umd.min.js"></script>
+  <script src="../assets/js/html2canvas.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <script>
     function descargarPDFMesas() {
