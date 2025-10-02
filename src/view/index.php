@@ -19,6 +19,12 @@ function getColor($parte, $total)
   }
 }
 
+function getPorcentaje($parte, $total)
+{
+  if ($total == 0) return 100;
+  return round(($parte / $total) * 100, 2);
+}
+
 ?>
 
 <!doctype html>
@@ -192,7 +198,7 @@ function getColor($parte, $total)
                           foreach ($menusNormales as $menu) {
 
                             $color = getColor($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
-
+                            $porcentaje = getPorcentaje($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
                           ?>
                             <tr class="align-middle">
                               <td><?= $index_menus++; ?></td>
@@ -218,7 +224,7 @@ function getColor($parte, $total)
                           // Menús rspeciales
 
                           $color = getColor($totalAsistentesRegimenes, $totalMenusRegimenes);
-
+                          $porcentaje = getPorcentaje($totalAsistentesRegimenes, $totalMenusRegimenes);
                           ?>
                           <tr class="align-middle">
                             <td><?= $index_menus++; ?></td>
@@ -318,6 +324,7 @@ function getColor($parte, $total)
                           foreach ($mesas as $menu) {
 
                             $color = getColor($mesasAsistentes[$menu->getId()], $datosHoy->getMesasTotales()[$menu->getId()]);
+                            $porcentaje = getPorcentaje($mesasAsistentes[$menu->getId()], $datosHoy->getMesasTotales()[$menu->getId()]);
 
                           ?>
                             <tr class="align-middle">
