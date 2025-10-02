@@ -11,6 +11,7 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"] ?? '';
     $apellidos = $_POST["apellidos"] ?? '';
+    $intolerancias = $_POST["intolerancias"] ?? '';
     $menu_id = $_POST["menu"] ?? '';
     $mesa_id = $_POST["mesa"] ?? '';
     $autobus_id = $_POST["autobus"] ?? '';
@@ -18,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
     try {
-        $comensal = new Comensal(null, $nombre, $apellidos, $menu_id ?: null, $mesa_id ?: null, $autobus_id ?: null);
+        $comensal = new Comensal(null, $nombre, $apellidos, $intolerancias ?: null, $menu_id ?: null, $mesa_id ?: null, $autobus_id ?: null);
         $comensal->save();
         header("Location: alumnos.php");
         exit();
@@ -122,6 +123,12 @@ $autobuses = getAllAutobuses();
                             <div class="mb-3">
                                 <label for="apellidos" class="form-label">Apellidos</label>
                                 <input type="text" class="form-control" id="apellidos" name="apellidos" required />
+                            </div>
+
+                            <!-- Intolerancias -->
+                            <div class="mb-3">
+                                <label for="intolerancias" class="form-label">Descripción</label>
+                                <textarea type="text" class="form-control" id="intolerancias" name="intolerancias"></textarea>
                             </div>
 
                             <!-- Menú -->

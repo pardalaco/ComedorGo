@@ -81,6 +81,7 @@ CREATE TABLE `Comensales` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(100) NOT NULL,
   `Apellidos` varchar(100) NOT NULL,
+  `Intolerancias` varchar(300) DEFAULT NULL,
   `Menu_ID` int DEFAULT NULL,
   `Mesa_ID` int DEFAULT NULL,
   `Autobus_ID` int DEFAULT NULL,
@@ -92,7 +93,7 @@ CREATE TABLE `Comensales` (
   CONSTRAINT `Comensales_Autobus_FK` FOREIGN KEY (`Autobus_ID`) REFERENCES `Autobus` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Comensales_Menu_FK` FOREIGN KEY (`Menu_ID`) REFERENCES `Menu` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `Comensales_Mesa_FK` FOREIGN KEY (`Mesa_ID`) REFERENCES `Mesa` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -101,7 +102,7 @@ CREATE TABLE `Comensales` (
 
 LOCK TABLES `Comensales` WRITE;
 /*!40000 ALTER TABLE `Comensales` DISABLE KEYS */;
-INSERT INTO `Comensales` VALUES (1,'Paco','Jones',1,4,1),(2,'Pepe','Martínez',NULL,9,NULL),(32,'Laura','GG',2,9,3),(34,'Jose','Castillas',NULL,9,3),(38,'bbb','b',3,9,1),(39,'aaa','b',4,4,1);
+INSERT INTO `Comensales` VALUES (1,'Paco','Jones',NULL,1,4,1),(2,'Pepe','Martínez','Atun',NULL,9,3),(32,'Laura','GG',NULL,2,9,3),(34,'Jose','Castillas',NULL,NULL,9,1),(38,'bbb','b',NULL,3,9,1),(39,'aaa','b',NULL,4,4,1);
 /*!40000 ALTER TABLE `Comensales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,4 +168,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-01 13:24:03
+-- Dump completed on 2025-10-02 11:40:57

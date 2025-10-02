@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($_POST['accion'] === 'modificar') {
         $nombre = $_POST["nombre"] ?? '';
         $apellidos = $_POST["apellidos"] ?? '';
+        $intolerancias = $_POST["intolerancias"] ?? '';
         $menu_id = $_POST["menu"] ?? '';
         $mesa_id = $_POST["mesa"] ?? '';
         $autobus_id = $_POST["autobus"] ?? '';
@@ -30,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         try {
             $comensal->setNombre($nombre);
             $comensal->setApellidos($apellidos);
+            $comensal->setIntolerancias($intolerancias ?: null);
             $comensal->setMenuId($menu_id ?: null);
             $comensal->setMesaId($mesa_id ?: null);
             $comensal->setAutobusId($autobus_id ?: null);
@@ -152,6 +154,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     required />
                             </div>
 
+                            <!-- Intolerancias -->
+                            <div class="mb-3">
+                                <label for="intolerancias" class="form-label">Descripción</label>
+                                <textarea type="text" class="form-control" id="intolerancias" name="intolerancias"><?= $comensal->getIntolerancias() ?></textarea>
+                            </div>
+
+
                             <!-- Menú -->
                             <div class="mb-3">
                                 <label for="menu" class="form-label">Menú</label>
@@ -232,9 +241,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <!--end::Quick Example-->
 
                 <?php
-                // echo "<pre>";
-                // print_r($comensal);
-                // echo "</pre>";
+                echo "<pre>";
+                print_r($comensal);
+                echo "</pre>";
                 ?>
 
 

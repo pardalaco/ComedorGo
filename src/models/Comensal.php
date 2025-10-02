@@ -6,6 +6,7 @@ class Comensal
     private $id;
     private $nombre;
     private $apellidos;
+    private $intolerancias;
 
     // Menus
     private $menu_id;
@@ -19,11 +20,12 @@ class Comensal
     private $autobus_id;
     private $autobus_name;
 
-    public function __construct($id, $nombre, $apellidos, $menu_id = null, $mesa_id = null, $autobus_id = null)
+    public function __construct($id, $nombre, $apellidos, $intolerancias = null, $menu_id = null, $mesa_id = null, $autobus_id = null)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->apellidos = $apellidos;
+        $this->intolerancias = $intolerancias;
 
         // Menus
         $this->menu_id = $menu_id;
@@ -47,20 +49,21 @@ class Comensal
             // Ya existe → UPDATE
             $stmt = $conn->prepare("
             UPDATE Comensales 
-            SET Nombre = :nombre, Apellidos = :apellidos, Menu_ID = :menu_id, Mesa_ID = :mesa_id, Autobus_ID = :autobus_id
+            SET Nombre = :nombre, Apellidos = :apellidos, Intolerancias = :intolerancias, Menu_ID = :menu_id, Mesa_ID = :mesa_id, Autobus_ID = :autobus_id
             WHERE ID = :id
         ");
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         } else {
             // No existe → INSERT
             $stmt = $conn->prepare("
-            INSERT INTO Comensales (Nombre, Apellidos, Menu_ID, Mesa_ID, Autobus_ID) 
-            VALUES (:nombre, :apellidos, :menu_id, :mesa_id, :autobus_id)
+            INSERT INTO Comensales (Nombre, Apellidos, Intolerancias, Menu_ID, Mesa_ID, Autobus_ID) 
+            VALUES (:nombre, :apellidos, :intolerancias, :menu_id, :mesa_id, :autobus_id)
         ");
         }
 
         $stmt->bindParam(':nombre', $this->nombre);
         $stmt->bindParam(':apellidos', $this->apellidos);
+        $stmt->bindParam(':intolerancias', $this->intolerancias);
         $stmt->bindParam(':menu_id', $this->menu_id);
         $stmt->bindParam(':mesa_id', $this->mesa_id);
         $stmt->bindParam(':autobus_id', $this->autobus_id);
@@ -103,19 +106,25 @@ class Comensal
     {
         return $this->apellidos;
     }
+    public function getIntolerancias()
+    {
+        return $this->intolerancias;
+    }
 
+    // Menus
     public function getMenuId()
     {
         return $this->menu_id;
     }
-
-    public function getMesaId()
-    {
-        return $this->mesa_id;
-    }
     public function getMenuName()
     {
         return $this->menu_name;
+    }
+
+    // Mesas
+    public function getMesaId()
+    {
+        return $this->mesa_id;
     }
     public function getMesaName()
     {
@@ -140,6 +149,10 @@ class Comensal
     public function setApellidos($apellidos)
     {
         $this->apellidos = $apellidos;
+    }
+    public function setIntolerancias($intolerancias)
+    {
+        $this->intolerancias = $intolerancias;
     }
 
     public function setMenuId($menu_id)
@@ -170,6 +183,7 @@ function getComensalById($id)
             $row['ID'],
             $row['Nombre'],
             $row['Apellidos'],
+            $row['Intolerancias'],
             $row['Menu_ID'],
             $row['Mesa_ID'],
             $row['Autobus_ID']
@@ -192,6 +206,7 @@ function getComensales()
             $row['ID'],
             $row['Nombre'],
             $row['Apellidos'],
+            $row['Intolerancias'],
             $row['Menu_ID'],
             $row['Mesa_ID'],
             $row['Autobus_ID'],
