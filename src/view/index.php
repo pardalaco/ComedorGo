@@ -79,52 +79,60 @@ function getPorcentaje($parte, $total)
               </ol>
             </div>
 
-            <!-- begin::Datos generales -->
-            <div class="row">
-              <div class="col-sm-6" style="margin-bottom: 15px;">
-                <h4 class="mb-0">Datos Generales</h4>
+            <!-- Datos generales -->
+            <div>
+
+
+              <!-- begin::Datos generales -->
+              <div class="row">
+                <div class="col-sm-6" style="margin-bottom: 15px;">
+                  <h4 class="mb-0">Datos Generales</h4>
+                </div>
               </div>
+
+
+              <!--begin::Row-->
+              <div class="row" style="margin-bottom: 15px;">
+
+                <!-- begin::Grafica -->
+                <div class="col-md-8">
+                  <div class="card">
+                    <div class="card-header">
+                      <h5 class="card-title">Histórico de asistencia</h5>
+                    </div>
+                    <div class="card-body">
+                      <div id="sales-chart"></div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end::Grafica -->
+
+
+                <!-- begin::Menus -->
+                <div class="col-md-4">
+
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Menús</h3>
+                    </div>
+                    <!-- /.card-header -->
+
+                    <div class="card-body">
+                      <canvas id="pieChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- end::Menus -->
+                </div>
+
+              </div>
+              <!-- end::Row -->
+              <!-- end::Datos generales -->
+
             </div>
 
 
-            <!--begin::Row-->
-            <div class="row" style="margin-bottom: 15px;">
-
-              <!-- begin::Grafica -->
-              <div class="col-md-8">
-                <div class="card">
-                  <div class="card-header">
-                    <h5 class="card-title">Histórico de asistencia</h5>
-                  </div>
-                  <div class="card-body">
-                    <div id="sales-chart"></div>
-                  </div>
-                </div>
-              </div>
-              <!-- end::Grafica -->
-
-
-              <!-- begin::Menus -->
-              <div class="col-md-4">
-
-                <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">Menús</h3>
-                  </div>
-                  <!-- /.card-header -->
-
-                  <div class="card-body">
-                    <canvas id="pieChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
-                  </div>
-                  <!-- /.card-body -->
-                </div>
-                <!-- end::Menus -->
-              </div>
-
-            </div>
-            <!-- end::Row -->
-            <!-- end::Datos generales -->
-
+            <!-- Datos hoy -->
             <!-- Datos a imprimir -->
             <div id="pdf-menus">
 
@@ -360,9 +368,9 @@ function getPorcentaje($parte, $total)
               <!-- end::Datos a imprimir -->
 
             </div>
-            <!-- end::Row -->
+            <!-- ./Datos hoy -->
 
-            <!-- Datos a imprimir -->
+            <!-- Mesas Asistentes -->
             <div>
 
               <div class="row mb-3">
@@ -380,8 +388,6 @@ function getPorcentaje($parte, $total)
               <div class="row">
 
 
-
-
                 <!-- begin::Table Mesa Alumnos -->
                 <?php
                 $mesas = $datosHoy->getMesas();
@@ -393,7 +399,7 @@ function getPorcentaje($parte, $total)
 
                 ?>
 
-                  <div class="col-md-6">
+                  <div class="col-xl-6" style="margin-bottom: 10px;">
                     <div class="card mesa-asistentes">
                       <div class="card-header">
                         <div class="row">
@@ -472,7 +478,83 @@ function getPorcentaje($parte, $total)
 
 
             </div>
-            <!-- end::Row -->
+            <!-- Mesas asistentes -->
+
+
+
+            <!-- Mesas Cocinero -->
+            <div id="pdf-mesasCocinero">
+
+
+              <div class="row mb-3">
+                <div class="col-12">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Mesas Cocienro</h4>
+                    <button class="btn btn-primary" onclick="descargarPDFMesasCocinero()">Descargar PDF</button>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="card">
+
+                <div class="card-body p-0">
+
+                  <table class="table table-sm table-hover">
+                    <thead>
+                      <tr>
+                        <th style="min-width:100px;">Mesa</th>
+                        <th style="min-width:50px;">Normales</th>
+                        <th style="min-width:50px;">Régimen</th>
+                        <th style="min-width:150px;">Recuento Régimen</th>
+                        <th style="min-width:200px;">Alumnos</th>
+                        <th style="min-width:150px;">Menús</th>
+                        <th>Intolerancias</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      $mesas = $datosHoy->getMesas();
+                      foreach ($mesas as $mesa) {
+                      ?>
+                        <!-- Fila principal de la mesa -->
+                        <tr>
+                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>"><?= $mesa->getNombre() ?></td>
+                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>"><?= count($mesa->getComensalesMenusNormaeles()) ?></td>
+                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>"><?= count($mesa->getComensalesMenusRegimen()) ?></td>
+                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>">
+                            <!-- Aquí no metemos más <tr>, solo mostramos recuentos -->
+                            <?php if (count($mesa->getComensalesMenusRegimenMesclat()) > 0): ?>
+                              Mesclat: <?= count($mesa->getComensalesMenusRegimenMesclat()) ?><br>
+                            <?php endif; ?>
+                            <?php if (count($mesa->getComensalesMenusRegimenTrituratPoc()) > 0): ?>
+                              Triturat Poc: <?= count($mesa->getComensalesMenusRegimenTrituratPoc()) ?><br>
+                            <?php endif; ?>
+                            <?php if (count($mesa->getComensalesMenusRegimenTrituratMolt()) > 0): ?>
+                              Triturat Molt: <?= count($mesa->getComensalesMenusRegimenTrituratMolt()) ?><br>
+                            <?php endif; ?>
+                          </td>
+                        </tr>
+
+                        <!-- Filas de los comensales -->
+                        <?php foreach ($mesa->getComensales() as $comensal): ?>
+                          <tr>
+                            <td><?= $comensal->getNombre() . " " . $comensal->getApellidos() ?></td>
+                            <td><?= $comensal->getMenuName() ?></td>
+                            <td><?= $comensal->getIntolerancias() ?></td>
+                          </tr>
+                        <?php endforeach; ?>
+
+                      <?php } ?>
+                    </tbody>
+                  </table>
+
+                </div>
+
+              </div>
+
+            </div>
+            <!-- Mesas Cocinero -->
 
           </div>
           <!--end::Row-->
@@ -671,6 +753,7 @@ function getPorcentaje($parte, $total)
     })
   </script>
 
+  <!-- Descargar datos hoy -->
   <script>
     function descargarPDF() {
       const contenedor = document.getElementById('pdf-menus');
@@ -692,6 +775,35 @@ function getPorcentaje($parte, $total)
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save('<?= date("Y-m-d") ?>_menus_asistencia.pdf');
+
+        // Volvemos a mostrar el botón
+        if (boton) boton.style.display = 'block';
+      });
+    }
+  </script>
+
+  <!-- Descargar Mesas Cocinero -->
+  <script>
+    function descargarPDFMesasCocinero() {
+      const contenedor = document.getElementById('pdf-mesasCocinero');
+
+      // Seleccionamos el botón dentro del contenedor y lo ocultamos
+      const boton = contenedor.querySelector('button');
+      if (boton) boton.style.display = 'none';
+
+      html2canvas(contenedor).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const {
+          jsPDF
+        } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('<?= date("Y-m-d") ?>_mesasCocinero.pdf');
 
         // Volvemos a mostrar el botón
         if (boton) boton.style.display = 'block';
