@@ -67,6 +67,7 @@
                                 <p>Mesas</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a href="autobuses.php" class="nav-link <?= ($activePage == 'autobuses') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-car-front-fill"></i>
@@ -75,12 +76,15 @@
                         </li>
                     </ul>
                 </li>
+                <?php /*
                 <li class="nav-item">
                     <a href="../templates/AdminLTE/dist/index.html" class="nav-link <?= ($activePage == 'asistencia') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-compass"></i>
                         <p>AdminLTE</p>
                     </a>
                 </li>
+                */
+                ?>
             </ul>
             <!--end::Sidebar Menu-->
         </nav>

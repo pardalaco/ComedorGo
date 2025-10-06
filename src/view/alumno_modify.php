@@ -244,9 +244,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <!--end::Quick Example-->
 
                 <?php
-                echo "<pre>";
-                print_r($comensal);
-                echo "</pre>";
+                // echo "<pre>";
+                // print_r($comensal);
+                // echo "</pre>";
                 ?>
 
 
