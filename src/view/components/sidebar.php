@@ -11,7 +11,7 @@
                 class="brand-image opacity-75 shadow" />
             <!--end::Brand Image-->
             <!--begin::Brand Text-->
-            <span class="brand-text fw-light">ComedorGO</span>
+            <span class="brand-text fw-light">MenjadorGo</span>
             <!--end::Brand Text-->
         </a>
         <!--end::Brand Link-->
@@ -37,14 +37,14 @@
                 <li class="nav-item">
                     <a href="asistencia.php" class="nav-link <?= ($activePage == 'asistencia') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-check2-circle"></i>
-                        <p>Asistencia</p>
+                        <p>Assistència</p>
                     </a>
                 </li>
                 <li class="nav-item <?= ($activePage == 'alumnos' || $activePage == 'menus' || $activePage == 'mesas' || $activePage == 'autobuses') ? 'menu-open' : '' ?>">
                     <a href="#" class="nav-link <?= ($activePage == 'alumnos' || $activePage == 'menus' || $activePage == 'mesas' || $activePage == 'autobuses') ? 'active' : '' ?>">
                         <i class="nav-icon bi bi-gear"></i>
                         <p>
-                            Gestión
+                            Gestió
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
@@ -52,13 +52,13 @@
                         <li class="nav-item">
                             <a href="alumnos.php" class="nav-link <?= ($activePage == 'alumnos') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-person"></i>
-                                <p>Alumnos</p>
+                                <p>Alumnes</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="menus.php" class="nav-link <?= ($activePage == 'menus') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-egg-fill"></i>
-                                <p>Menus</p>
+                                <p>Menús</p>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -70,7 +70,7 @@
                         <li class="nav-item">
                             <a href="autobuses.php" class="nav-link <?= ($activePage == 'autobuses') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-car-front-fill"></i>
-                                <p>Autobuses</p>
+                                <p>Autobusos</p>
                             </a>
                         </li>
                     </ul>

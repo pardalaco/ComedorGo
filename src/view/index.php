@@ -33,7 +33,7 @@ function getPorcentaje($parte, $total)
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>ComedorGo - Alumnos</title>
+  <title>MenjadorGo</title>
 
   <?php include __DIR__ . '/components/head.html'; ?>
 
@@ -86,7 +86,7 @@ function getPorcentaje($parte, $total)
               <!-- begin::Datos generales -->
               <div class="row">
                 <div class="col-sm-6" style="margin-bottom: 15px;">
-                  <h4 class="mb-0">Datos Generales</h4>
+                  <h4 class="mb-0">Dades Generals</h4>
                 </div>
               </div>
 
@@ -98,7 +98,7 @@ function getPorcentaje($parte, $total)
                 <div class="col-md-8">
                   <div class="card">
                     <div class="card-header">
-                      <h5 class="card-title">Histórico de asistencia</h5>
+                      <h5 class="card-title">Històric d'asistencia</h5>
                     </div>
                     <div class="card-body">
                       <div id="sales-chart"></div>
@@ -139,8 +139,8 @@ function getPorcentaje($parte, $total)
               <div class="row mb-3">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Datos de hoy</h4>
-                    <button class="btn btn-primary" onclick="descargarPDF()">Descargar PDF</button>
+                    <h4 class="mb-0">Dades de hui</h4>
+                    <button class="btn btn-primary" onclick="descargarPDF()">Descarrega PDF</button>
                   </div>
                 </div>
               </div>
@@ -154,7 +154,7 @@ function getPorcentaje($parte, $total)
                 <div class="col-md-4">
                   <div class="card text-center">
                     <div class="card-header">
-                      <h3 class="card-title">Asistencia</h3>
+                      <h3 class="card-title">Assistència</h3>
                       <?= $datosHoy->getAsistentes() . " de " . $datosHoy->getComensalesTotales() . " comensales" ?>
                     </div>
                     <div class="card-body">
@@ -195,9 +195,9 @@ function getPorcentaje($parte, $total)
                         <thead>
                           <tr>
                             <th style="width: 10px">#</th>
-                            <th>Tipos de menús</th>
-                            <th>Porcentajes</th>
-                            <th>Asistentes</th>
+                            <th>Tipus de menús</th>
+                            <th>Percentatge</th>
+                            <th>Assistència</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -236,7 +236,7 @@ function getPorcentaje($parte, $total)
                           ?>
                           <tr class="align-middle">
                             <td><?= $index_menus++; ?></td>
-                            <td><span class="badge <?= $color ?>" data-bs-toggle="tooltip">Regimenes </span></td>
+                            <td><span class="badge <?= $color ?>" data-bs-toggle="tooltip">Règims </span></td>
                             <td>
                               <div class="progress progress-xs">
                                 <div class="progress-bar <?= $color ?>"
@@ -259,9 +259,9 @@ function getPorcentaje($parte, $total)
                         <thead>
                           <tr>
                             <th style="width: 10px">#</th>
-                            <th>Menús Regimenes</th>
-                            <th>Porcentajes</th>
-                            <th>Asistentes</th>
+                            <th>Menús Règims</th>
+                            <th>Percentatge</th>
+                            <th>Assistents</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -313,7 +313,7 @@ function getPorcentaje($parte, $total)
                 <div class="col-md-4">
                   <div class="card ">
                     <div class="card-header">
-                      <h3 class="card-title">Mesas</h3>
+                      <h3 class="card-title">Taules</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body p-0">
@@ -321,9 +321,9 @@ function getPorcentaje($parte, $total)
                         <thead>
                           <tr>
                             <th style="width: 10px">#</th>
-                            <th>Mesas</th>
-                            <th>Porcentajes</th>
-                            <th>Asistentes</th>
+                            <th>Taula</th>
+                            <th>Percentatge</th>
+                            <th>Assistents</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -376,8 +376,8 @@ function getPorcentaje($parte, $total)
               <div class="row mb-3">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Mesas asistentes</h4>
-                    <button class="btn btn-primary" onclick="descargarPDFMesas()">Descargar PDF</button>
+                    <h4 class="mb-0">Taules assistents</h4>
+                    <button class="btn btn-primary" onclick="descargarPDFMesas()">Descarrega PDF</button>
                   </div>
                 </div>
               </div>
@@ -417,8 +417,8 @@ function getPorcentaje($parte, $total)
                               <th style="width: 10px">#</th>
                               <th>Alumne</th>
                               <th>Menú</th>
-                              <th>Intolerancias</th>
-                              <th>Autobus</th>
+                              <th>Intoleràncies</th>
+                              <th>Autobús</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -490,7 +490,7 @@ function getPorcentaje($parte, $total)
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">Mesas Cocinero</h4>
-                    <button class="btn btn-primary" onclick="descargarPDFMesasCocinero()">Descargar PDF</button>
+                    <button class="btn btn-primary" onclick="descargarPDFMesasCocinero()">Descarrega PDF</button>
                   </div>
                 </div>
               </div>
@@ -503,14 +503,14 @@ function getPorcentaje($parte, $total)
                   <table class="table table-sm table-hover">
                     <thead>
                       <tr>
-                        <th style="min-width:100px;">Mesa</th>
-                        <th style="min-width:50px;">Normales</th>
-                        <th style="min-width:50px;">Especiales</th>
-                        <th style="min-width:50px;">Régimen</th>
-                        <th style="min-width:150px;">Recuento Régimen</th>
-                        <th style="min-width:200px;">Alumnos</th>
+                        <th style="min-width:100px;">Taula</th>
+                        <th style="min-width:50px;">Normals</th>
+                        <th style="min-width:50px;">Especials</th>
+                        <th style="min-width:50px;">Règim</th>
+                        <th style="min-width:150px;">Recompte de règim</th>
+                        <th style="min-width:200px;">Alumnes</th>
                         <th style="min-width:150px;">Menús</th>
-                        <th>Intolerancias</th>
+                        <th>Intoleràncies</th>
                       </tr>
                     </thead>
                     <tbody>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>ComedorGo - Licencia</title>
+  <title>MenjadorGo - Llicencia</title>
 
   <?php include './components/head.html'; ?>
 
@@ -38,27 +38,25 @@
           <!--begin::Row-->
           <div class="row">
 
-
-
             <div class="content-wrapper">
-              <!-- Cabecera de página -->
+              <!-- Capçalera de pàgina -->
               <section class="content-header">
                 <div class="container-fluid">
                   <div class="row mb-2">
                     <div class="col-sm-6">
-                      <h1>Redes y Desarrollador</h1>
+                      <h1>Xarxes i Desenvolupador</h1>
                     </div>
                   </div>
                 </div>
               </section>
 
-              <!-- Contenido principal -->
+              <!-- Contingut principal -->
               <section class="content">
                 <div class="container-fluid">
                   <div class="card text-center">
                     <div class="card-body">
-                      <h2>Hola, soy <strong>Daniel Rovira</strong></h2>
-                      <p>Soy el desarrollador de esta página. Puedes seguirme o contactarme a través de mis perfiles profesionales:</p>
+                      <h2>Hola, sóc <strong>Daniel Rovira</strong></h2>
+                      <p>Sóc el desenvolupador d’esta pàgina. Pots seguir-me o contactar amb mi a través dels meus perfils professionals:</p>
 
                       <a href="https://github.com/pardalaco" target="_blank" class="btn btn-dark m-2">
                         <i class="bi bi-github"></i> GitHub
@@ -72,7 +70,6 @@
                 </div>
               </section>
             </div>
-
 
 
 

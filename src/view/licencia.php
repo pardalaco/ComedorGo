@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>ComedorGo - Licencia</title>
+  <title>MenjadorGo - Llicencia</title>
 
   <?php include './components/head.html'; ?>
 
@@ -46,7 +46,7 @@
                 <div class="container-fluid">
                   <div class="row mb-2">
                     <div class="col-sm-6">
-                      <h1>Licencia y Créditos</h1>
+                      <h1>Llicència i Crèdits</h1>
                     </div>
                   </div>
                 </div><!-- /.container-fluid -->
@@ -57,17 +57,17 @@
                 <div class="container-fluid">
                   <div class="card">
                     <div class="card-body">
-                      <h3>Licencia</h3>
+                      <h3>Llicència</h3>
                       <p>
-                        Este proyecto se distribuye bajo la licencia <strong>Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)</strong>.
-                        Esto significa que puedes compartir y adaptar el proyecto, incluso con fines comerciales, siempre que des el crédito correspondiente y compartas tu versión bajo la misma licencia.
+                        Este projecte es distribueix baix la llicència <strong>Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)</strong>.
+                        Açò significa que pots compartir i adaptar el projecte, inclús amb fins comercials, sempre que dones el crèdit corresponent i compartisques la teua versió baix la mateixa llicència.
                       </p>
-                      <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Más información sobre la licencia CC BY-SA 4.0</a>
+                      <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Més informació sobre la llicència CC BY-SA 4.0</a>
 
-                      <h3 class="mt-4">Créditos</h3>
+                      <h3 class="mt-4">Crèdits</h3>
                       <p>
-                        Plantilla utilizada: <a href="https://adminlte.io" target="_blank">AdminLTE</a>.<br>
-                        Agradecimientos a los creadores de AdminLTE por ofrecer una plantilla de código abierto.
+                        Plantilla utilitzada: <a href="https://adminlte.io" target="_blank">AdminLTE</a>.<br>
+                        Agraïments als creadors d’AdminLTE per oferir una plantilla de codi obert.
                       </p>
                     </div>
                   </div>

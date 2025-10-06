@@ -12,7 +12,7 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Alumnos</title>
+    <title>ComedorGo - Alumnes</title>
 
     <?php include './components/head.html'; ?>
 
@@ -57,12 +57,12 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Dashboard</h3>
+                            <h3 class="mb-0">Alumnes</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Alumnos</li>
+                                <li class="breadcrumb-item active" aria-current="page">Alumnes</li>
                             </ol>
                         </div>
                     </div>
@@ -79,7 +79,7 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
                 <div class="d-flex justify-content-end mb-2">
 
                     <button class="btn btn-primary" onclick="location.href='alumno_add.php'">
-                        Añadir alumno
+                        Afegir alumne
                     </button>
                 </div>
                 <!-- ./Botones arriba de la tabla -->
@@ -100,11 +100,11 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
                             <thead>
                                 <tr>
                                     <!-- <th style="width: 10px">#</th> -->
-                                    <th>Nombre</th>
-                                    <th>Apellidos</th>
+                                    <th>Nom</th>
+                                    <th>Cognom</th>
                                     <th>Menú</th>
-                                    <th>Mesa</th>
-                                    <th>Autobus</th>
+                                    <th>Taula</th>
+                                    <th>Autobús</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Alumnos</title>
+    <title>ComedorGo - Alumnes</title>
 
     <?php include './components/head.html'; ?>
 
@@ -106,12 +106,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Modificar Alumno</h3>
+                            <h3 class="mb-0">Modificar Alumne</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="alumnos.php">Alumnos</a></li>
+                                <li class="breadcrumb-item"><a href="alumnos.php">Alumnes</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Modificar Alumno</li>
                             </ol>
                         </div>
@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <div class="card-title">Formulario Alumno</div>
+                        <div class="card-title">Formulari alumnes</div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <div class="card-body">
                             <!-- Nombre -->
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre</label>
+                                <label for="nombre" class="form-label">Nom</label>
                                 <input type="text"
                                     class="form-control"
                                     id="nombre"
@@ -148,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                             <!-- Apellidos -->
                             <div class="mb-3">
-                                <label for="apellidos" class="form-label">Apellidos</label>
+                                <label for="apellidos" class="form-label">Cognom</label>
                                 <input type="text"
                                     class="form-control"
                                     id="apellidos"
@@ -159,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                             <!-- Intolerancias -->
                             <div class="mb-3">
-                                <label for="intolerancias" class="form-label">Descripción</label>
+                                <label for="intolerancias" class="form-label">Intoleràncies</label>
                                 <textarea type="text" class="form-control" id="intolerancias" name="intolerancias"><?= $comensal->getIntolerancias() ?></textarea>
                             </div>
 
@@ -186,9 +186,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                             <!-- Mesa -->
                             <div class="mb-3">
-                                <label for="mesa" class="form-label">Mesa</label>
+                                <label for="mesa" class="form-label">Taula</label>
                                 <select class="form-select" id="mesa" name="mesa">
-                                    <option value="">-- Selecciona una mesa --</option>
+                                    <option value="">-- Selecciona una taula --</option>
                                     <?php
                                     foreach ($mesas as $mesa) {
                                     ?>
@@ -204,9 +204,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                             <!-- Autobus -->
                             <div class="mb-3">
-                                <label for="autobus" class="form-label">Autobus</label>
+                                <label for="autobus" class="form-label">Autobús</label>
                                 <select class="form-select" id="autobus" name="autobus">
-                                    <option value="">-- Selecciona un autobus --</option>
+                                    <option value="">-- Selecciona un autobús --</option>
                                     <?php
                                     foreach ($autobuses as $autobus) {
                                     ?>

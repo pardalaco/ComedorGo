@@ -11,7 +11,7 @@ $activePage = 'mesas'; // Para resaltar la página activa en el sidebar
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Mesas</title>
+    <title>ComedorGo - Taules</title>
 
     <?php include './components/head.html'; ?>
 
@@ -40,12 +40,12 @@ $activePage = 'mesas'; // Para resaltar la página activa en el sidebar
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Mesas</h3>
+                            <h3 class="mb-0">Taules</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Mesa</li>
+                                <li class="breadcrumb-item active" aria-current="page">Taules</li>
                             </ol>
                         </div>
                     </div>
@@ -61,7 +61,7 @@ $activePage = 'mesas'; // Para resaltar la página activa en el sidebar
                 <div class="d-flex justify-content-end mb-2">
 
                     <button class="btn btn-primary" onclick="location.href='mesa_add.php'">
-                        Añadir mesa
+                        Afegir taula
                     </button>
                 </div>
                 <!-- ./Botones arriba de la tabla -->

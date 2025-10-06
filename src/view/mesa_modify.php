@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Mesas</title>
+    <title>ComedorGo - Taules</title>
 
     <?php include './components/head.html'; ?>
 
@@ -85,13 +85,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Modificar Mesa</h3>
+                            <h3 class="mb-0">Modificar Taules</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="mesas.php">Mesas</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Modificar Mesa</li>
+                                <li class="breadcrumb-item"><a href="mesas.php">Taules</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Modificar Taules</li>
                             </ol>
                         </div>
                     </div>
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <div class="card-title">Formulario Mesa</div>
+                        <div class="card-title">Formulari Taules</div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <div class="card-body">
                             <!-- Nombre -->
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre</label>
+                                <label for="nombre" class="form-label">Nom</label>
                                 <input type="text"
                                     class="form-control"
                                     id="nombre"
@@ -130,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                             <!-- Apellidos -->
                             <div class="mb-3">
-                                <label for="descripcion" class="form-label">Descripción</label>
+                                <label for="descripcion" class="form-label">Descripció</label>
                                 <textarea type="text"
                                     class="form-control"
                                     id="descripcion"

@@ -58,7 +58,7 @@ $autobuses = getAllAutobuses();
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Alumnos</title>
+    <title>ComedorGo - Alumnes</title>
 
     <?php include './components/head.html'; ?>
 
@@ -87,13 +87,13 @@ $autobuses = getAllAutobuses();
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Añadir Alumno</h3>
+                            <h3 class="mb-0">Afegir Alumne</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item"><a href="alumnos.php">Alumnos</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Añadir Alumno</li>
+                                <li class="breadcrumb-item"><a href="alumnos.php">Alumnes</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Afegir Alumne</li>
                             </ol>
                         </div>
                     </div>
@@ -109,7 +109,7 @@ $autobuses = getAllAutobuses();
                 <div class="card card-primary card-outline mb-4">
                     <!--begin::Header-->
                     <div class="card-header">
-                        <div class="card-title">Formulario Alumno</div>
+                        <div class="card-title">Formulari Alumne</div>
                     </div>
                     <!--end::Header-->
                     <!--begin::Form-->
@@ -118,19 +118,19 @@ $autobuses = getAllAutobuses();
                         <div class="card-body">
                             <!-- Nombre -->
                             <div class="mb-3">
-                                <label for="nombre" class="form-label">Nombre</label>
+                                <label for="nombre" class="form-label">Nom</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" required />
                             </div>
 
                             <!-- Apellidos -->
                             <div class="mb-3">
-                                <label for="apellidos" class="form-label">Apellidos</label>
+                                <label for="apellidos" class="form-label">Cognom</label>
                                 <input type="text" class="form-control" id="apellidos" name="apellidos" required />
                             </div>
 
                             <!-- Intolerancias -->
                             <div class="mb-3">
-                                <label for="intolerancias" class="form-label">Descripción</label>
+                                <label for="intolerancias" class="form-label">Intoleràncies</label>
                                 <textarea type="text" class="form-control" id="intolerancias" name="intolerancias"></textarea>
                             </div>
 
@@ -154,9 +154,9 @@ $autobuses = getAllAutobuses();
 
                             <!-- Mesa -->
                             <div class="mb-3">
-                                <label for="mesa" class="form-label">Mesa</label>
+                                <label for="mesa" class="form-label">Taula</label>
                                 <select class="form-select" id="mesa" name="mesa">
-                                    <option value="">-- Selecciona una mesa --</option>
+                                    <option value="">-- Selecciona una taula --</option>
                                     <?php
                                     foreach ($mesas as $mesa) {
                                     ?>
@@ -171,9 +171,9 @@ $autobuses = getAllAutobuses();
 
                             <!-- Autobus -->
                             <div class="mb-3">
-                                <label for="autobus" class="form-label">Autobus</label>
+                                <label for="autobus" class="form-label">Autobús</label>
                                 <select class="form-select" id="autobus" name="autobus">
-                                    <option value="">-- Selecciona un autobus --</option>
+                                    <option value="">-- Selecciona un autobús --</option>
                                     <?php
                                     foreach ($autobuses as $autobus) {
                                     ?>

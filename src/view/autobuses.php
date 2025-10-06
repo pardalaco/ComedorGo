@@ -11,7 +11,7 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Autobuses</title>
+    <title>ComedorGo - Autobusos</title>
 
     <?php include './components/head.html'; ?>
 
@@ -40,12 +40,12 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Autobuses</h3>
+                            <h3 class="mb-0">Autobusos</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Autobus</li>
+                                <li class="breadcrumb-item active" aria-current="page">Autobús</li>
                             </ol>
                         </div>
                     </div>
@@ -61,7 +61,7 @@ $activePage = 'autobuses'; // Para resaltar la página activa en el sidebar
                 <div class="d-flex justify-content-end mb-2">
 
                     <button class="btn btn-primary" onclick="location.href='autobus_add.php'">
-                        Añadir autobus
+                        Afegir Autobús
                     </button>
                 </div>
                 <!-- ./Botones arriba de la tabla -->

@@ -26,7 +26,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ComedorGo - Alumnos</title>
+    <title>ComedorGo - Assistència</title>
 
     <?php include './components/head.html'; ?>
 
@@ -79,12 +79,12 @@ $asistencias = getAsistenciasFecha($dateSelected);
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">Asistencia</h3>
+                            <h3 class="mb-0">Assistència</h3>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Asistencia</li>
+                                <li class="breadcrumb-item active" aria-current="page">Assistència</li>
                             </ol>
                         </div>
                     </div>
@@ -99,7 +99,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                 <div class="card-header p-2">
                     <ul class="nav nav-pills" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link <?= $activeTab == 'diaria' ? 'active' : '' ?>" id="asistencia-diaria-tab" data-bs-toggle="tab" href="#asistencia-diaria" role="tab">Diaria</a>
+                            <a class="nav-link <?= $activeTab == 'diaria' ? 'active' : '' ?>" id="asistencia-diaria-tab" data-bs-toggle="tab" href="#asistencia-diaria" role="tab">Diària</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link <?= $activeTab == 'mensual' ? 'active' : '' ?>" id="asistencia-mensual-tab" data-bs-toggle="tab" href="#asistencia-mensual" role="tab">Mensual</a>
@@ -118,11 +118,11 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
                                 <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
                                     <!-- Botón a la izquierda -->
-                                    <button type="button" class="btn btn-primary" onclick="descargarPDF()">Descargar PDF</button>
+                                    <button type="button" class="btn btn-primary" onclick="descargarPDF()">Descarrega PDF</button>
 
                                     <!-- Selector de fecha a la derecha -->
                                     <div class="d-flex align-items-center gap-2">
-                                        <label for="fecha" class="mb-0">Seleccionar fecha:</label>
+                                        <label for="fecha" class="mb-0">Seleccionar data:</label>
                                         <form method="GET" id="formFecha">
                                             <input type="date"
                                                 id="fecha"
@@ -149,9 +149,9 @@ $asistencias = getAsistenciasFecha($dateSelected);
                                             <thead>
                                                 <tr>
                                                     <!-- <th style="width: 10px">#</th> -->
-                                                    <th>Nombre</th>
-                                                    <th>Apellidos</th>
-                                                    <th>Autobus</th>
+                                                    <th>Nom</th>
+                                                    <th>Cognom</th>
+                                                    <th>Autobús</th>
                                                     <th class="text-center" id="checkboxAll">
                                                         <input type="checkbox"
                                                             class="form-check-input"
