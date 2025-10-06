@@ -489,7 +489,7 @@ function getPorcentaje($parte, $total)
               <div class="row mb-3">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Mesas Cocienro</h4>
+                    <h4 class="mb-0">Mesas Cocinero</h4>
                     <button class="btn btn-primary" onclick="descargarPDFMesasCocinero()">Descargar PDF</button>
                   </div>
                 </div>
@@ -505,6 +505,7 @@ function getPorcentaje($parte, $total)
                       <tr>
                         <th style="min-width:100px;">Mesa</th>
                         <th style="min-width:50px;">Normales</th>
+                        <th style="min-width:50px;">Especiales</th>
                         <th style="min-width:50px;">Régimen</th>
                         <th style="min-width:150px;">Recuento Régimen</th>
                         <th style="min-width:200px;">Alumnos</th>
@@ -515,29 +516,57 @@ function getPorcentaje($parte, $total)
                     <tbody>
                       <?php
                       $mesas = $datosHoy->getMesas();
+
+                      $totalNormal = 0;
+                      $totalEspeciales = 0;
+                      $totalRegimen = 0;
+                      $totalMenusRegimenMesclat = 0;
+                      $totalMenusRegimenTrituratPoc = 0;
+                      $totalMenusRegimenTrituratMolt = 0;
+
                       foreach ($mesas as $mesa) {
+                        $rowspan = count($mesa->getComensalesAsistenciaHoy()) ? count($mesa->getComensalesAsistenciaHoy()) + 1 : 1;
+                        $totalNormal += count($mesa->getComensalesMenusNormaeles());
+                        $totalEspeciales += count($mesa->getComensalesMenusEspeciales());
+                        $totalRegimen += count($mesa->getComensalesMenusRegimen());
                       ?>
                         <!-- Fila principal de la mesa -->
                         <tr>
-                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>"><?= $mesa->getNombre() ?></td>
-                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>"><?= count($mesa->getComensalesMenusNormaeles()) ?></td>
-                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>"><?= count($mesa->getComensalesMenusRegimen()) ?></td>
-                          <td rowspan="<?= count($mesa->getComensales()) + 1 ?>">
+                          <td rowspan="<?= $rowspan ?>"><?= $mesa->getNombre() ?></td>
+                          <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusNormaeles()) ?></td>
+                          <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusEspeciales()) ?></td>
+                          <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusRegimen()) ?></td>
+                          <td rowspan="<?= $rowspan ?>">
                             <!-- Aquí no metemos más <tr>, solo mostramos recuentos -->
-                            <?php if (count($mesa->getComensalesMenusRegimenMesclat()) > 0): ?>
+                            <?php if (count($mesa->getComensalesMenusRegimenMesclat()) > 0) {
+                              $totalMenusRegimenMesclat += count($mesa->getComensalesMenusRegimenMesclat());
+                            ?>
                               Mesclat: <?= count($mesa->getComensalesMenusRegimenMesclat()) ?><br>
-                            <?php endif; ?>
-                            <?php if (count($mesa->getComensalesMenusRegimenTrituratPoc()) > 0): ?>
+                            <?php } ?>
+                            <?php if (count($mesa->getComensalesMenusRegimenTrituratPoc()) > 0) {
+                              $totalMenusRegimenTrituratPoc += count($mesa->getComensalesMenusRegimenTrituratPoc());
+                            ?>
                               Triturat Poc: <?= count($mesa->getComensalesMenusRegimenTrituratPoc()) ?><br>
-                            <?php endif; ?>
-                            <?php if (count($mesa->getComensalesMenusRegimenTrituratMolt()) > 0): ?>
+                            <?php } ?>
+                            <?php if (count($mesa->getComensalesMenusRegimenTrituratMolt()) > 0) {
+                              $totalMenusRegimenTrituratMolt += count($mesa->getComensalesMenusRegimenTrituratMolt());
+                            ?>
                               Triturat Molt: <?= count($mesa->getComensalesMenusRegimenTrituratMolt()) ?><br>
-                            <?php endif; ?>
+                            <?php } ?>
                           </td>
+
+                          <?php
+                          // Si no hay comensales hoy, añadimos una fila vacía para mantener la estructura
+                          if (count($mesa->getComensalesAsistenciaHoy()) == 0) {
+                          ?>
+                            <td colspan="4"></td>
+                          <?php
+                          }
+                          ?>
                         </tr>
 
                         <!-- Filas de los comensales -->
-                        <?php foreach ($mesa->getComensales() as $comensal): ?>
+                        <?php foreach ($mesa->getComensalesAsistenciaHoy() as $comensal): ?>
                           <tr>
                             <td><?= $comensal->getNombre() . " " . $comensal->getApellidos() ?></td>
                             <td><?= $comensal->getMenuName() ?></td>
@@ -547,6 +576,27 @@ function getPorcentaje($parte, $total)
 
                       <?php } ?>
                     </tbody>
+                    <tfoot>
+                      <th>Total</th>
+                      <th><?= $totalNormal ?></th>
+                      <th><?= $totalEspeciales ?></th>
+                      <th><?= $totalRegimen ?></th>
+                      <td>
+                        <!-- Aquí no metemos más <tr>, solo mostramos recuentos -->
+                        <?php if ($totalMenusRegimenMesclat > 0) { ?>
+                          Mesclat: <?= $totalMenusRegimenMesclat ?><br>
+                        <?php } ?>
+                        <?php if ($totalMenusRegimenTrituratPoc > 0) { ?>
+                          Triturat Poc: <?= $totalMenusRegimenTrituratPoc ?><br>
+                        <?php } ?>
+                        <?php if ($totalMenusRegimenTrituratMolt > 0) { ?>
+                          Triturat Molt: <?= $totalMenusRegimenTrituratMolt ?><br>
+                        <?php } ?>
+                      </td>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+                    </tfoot>
                   </table>
 
                 </div>
