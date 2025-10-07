@@ -407,6 +407,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                 responsive: false,
                 scrollX: true, // <- scroll horizontal
                 autoWidth: false,
+                paging: false, // <- muestra todas las filas
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 }
@@ -421,9 +422,9 @@ $asistencias = getAsistenciasFecha($dateSelected);
             $('#mi-tabla-mensual').DataTable({
                 responsive: false, // <- desactivado
                 scrollX: true, // <- scroll horizontal
-                scrollY: "600px", // <- opcional, scroll vertical si hay muchas filas
                 scrollCollapse: true,
                 autoWidth: false,
+                paging: false, // <- muestra todas las filas
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 },
