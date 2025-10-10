@@ -56,12 +56,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="menus.php" class="nav-link <?= ($activePage == 'menus') ? 'active' : '' ?>">
-                                <i class="nav-icon bi bi-egg-fill"></i>
-                                <p>Menús</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="mesas.php" class="nav-link <?= ($activePage == 'mesas') ? 'active' : '' ?>">
                                 <i class="nav-icon bi bi-border-all"></i>
                                 <p>Mesas</p>
