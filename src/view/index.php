@@ -270,7 +270,7 @@ function getPorcentaje($parte, $total)
                           foreach ($menusRegimenes as $menu) {
 
                             $color = getColor($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
-
+                            $porcentaje = getPorcentaje($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
                           ?>
                             <tr class="align-middle">
                               <td><?= $index_menus++; ?></td>
