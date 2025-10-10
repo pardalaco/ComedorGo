@@ -158,7 +158,10 @@ function getPorcentaje($parte, $total)
                       <?= $datosHoy->getAsistentes() . " de " . $datosHoy->getComensalesTotales() . " comensales" ?>
                     </div>
                     <div class="card-body">
-                      <input type="text" class="knob" value="<?= round($datosHoy->getAsistentes() / $datosHoy->getComensalesTotales() * 100); ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
+                      <?php
+                      $porcentajeAsistencia = getPorcentaje($datosHoy->getAsistentes(), $datosHoy->getComensalesTotales());
+                      ?>
+                      <input type="text" class="knob" value="<?= $porcentajeAsistencia; ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
                     </div>
                   </div>
                 </div>
