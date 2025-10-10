@@ -329,15 +329,16 @@ function getPorcentaje($parte, $total)
                         <tbody>
 
                           <?php
-                          foreach ($mesas as $menu) {
+                          foreach ($mesas as $mesa) {
+                            $asistentesMesa = $datosHoy->getMesasTotales()[$mesa->getId()] ?? 0;
 
-                            $color = getColor($mesasAsistentes[$menu->getId()], $datosHoy->getMesasTotales()[$menu->getId()]);
-                            $porcentaje = getPorcentaje($mesasAsistentes[$menu->getId()], $datosHoy->getMesasTotales()[$menu->getId()]);
+                            $color = getColor($mesasAsistentes[$mesa->getId()], $asistentesMesa);
+                            $porcentaje = getPorcentaje($mesasAsistentes[$mesa->getId()], $asistentesMesa);
 
                           ?>
                             <tr class="align-middle">
                               <td><?= $index_mesas++; ?></td>
-                              <td><?= $menu->getNombre(); ?></td>
+                              <td><?= $mesa->getNombre(); ?></td>
                               <td>
                                 <div class="progress progress-xs">
                                   <div class="progress-bar <?= $color ?>"
@@ -348,7 +349,8 @@ function getPorcentaje($parte, $total)
                               </td>
                               <td class="text-center">
                                 <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                                  <?= $mesasAsistentes[$menu->getId()] . "/" . $datosHoy->getMesasTotales()[$menu->getId()]; ?>
+                                  <?php
+                                  echo $mesasAsistentes[$mesa->getId()] . "/" . $asistentesMesa; ?>
                                 </span>
                               </td>
                             </tr>
