@@ -811,8 +811,13 @@ function getPorcentaje($parte, $total)
     })
   </script>
 
-  <!-- Descargar datos hoy -->
+  <!-- Descargar tablas -->
+  <script src="../assets/js/jspdf.umd.min.js"></script>
+  <script src="../assets/js/html2canvas.min.js"></script>
+
+  <!-- Descargar PDFs -->
   <script>
+    // Descargar PDF datos hoy
     function descargarPDF() {
       const contenedor = document.getElementById('pdf-menus');
 
@@ -838,10 +843,8 @@ function getPorcentaje($parte, $total)
         if (boton) boton.style.display = 'block';
       });
     }
-  </script>
 
-  <!-- Descargar Mesas Cocinero -->
-  <script>
+    // Descargar Taules Cuiner
     function descargarPDFMesasCocinero() {
       const contenedor = document.getElementById('pdf-mesasCocinero');
       const boton = contenedor.querySelector('button');
@@ -882,14 +885,8 @@ function getPorcentaje($parte, $total)
         if (boton) boton.style.display = 'block';
       });
     }
-  </script>
 
-  <!-- Descargar tablas -->
-  <script src="../assets/js/jspdf.umd.min.js"></script>
-  <script src="../assets/js/html2canvas.min.js"></script>
-
-
-  <script>
+    // Descargar Taules Assistents
     function descargarPDFMesas() {
       // 1. Obtén todas las tarjetas de mesa
       const mesas = document.querySelectorAll('.mesa-asistentes');
