@@ -844,26 +844,41 @@ function getPorcentaje($parte, $total)
   <script>
     function descargarPDFMesasCocinero() {
       const contenedor = document.getElementById('pdf-mesasCocinero');
-
-      // Seleccionamos el botón dentro del contenedor y lo ocultamos
       const boton = contenedor.querySelector('button');
       if (boton) boton.style.display = 'none';
 
-      html2canvas(contenedor).then(canvas => {
+      html2canvas(contenedor, {
+        scale: 2
+      }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const {
           jsPDF
         } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
 
-        const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgProps = pdf.getImageProperties(imgData);
+        const imgWidth = pdfWidth;
+        const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        // Añadimos la primera página
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+
+        // Mientras quede altura, añadimos páginas nuevas
+        while (heightLeft > 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pdfHeight;
+        }
+
         pdf.save('<?= $data; ?>_taules_cuiner.pdf');
 
-        // Volvemos a mostrar el botón
         if (boton) boton.style.display = 'block';
       });
     }
