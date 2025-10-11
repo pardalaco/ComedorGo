@@ -4,7 +4,10 @@ require_once(__DIR__ . '/../models/DatosDia.php');
 
 $activePage = 'index'; // Para resaltar la página activa en el sidebar
 
-$datosHoy = new DatosDia(date('Y-m-d'));
+$data = date('Y-m-d');
+$dataReverse = date('d-m-Y');
+
+$datosHoy = new DatosDia($data);
 
 function getColor($parte, $total)
 {
@@ -139,7 +142,7 @@ function getPorcentaje($parte, $total)
               <div class="row mb-3">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Dades de hui</h4>
+                    <h4 class="mb-0">Dades - <?= $dataReverse ?></h4>
                     <button class="btn btn-primary" onclick="descargarPDF()">Descarrega PDF</button>
                   </div>
                 </div>
@@ -381,7 +384,7 @@ function getPorcentaje($parte, $total)
               <div class="row mb-3">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Taules assistents</h4>
+                    <h4 class="mb-0">Taules assistents - <?= $dataReverse ?></h4>
                     <button class="btn btn-primary" onclick="descargarPDFMesas()">Descarrega PDF</button>
                   </div>
                 </div>
@@ -494,7 +497,7 @@ function getPorcentaje($parte, $total)
               <div class="row mb-3">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Mesas Cocinero</h4>
+                    <h4 class="mb-0">Taules Cuiner - <?= $dataReverse ?></h4>
                     <button class="btn btn-primary" onclick="descargarPDFMesasCocinero()">Descarrega PDF</button>
                   </div>
                 </div>
@@ -712,7 +715,7 @@ function getPorcentaje($parte, $total)
           <?php
           $menus = $datosHoy->getMenusNormales();
           $labels = [];
-          $data = [];
+          $datas = [];
           $colors = [];
           $i = 0;
 
@@ -731,11 +734,11 @@ function getPorcentaje($parte, $total)
 
           foreach ($menus as $menu) {
             $labels[] = "'" . $menu->getNombre() . "'";
-            $data[] = $datosHoy->getMenusTotales()[$menu->getId()];
+            $datas[] = $datosHoy->getMenusTotales()[$menu->getId()];
             $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
           }
           $labels[] = "'Regimenes'";
-          $data[] = $totalMenusRegimenes;
+          $datas[] = $totalMenusRegimenes;
           $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
 
           echo implode(", ", $labels);
@@ -744,7 +747,7 @@ function getPorcentaje($parte, $total)
         datasets: [{
           data: [
             <?php
-            echo implode(", ", $data);
+            echo implode(", ", $datas);
             ?>
           ],
           backgroundColor: [
@@ -829,7 +832,7 @@ function getPorcentaje($parte, $total)
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('<?= date("Y-m-d") ?>_menus_asistencia.pdf');
+        pdf.save('<?= $data; ?>_menus_asistencia.pdf');
 
         // Volvemos a mostrar el botón
         if (boton) boton.style.display = 'block';
@@ -858,7 +861,7 @@ function getPorcentaje($parte, $total)
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('<?= date("Y-m-d") ?>_mesasCocinero.pdf');
+        pdf.save('<?= $data; ?>_taules_cuiner.pdf');
 
         // Volvemos a mostrar el botón
         if (boton) boton.style.display = 'block';
@@ -918,7 +921,7 @@ function getPorcentaje($parte, $total)
 
       // 4. Espera a que todas las conversiones de canvas terminen y guarda el PDF
       Promise.all(promises).then(() => {
-        doc.save('<?= date("Y-m-d") ?>_mesas_asistentes.pdf');
+        doc.save('<?= $data; ?>_taules_asistents.pdf');
       }).catch(error => {
         console.error("Error al generar el PDF:", error);
         alert("Hubo un error al generar el PDF.");
