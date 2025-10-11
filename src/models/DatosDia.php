@@ -146,7 +146,7 @@ class DatosDia
         $stmt = $conn->prepare("
         SELECT fecha, COUNT(Comensal_ID) AS NumAsistentes
         FROM Asistencia
-        WHERE DAYOFWEEK(fecha) NOT IN (1, 7)
+        WHERE DAYOFWEEK(fecha) 
         GROUP BY fecha
         ORDER BY fecha DESC
         LIMIT 30
