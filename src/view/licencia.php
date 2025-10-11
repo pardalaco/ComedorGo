@@ -59,10 +59,12 @@
                     <div class="card-body">
                       <h3>Llicència</h3>
                       <p>
-                        Este projecte es distribueix baix la llicència <strong>Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)</strong>.
-                        Açò significa que pots compartir i adaptar el projecte, inclús amb fins comercials, sempre que dones el crèdit corresponent i compartisques la teua versió baix la mateixa llicència.
+                        Este projecte es distribueix baix la llicència <strong>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</strong>.
+                        Açò significa que pots compartir i adaptar el projecte, sempre que dones el crèdit corresponent, no el uses amb fins comercials i compartisques la teua versió baix la mateixa llicència.
                       </p>
-                      <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Més informació sobre la llicència CC BY-SA 4.0</a>
+                      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank">
+                        Més informació sobre la llicència CC BY-NC-SA 4.0
+                      </a>
 
                       <h3 class="mt-4">Crèdits</h3>
                       <p>
@@ -73,21 +75,20 @@
                   </div>
                 </div>
               </section>
+
+
             </div>
-
-
+            <!--end::Row-->
           </div>
-          <!--end::Row-->
+          <!--end::Container-->
         </div>
-        <!--end::Container-->
-      </div>
-      <!--end::App Content Header-->
-      <!--begin::App Content-->
-      <div class="app-content">
+        <!--end::App Content Header-->
+        <!--begin::App Content-->
+        <div class="app-content">
 
 
-      </div>
-      <!--end::App Content-->
+        </div>
+        <!--end::App Content-->
     </main>
     <!--end::App Main-->
     <?php include './components/footer.html'; ?>
