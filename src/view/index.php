@@ -822,7 +822,7 @@ function getPorcentaje($parte, $total)
         const {
           jsPDF
         } = window.jspdf;
-        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdf = new jsPDF('l', 'mm', 'a4');
 
         const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
@@ -918,7 +918,7 @@ function getPorcentaje($parte, $total)
 
       // 4. Espera a que todas las conversiones de canvas terminen y guarda el PDF
       Promise.all(promises).then(() => {
-        doc.save('mesas_asistentes.pdf');
+        doc.save('<?= date("Y-m-d") ?>_mesas_asistentes.pdf');
       }).catch(error => {
         console.error("Error al generar el PDF:", error);
         alert("Hubo un error al generar el PDF.");
