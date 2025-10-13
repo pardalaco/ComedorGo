@@ -163,6 +163,7 @@ function getPorcentaje($parte, $total)
                     <div class="card-body">
                       <?php
                       $porcentajeAsistencia = getPorcentaje($datosHoy->getAsistentes(), $datosHoy->getComensalesTotales());
+                      $porcentajeAsistencia = round($porcentajeAsistencia, 1);
                       ?>
                       <input type="text" class="knob" value="<?= $porcentajeAsistencia; ?>" data-width="120" data-height="120" data-thickness="0.1" data-fgColor="#0d6efd" data-readOnly="true">
                     </div>
