@@ -156,3 +156,56 @@ Aquestes relacions permeten:
 
 ![Diagrama db](imgs/diagrama_db.png)
 
+Perfecte, aquest fitxer `db.php` és el que utilitzen totes les classes (`Comensal`, `Menu`, `Mesa`, `DatosDia`) per connectar-se a la base de dades. Ací tens una explicació clara de què modificar per fer que funcione en diferents entorns:
+
+---
+
+## 8. Fitxer `src/config/db.php`
+
+### Funció principal
+
+```php
+function getConnection()
+{
+    $host = "db";    // Host de la base de dades
+    $port = 3306;    // Port MySQL
+    $user = "root";  // Usuari de la base de dades
+    $pass = "root";  // Contrasenya
+    $dbname = "ComedorGo"; // Nom de la base de dades
+
+    try {
+        $conn = new PDO(
+            "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8",
+            $user,
+            $pass
+        );
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $conn;
+    } catch (PDOException $e) {
+        die("Error de conexión: " . $e->getMessage());
+    }
+}
+```
+
+
+
+### Què modificar segons l’entorn
+
+|Paràmetre|Descripció|Exemple|
+|---|---|---|
+|`$host`|Host o IP on està la base de dades.|`"127.0.0.1"` si és local, `"db"` si és un contenedor Docker amb nom `db`.|
+|`$port`|Port de MySQL.|Normalment `3306`.|
+|`$user`|Usuari de la base de dades.|`"root"` o un usuari creat per a l’aplicació.|
+|`$pass`|Contrasenya de l’usuari.|`"root"` o la contrasenya assignada.|
+|`$dbname`|Nom de la base de dades a utilitzar.|`"ComedorGo"` o el nom de la base de dades que tingues.|
+
+
+
+### Notes
+
+- Si utilitzes **Docker**, assegura’t que el `host` siga el nom del servei de MySQL del `docker-compose.yml`.
+- Si vols **connectar-te des del teu ordinador sense Docker**, canvia `$host` a `"127.0.0.1"` o `"localhost"`.
+- Si vols usar un **usuari diferent de root**, modifica `$user` i `$pass` i assegura’t que l’usuari té permisos sobre la base de dades.
+
+
+---
