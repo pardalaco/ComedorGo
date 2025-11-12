@@ -18,11 +18,8 @@ class DatosDia
 
     // Menús
     private array $menus; // array de objetos Menu
-    private array $menusNormales;
-    private array $menusRegimenes;
     private $menusTotales; // Array con el MenuID y Número total de menús en la base de datos
     private $asistentesMenus; // Array con el MenuID y NumeroAsistentes
-    private $menusRegimenesTotales;
 
     // Mesas
     private array $mesas; // array de objetos Mesa
@@ -48,9 +45,6 @@ class DatosDia
         $this->menus = getAllMenus();
         $this->menusTotales = $this->getTotalMenus();
         $this->asistentesMenus = $this->getAsistentesPorMenu($fecha);
-        $this->menusNormales = array_filter($this->menus, fn($menu) => !$menu->isRegimen());
-        $this->menusRegimenes = array_filter($this->menus, fn($menu) => $menu->isRegimen());
-        $this->menusRegimenesTotales = $this->getTotalMenusRegimenes();
 
         // Mesas
         $this->mesas = getAllMesas();
@@ -70,22 +64,6 @@ class DatosDia
             GROUP BY m.ID;
             "
         );
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
-    }
-
-    // Obtener el total de menús regimenes
-    private function getTotalMenusRegimenes()
-    {
-        // MenuID => Número de comensales con ese menú regimen
-        $conn = getConnection();
-        $stmt = $conn->prepare("
-            SELECT m.ID AS Menu_ID, COUNT(c.ID) AS NumComensales
-            FROM Menu m
-            LEFT JOIN Comensales c ON c.Menu_ID = m.ID
-            WHERE m.Regimen = 1
-            GROUP BY m.ID
-        ");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // Devuelve un array asociativo [Menu_ID => NumComensales]
     }
@@ -185,19 +163,6 @@ class DatosDia
     {
         return $this->menus;
     }
-    public function getMenusNormales()
-    {
-        return $this->menusNormales;
-    }
-    public function getMenusRegimenes()
-    {
-        return $this->menusRegimenes;
-    }
-    public function getMenusRegimenesTotales()
-    {
-        return $this->menusRegimenesTotales;
-    }
-
     public function getMenusTotales()
     {
         return $this->menusTotales;

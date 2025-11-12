@@ -9,16 +9,14 @@ class Menu
     private $id;
     private $nombre;
     private $descripcion;
-    private bool $regimen;
     private array $comensales; // array de objetos Comensal
     private int $numeroComensales;
 
-    public function __construct($id, $nombre, $descripcion = null, $regimen = false)
+    public function __construct($id, $nombre, $descripcion = null)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
-        $this->regimen = $regimen;
         $this->comensales = $this->obtenerComensales();
         $this->numeroComensales = count($this->comensales);
     }
@@ -32,21 +30,20 @@ class Menu
             // Ya existe → UPDATE
             $stmt = $conn->prepare("
             UPDATE Menu 
-            SET Nombre = :nombre, Descripcion = :descripcion, Regimen = :regimen
+            SET Nombre = :nombre, Descripcion = :descripcion
             WHERE ID = :id
         ");
             $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
         } else {
             // No existe → INSERT
             $stmt = $conn->prepare("
-            INSERT INTO Menu (Nombre, Descripcion, Regimen) 
-            VALUES (:nombre, :descripcion, :regimen)
+            INSERT INTO Menu (Nombre, Descripcion) 
+            VALUES (:nombre, :descripcion)
         ");
         }
 
         $stmt->bindParam(':nombre', $this->nombre);
         $stmt->bindParam(':descripcion', $this->descripcion);
-        $stmt->bindParam(':regimen', $this->regimen, PDO::PARAM_BOOL);
 
         $resultado = $stmt->execute();
 
@@ -108,10 +105,6 @@ class Menu
     {
         return $this->comensales;
     }
-    public function isRegimen()
-    {
-        return $this->regimen;
-    }
     public function getNumeroComensales()
     {
         return $this->numeroComensales;
@@ -125,10 +118,6 @@ class Menu
     {
         $this->descripcion = $descripcion;
     }
-    public function setRegimen($regimen)
-    {
-        $this->regimen = $regimen;
-    }
 }
 
 // Funciones para manejar menús
@@ -139,7 +128,7 @@ function getAllMenus()
     $stmt->execute();
     $menus = [];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $menus[] = new Menu($row['ID'], $row['Nombre'], $row['Descripcion'], $row['Regimen']);
+        $menus[] = new Menu($row['ID'], $row['Nombre'], $row['Descripcion']);
     }
     return $menus;
 }
@@ -152,7 +141,7 @@ function getMenuById($id)
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt->execute();
     if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        return new Menu($row['ID'], $row['Nombre'], $row['Descripcion'], $row['Regimen']);
+        return new Menu($row['ID'], $row['Nombre'], $row['Descripcion']);
     }
     return null;
 }

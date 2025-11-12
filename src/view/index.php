@@ -9,6 +9,7 @@ $dataReverse = date('d-m-Y');
 
 $datosHoy = new DatosDia($data);
 
+
 function getColor($parte, $total)
 {
 
@@ -175,19 +176,9 @@ function getPorcentaje($parte, $total)
 
                 <!-- begin::Table Menús-->
                 <?php
-                $menusNormales = $datosHoy->getMenusNormales();
-                $menusRegimenes = $datosHoy->getMenusRegimenes();
+                $menus = $datosHoy->getMenus();
                 $menusAsistentes = $datosHoy->getAsistentesMenus();
                 $index_menus = 1;
-
-                $totalMenusRegimenes = 0;
-                foreach ($datosHoy->getMenusRegimenesTotales() as $menu) {
-                  $totalMenusRegimenes += $menu;
-                }
-                $totalAsistentesRegimenes = 0;
-                foreach ($menusRegimenes as $menu) {
-                  $totalAsistentesRegimenes += $menusAsistentes[$menu->getId()];
-                }
 
                 ?>
 
@@ -210,71 +201,7 @@ function getPorcentaje($parte, $total)
                         <tbody>
 
                           <?php
-                          foreach ($menusNormales as $menu) {
-
-                            $color = getColor($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
-                            $porcentaje = getPorcentaje($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
-                          ?>
-                            <tr class="align-middle">
-                              <td><?= $index_menus++; ?></td>
-                              <td><?= $menu->getNombre(); ?></td>
-                              <td>
-                                <div class="progress progress-xs">
-                                  <div class="progress-bar <?= $color ?>"
-                                    style="width: <?= $porcentaje; ?>%"
-                                    title="<?= $porcentaje; ?>%"
-                                    data-bs-toggle="tooltip"></div>
-                                </div>
-                              </td>
-                              <td class="text-center">
-                                <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                                  <?= $menusAsistentes[$menu->getId()] . "/" . $datosHoy->getMenusTotales()[$menu->getId()]; ?>
-                                </span>
-                              </td>
-                            </tr>
-                          <?php
-                          }
-                          ?>
-                          <?php
-                          // Menús rspeciales
-
-                          $color = getColor($totalAsistentesRegimenes, $totalMenusRegimenes);
-                          $porcentaje = getPorcentaje($totalAsistentesRegimenes, $totalMenusRegimenes);
-                          ?>
-                          <tr class="align-middle">
-                            <td><?= $index_menus++; ?></td>
-                            <td><span class="badge <?= $color ?>" data-bs-toggle="tooltip">Règims </span></td>
-                            <td>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar <?= $color ?>"
-                                  style="width: <?= $porcentaje; ?>%"
-                                  title="<?= $porcentaje; ?>%"
-                                  data-bs-toggle="tooltip"></div>
-                              </div>
-                            </td>
-                            <td class="text-center">
-                              <span class="badge <?= $color ?>" data-bs-toggle="tooltip">
-                                <?= $totalAsistentesRegimenes . "/" . $totalMenusRegimenes ?>
-                              </span>
-                            </td>
-                          </tr>
-
-                        </tbody>
-                      </table>
-                      <?php $index_menus = 1; ?>
-                      <table class="table table-sm">
-                        <thead>
-                          <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Menús Règims</th>
-                            <th>Percentatge</th>
-                            <th>Assistents</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                          <?php
-                          foreach ($menusRegimenes as $menu) {
+                          foreach ($menus as $menu) {
 
                             $color = getColor($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
                             $porcentaje = getPorcentaje($menusAsistentes[$menu->getId()], $datosHoy->getMenusTotales()[$menu->getId()]);
@@ -302,6 +229,7 @@ function getPorcentaje($parte, $total)
 
                         </tbody>
                       </table>
+
                     </div>
                     <!-- /.card-body -->
                   </div>
@@ -498,7 +426,7 @@ function getPorcentaje($parte, $total)
               <div class="row mb-3">
                 <div class="col-12">
                   <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">Taules Cuiner - <?= $dataReverse ?></h4>
+                    <h4 class="mb-0">Taules Cuiner <?= $dataReverse ?></h4>
                     <button class="btn btn-primary" onclick="descargarPDFMesasCocinero()">Descarrega PDF</button>
                   </div>
                 </div>
@@ -514,9 +442,9 @@ function getPorcentaje($parte, $total)
                       <tr>
                         <th style="min-width:100px;">Taula</th>
                         <th style="min-width:50px;">Normals</th>
-                        <th style="min-width:50px;">Especials</th>
                         <th style="min-width:50px;">Règim</th>
-                        <th style="min-width:150px;">Recompte de règim</th>
+                        <th style="min-width:50px;">Triturat</th>
+                        <th style="min-width:50px;">Sonda</th>
                         <th style="min-width:200px;">Alumnes</th>
                         <th style="min-width:150px;">Menús</th>
                         <th>Intoleràncies</th>
@@ -527,43 +455,24 @@ function getPorcentaje($parte, $total)
                       $mesas = $datosHoy->getMesas();
 
                       $totalNormal = 0;
-                      $totalEspeciales = 0;
                       $totalRegimen = 0;
-                      $totalMenusRegimenMesclat = 0;
-                      $totalMenusRegimenTrituratPoc = 0;
-                      $totalMenusRegimenTrituratMolt = 0;
+                      $totalTriturats = 0;
+                      $totalSonda = 0;
 
                       foreach ($mesas as $mesa) {
                         $rowspan = count($mesa->getComensalesAsistenciaHoy()) ? count($mesa->getComensalesAsistenciaHoy()) + 1 : 1;
                         $totalNormal += count($mesa->getComensalesMenusNormaeles());
-                        $totalEspeciales += count($mesa->getComensalesMenusEspeciales());
                         $totalRegimen += count($mesa->getComensalesMenusRegimen());
+                        $totalTriturats += count($mesa->getComensalesMenusTriturats());
+                        $totalSonda += count($mesa->getComensalesMenusSonda());
                       ?>
                         <!-- Fila principal de la mesa -->
                         <tr>
                           <td rowspan="<?= $rowspan ?>"><?= $mesa->getNombre() ?></td>
                           <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusNormaeles()) ?></td>
-                          <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusEspeciales()) ?></td>
                           <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusRegimen()) ?></td>
-                          <td rowspan="<?= $rowspan ?>">
-                            <!-- Aquí no metemos más <tr>, solo mostramos recuentos -->
-                            <?php if (count($mesa->getComensalesMenusRegimenMesclat()) > 0) {
-                              $totalMenusRegimenMesclat += count($mesa->getComensalesMenusRegimenMesclat());
-                            ?>
-                              Mesclat: <?= count($mesa->getComensalesMenusRegimenMesclat()) ?><br>
-                            <?php } ?>
-                            <?php if (count($mesa->getComensalesMenusRegimenTrituratPoc()) > 0) {
-                              $totalMenusRegimenTrituratPoc += count($mesa->getComensalesMenusRegimenTrituratPoc());
-                            ?>
-                              Triturat Poc: <?= count($mesa->getComensalesMenusRegimenTrituratPoc()) ?><br>
-                            <?php } ?>
-                            <?php if (count($mesa->getComensalesMenusRegimenTrituratMolt()) > 0) {
-                              $totalMenusRegimenTrituratMolt += count($mesa->getComensalesMenusRegimenTrituratMolt());
-                            ?>
-                              Triturat Molt: <?= count($mesa->getComensalesMenusRegimenTrituratMolt()) ?><br>
-                            <?php } ?>
-                          </td>
-
+                          <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusTriturats()) ?></td>
+                          <td rowspan="<?= $rowspan ?>"><?= count($mesa->getComensalesMenusSonda()) ?></td>
                           <?php
                           // Si no hay comensales hoy, añadimos una fila vacía para mantener la estructura
                           if (count($mesa->getComensalesAsistenciaHoy()) == 0) {
@@ -586,22 +495,12 @@ function getPorcentaje($parte, $total)
                       <?php } ?>
                     </tbody>
                     <tfoot>
-                      <th>Total</th>
-                      <th><?= $totalNormal ?></th>
-                      <th><?= $totalEspeciales ?></th>
-                      <th><?= $totalRegimen ?></th>
-                      <td>
-                        <!-- Aquí no metemos más <tr>, solo mostramos recuentos -->
-                        <?php if ($totalMenusRegimenMesclat > 0) { ?>
-                          Mesclat: <?= $totalMenusRegimenMesclat ?><br>
-                        <?php } ?>
-                        <?php if ($totalMenusRegimenTrituratPoc > 0) { ?>
-                          Triturat Poc: <?= $totalMenusRegimenTrituratPoc ?><br>
-                        <?php } ?>
-                        <?php if ($totalMenusRegimenTrituratMolt > 0) { ?>
-                          Triturat Molt: <?= $totalMenusRegimenTrituratMolt ?><br>
-                        <?php } ?>
-                      </td>
+                      <th>Total: <?= $totalMenus = $totalNormal + $totalRegimen + $totalTriturats ?></th>
+                      <th>Normals: <?= $totalNormal ?></th>
+                      <th>Règim: <?= $totalRegimen ?></th>
+                      <th>Triturats: <?= $totalTriturats ?></th>
+                      <!-- <th><?= $totalSonda ?></th> -->
+                      <th></th>
                       <th></th>
                       <th></th>
                       <th></th>
@@ -714,7 +613,7 @@ function getPorcentaje($parte, $total)
       var pieData = {
         labels: [
           <?php
-          $menus = $datosHoy->getMenusNormales();
+          $menus = $datosHoy->getMenus();
           $labels = [];
           $datas = [];
           $colors = [];
@@ -738,9 +637,6 @@ function getPorcentaje($parte, $total)
             $datas[] = $datosHoy->getMenusTotales()[$menu->getId()];
             $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
           }
-          $labels[] = "'Regimenes'";
-          $datas[] = $totalMenusRegimenes;
-          $colors[] = "'" . $colorsPalette[$i++ % count($colorsPalette)] . "'";
 
           echo implode(", ", $labels);
           ?>

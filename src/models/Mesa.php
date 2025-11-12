@@ -12,11 +12,9 @@ class Mesa
     // Asistencia de hoy
     private array $comensalesAsistenciaHoy; // array de objetos Comensal con asistencia hoy
     private array $comensalesMenusNormaeles; // array de objeto Comensal con menú normal
-    private array $comensalesMenusEspeciales; // array de objetos Comensal con menú especial
     private array $comensalesMenusRegimen; // array de objetos Comensal con menú de régimen
-    private array $comensalesMenusRegimenMesclat; // array de objetos Comensal con menú de régimen mesclat
-    private array $comensalesMenusRegimenTrituratMolt; // array de objetos Comensal con menú de régimen triturat molt
-    private array $comensalesMenusRegimenTrituratPoc; // array de objetos Comensal con menú de régimen triturat poc
+    private array $comensalesMenusTriturats; // array de objetos Comensal con menú triturat
+    private array $comensalesMenusSonda; // array de objetos Comensal con menú sonda
 
     public function __construct($id, $nombre, $descripcion = null)
     {
@@ -27,17 +25,9 @@ class Mesa
 
         $this->comensalesAsistenciaHoy = $this->obtenerComensalesHoy();
         $this->comensalesMenusNormaeles = $this->obtenerComensalesMenusNormales();
-        $this->comensalesMenusEspeciales = $this->obtenerComensalesMenusEspeciales();
         $this->comensalesMenusRegimen = $this->obtenerComensalesMenusRegimen();
-        $this->comensalesMenusRegimenMesclat = array_filter($this->comensalesMenusRegimen, function ($comensal) {
-            return $comensal->getMenuId() == 2;
-        });
-        $this->comensalesMenusRegimenTrituratMolt = array_filter($this->comensalesMenusRegimen, function ($comensal) {
-            return $comensal->getMenuId() == 3;
-        });
-        $this->comensalesMenusRegimenTrituratPoc = array_filter($this->comensalesMenusRegimen, function ($comensal) {
-            return $comensal->getMenuId() == 4;
-        });
+        $this->comensalesMenusTriturats = $this->obtenerComensalesMenusTriturats();
+        $this->comensalesMenusSonda = $this->obtenerComensalesMenusSonda();
     }
 
     // Guarda o actualiza el menú en la base de datos
@@ -185,43 +175,6 @@ class Mesa
         return $comensales;
     }
 
-    private function obtenerComensalesMenusEspeciales()
-    {
-        $conn = getConnection();
-        $sql = "SELECT *
-            FROM Comensales AS C
-            LEFT JOIN Asistencia AS A
-                ON A.Comensal_ID = C.ID
-            WHERE C.Mesa_ID = :mesaId
-              AND C.Menu_ID = 5
-              AND A.fecha = :fecha;";
-
-        $stmt = $conn->prepare($sql);
-
-        // Asumiendo que $this->id es el ID de la mesa
-        $stmt->bindValue(':mesaId', $this->id, PDO::PARAM_INT);
-
-        // Fecha actual en formato SQL
-        $fechaHoy = date('Y-m-d');
-        $stmt->bindValue(':fecha', $fechaHoy, PDO::PARAM_STR);
-
-        $stmt->execute();
-
-        $comensales = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $comensales[] = new Comensal(
-                $row['ID'],
-                $row['Nombre'],
-                $row['Apellidos'],
-                $row['Intolerancias'],
-                $row['Menu_ID'],
-                $row['Mesa_ID'],
-                $row['Autobus_ID']
-            );
-        }
-
-        return $comensales;
-    }
 
 
     // Obtener los comensales con menú de régimen
@@ -233,7 +186,7 @@ class Mesa
                                 LEFT JOIN Asistencia AS A
                                     ON A.Comensal_ID = C.ID
                                 WHERE Mesa_ID = :mesaId 
-                                    AND (Menu_ID = 2 OR Menu_ID = 3 OR Menu_ID = 4)
+                                    AND Menu_ID = 2
                                     AND A.fecha = :fecha;");
 
 
@@ -263,6 +216,84 @@ class Mesa
     }
 
 
+
+    // Obtener los comensales con menú de triturat
+    private function obtenerComensalesMenusTriturats()
+    {
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT * 
+                                FROM Comensales AS C
+                                LEFT JOIN Asistencia AS A
+                                    ON A.Comensal_ID = C.ID
+                                WHERE Mesa_ID = :mesaId 
+                                    AND Menu_ID = 3
+                                    AND A.fecha = :fecha;");
+
+
+
+        // Asumiendo que $this->id es el ID de la mesa
+        $stmt->bindValue(':mesaId', $this->id, PDO::PARAM_INT);
+
+        // Fecha actual en formato SQL
+        $fechaHoy = date('Y-m-d');
+        $stmt->bindValue(':fecha', $fechaHoy, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $comensales = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $comensales[] = new Comensal(
+                $row['ID'],
+                $row['Nombre'],
+                $row['Apellidos'],
+                $row['Intolerancias'],
+                $row['Menu_ID'],
+                $row['Mesa_ID'],
+                $row['Autobus_ID'],
+            );
+        }
+        return $comensales;
+    }
+
+
+    // Obtener los comensales con menú de sonda
+    private function obtenerComensalesMenusSonda()
+    {
+        $conn = getConnection();
+        $stmt = $conn->prepare("SELECT * 
+                                FROM Comensales AS C
+                                LEFT JOIN Asistencia AS A
+                                    ON A.Comensal_ID = C.ID
+                                WHERE Mesa_ID = :mesaId 
+                                    AND Menu_ID = 4
+                                    AND A.fecha = :fecha;");
+
+
+
+        // Asumiendo que $this->id es el ID de la mesa
+        $stmt->bindValue(':mesaId', $this->id, PDO::PARAM_INT);
+
+        // Fecha actual en formato SQL
+        $fechaHoy = date('Y-m-d');
+        $stmt->bindValue(':fecha', $fechaHoy, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $comensales = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $comensales[] = new Comensal(
+                $row['ID'],
+                $row['Nombre'],
+                $row['Apellidos'],
+                $row['Intolerancias'],
+                $row['Menu_ID'],
+                $row['Mesa_ID'],
+                $row['Autobus_ID'],
+            );
+        }
+        return $comensales;
+    }
+
     // Getters
     public function getId()
     {
@@ -288,25 +319,17 @@ class Mesa
     {
         return $this->comensalesMenusNormaeles;
     }
-    public function getComensalesMenusEspeciales()
-    {
-        return $this->comensalesMenusEspeciales;
-    }
     public function getComensalesMenusRegimen()
     {
         return $this->comensalesMenusRegimen;
     }
-    public function getComensalesMenusRegimenMesclat()
+    public function getComensalesMenusTriturats()
     {
-        return $this->comensalesMenusRegimenMesclat;
+        return $this->comensalesMenusTriturats;
     }
-    public function getComensalesMenusRegimenTrituratMolt()
+    public function getComensalesMenusSonda()
     {
-        return $this->comensalesMenusRegimenTrituratMolt;
-    }
-    public function getComensalesMenusRegimenTrituratPoc()
-    {
-        return $this->comensalesMenusRegimenTrituratPoc;
+        return $this->comensalesMenusSonda;
     }
 
     // Setters

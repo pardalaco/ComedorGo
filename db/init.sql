@@ -90,10 +90,9 @@ CREATE TABLE `Menu` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(100) NOT NULL,
   `Descripcion` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `Regimen` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `Menu_UNIQUE` (`Nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +101,7 @@ CREATE TABLE `Menu` (
 
 LOCK TABLES `Menu` WRITE;
 /*!40000 ALTER TABLE `Menu` DISABLE KEYS */;
-INSERT INTO `Menu` VALUES (1,'Normal',NULL,0),(2,'Règim Mesclat','',1),(3,'Règim Triturat Molt		','',1),(4,'Règim Triturat Poc',NULL,1),(5,'Especial',NULL,0);
+INSERT INTO `Menu` VALUES (1,'Normal',NULL),(2,'Règim',NULL),(3,'Triturat',NULL),(4,'Sonda',NULL);
 /*!40000 ALTER TABLE `Menu` ENABLE KEYS */;
 UNLOCK TABLES;
 
