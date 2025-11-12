@@ -143,8 +143,7 @@ $autobuses = getAllAutobuses();
                                     foreach ($menus as $menu) {
                                     ?>
                                         <option value="<?php echo $menu->getId() ?>">
-                                            <?php echo $menu->getNombre();
-                                            if ($menu->isRegimen()) echo " (Especial)" ?>
+                                            <?php echo $menu->getNombre(); ?>
                                         </option>
                                     <?php
                                     }
