@@ -1,0 +1,27 @@
+{
+  "name": "comedorgo",
+  "version": "1.0.0",
+  "description": "Este proyecto contiene una aplicación PHP con Apache y MySQL lista para ejecutarse usando Docker Compose.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pardalaco/ComedorGo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/pardalaco/ComedorGo/issues"
+  },
+  "homepage": "https://github.com/pardalaco/ComedorGo#readme",
+  "dependencies": {
+    "apexcharts": "^5.10.6"
+  }
+}

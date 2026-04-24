@@ -42,7 +42,9 @@ function getPorcentaje($parte, $total)
   <?php include __DIR__ . '/components/head.html'; ?>
 
   <!-- ApexCharts -->
-  <script src="../assets/js/apexcharts.min.js"></script>
+  <!-- <script src="../assets/js/apexcharts.min.js"></script> -->
+  <script src="../node_modules/apexcharts/dist/apexcharts.min.js"></script>
+
 
   <!-- PDF -->
   <script src="../assets/js/jspdf.umd.min.js"></script>

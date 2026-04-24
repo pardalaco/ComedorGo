@@ -2,12 +2,13 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: dockerfile.dev
     container_name: mi_app_php
     ports:
       - "8080:80"
     volumes:
       - ./src:/var/www/html
+      - ./node_modules:/var/www/html/node_modules
     restart: always
     depends_on:
       - db
