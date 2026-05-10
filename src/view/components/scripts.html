@@ -1,44 +1,43 @@
+<!--begin::Script-->
+<!--begin::Third Party Plugin(OverlayScrollbars)-->
+<!-- OverlayScrollbars -->
+<script src="../assets/js/overlayscrollbars.browser.es6.min.js"></script>
 
-  <!--begin::Script-->
-  <!--begin::Third Party Plugin(OverlayScrollbars)-->
-  <!-- OverlayScrollbars -->
-  <script src="../assets/js/overlayscrollbars.browser.es6.min.js"></script>
+<!-- Popper.js para Bootstrap 5 -->
+<script src="../assets/js/popper.min.js"></script>
 
-  <!-- Popper.js para Bootstrap 5 -->
-  <script src="../assets/js/popper.min.js"></script>
+<!-- Bootstrap 5 -->
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-  <!-- Bootstrap 5 -->
-  <script src="../assets/js/bootstrap.min.js"></script>
+<!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+<script src="../templates/AdminLTE/dist/js/adminlte.js"></script>
+<!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
+<script>
+  const SELECTOR_SIDEBAR_WRAPPER = ".sidebar-wrapper";
+  const Default = {
+    scrollbarTheme: "os-theme-light",
+    scrollbarAutoHide: "leave",
+    scrollbarClickScroll: true,
+  };
+  document.addEventListener("DOMContentLoaded", function () {
+    const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
 
-  <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-  <script src="../templates/AdminLTE/dist/js/adminlte.js"></script>
-  <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
-  <script>
-    const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-    const Default = {
-      scrollbarTheme: 'os-theme-light',
-      scrollbarAutoHide: 'leave',
-      scrollbarClickScroll: true,
-    };
-    document.addEventListener('DOMContentLoaded', function() {
-      const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+    // Disable OverlayScrollbars on mobile devices to prevent touch interference
+    const isMobile = window.innerWidth <= 992;
 
-      // Disable OverlayScrollbars on mobile devices to prevent touch interference
-      const isMobile = window.innerWidth <= 992;
-
-      if (
-        sidebarWrapper &&
-        OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
-        !isMobile
-      ) {
-        OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-          scrollbars: {
-            theme: Default.scrollbarTheme,
-            autoHide: Default.scrollbarAutoHide,
-            clickScroll: Default.scrollbarClickScroll,
-          },
-        });
-      }
-    });
-  </script>
-  <!--end::OverlayScrollbars Configure-->
+    if (
+      sidebarWrapper &&
+      OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
+      !isMobile
+    ) {
+      OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+        scrollbars: {
+          theme: Default.scrollbarTheme,
+          autoHide: Default.scrollbarAutoHide,
+          clickScroll: Default.scrollbarClickScroll,
+        },
+      });
+    }
+  });
+</script>
+<!--end::OverlayScrollbars Configure-->
