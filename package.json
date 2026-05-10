@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/pardalaco/ComedorGo#readme",
   "dependencies": {
-    "apexcharts": "^5.10.6"
+    "apexcharts": "^5.10.6",
+    "jspdf": "^4.2.1"
   }
 }
