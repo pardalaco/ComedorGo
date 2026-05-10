@@ -24,6 +24,7 @@
   "dependencies": {
     "apexcharts": "^5.10.6",
     "bootstrap": "^5.3.8",
+    "chart.js": "^4.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "html2canvas": "^1.4.1",
     "jquery": "^4.0.0",
