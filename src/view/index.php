@@ -47,8 +47,8 @@ function getPorcentaje($parte, $total)
 
   <!-- PDF -->
   <script src="../node_modules/jspdf/dist/jspdf.umd.min.js"></script>
+  <script src="../node_modules/html2canvas/dist/html2canvas.min.js"></script>
 
-  <script src="../assets/js/html2canvas.min.js"></script>
 
 
 </head>
@@ -709,9 +709,6 @@ function getPorcentaje($parte, $total)
       return new bootstrap.Tooltip(tooltipTriggerEl)
     })
   </script>
-
-  <!-- Descargar tablas -->
-  <script src="../assets/js/html2canvas.min.js"></script>
 
   <!-- Descargar PDFs -->
   <script>

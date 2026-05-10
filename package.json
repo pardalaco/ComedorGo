@@ -23,6 +23,7 @@
   "homepage": "https://github.com/pardalaco/ComedorGo#readme",
   "dependencies": {
     "apexcharts": "^5.10.6",
+    "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1"
   }
 }

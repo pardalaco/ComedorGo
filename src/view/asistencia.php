@@ -50,8 +50,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
 <!-- Imprimir tabla -->
 <script src="../node_modules/jspdf/dist/jspdf.umd.min.js"></script>
-
-<script src="../assets/js/html2canvas.min.js"></script>
+<script src="../node_modules/html2canvas/dist/html2canvas.min.js"></script>
 
 
 <!--begin::Body-->
