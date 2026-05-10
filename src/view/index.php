@@ -690,7 +690,8 @@ function getPorcentaje($parte, $total)
 
   <!-- Porcentajed de asistencia -->
   <!-- jQuery y jQuery Knob -->
-  <script src="../assets/js/jquery-3.6.0.min.js"></script>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+
   <script src="../assets/js/jquery.knob.min.js"></script>
   <script>
     $(function() {

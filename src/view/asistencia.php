@@ -40,7 +40,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
 <!--end::Head-->
 
 <!-- jQuery -->
-<script src="../assets/js/jquery-3.6.0.min.js"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
 <!-- DataTables JS -->
 <script src="../assets/js/jquery.dataTables.min.js"></script>
