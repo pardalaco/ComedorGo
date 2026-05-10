@@ -604,7 +604,8 @@ function getPorcentaje($parte, $total)
 
   <!-- Grafico de tarta -->
   <script src="../assets/js/chart.umd.min.js"></script>
-  <script src="../assets/js/chartjs-plugin-datalabels.min.js"></script>
+  <script src="../node_modules/chartjs-plugin-datalabels/dist/chartjs-plugin-datalabels.min.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       // Registrar el plugin de datalabels
