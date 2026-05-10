@@ -4,14 +4,9 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>MenjadorGo - Llicencia</title>
+  <title>MenjadorGo - Contacto</title>
 
   <?php include './components/head.html'; ?>
-
-
-  <!-- ApexCharts -->
-  <!-- ApexCharts -->
-  <script src="../assets/js/apexcharts.min.js"></script>
 
 </head>
 <!--end::Head-->
@@ -62,7 +57,7 @@
                         <i class="bi bi-github"></i> GitHub
                       </a>
 
-                      <a href="https://www.linkedin.com/in/daniel-rovira-mart%C3%ADnez/" target="_blank" class="btn btn-primary m-2">
+                      <a href="https://www.linkedin.com/in/daniel-rovira-martinez/" target="_blank" class="btn btn-primary m-2">
                         <i class="bi bi-linkedin"></i> LinkedIn
                       </a>
                     </div>

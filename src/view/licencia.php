@@ -8,11 +8,6 @@
 
   <?php include './components/head.html'; ?>
 
-
-  <!-- ApexCharts -->
-  <!-- ApexCharts -->
-  <script src="../assets/js/apexcharts.min.js"></script>
-
 </head>
 <!--end::Head-->
 <!--begin::Body-->
