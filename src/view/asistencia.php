@@ -32,8 +32,8 @@ $asistencias = getAsistenciasFecha($dateSelected);
 
     <!-- Tabla -->
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="../assets/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="../assets/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="../node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="../node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css">
 
 
 </head>
@@ -43,10 +43,10 @@ $asistencias = getAsistenciasFecha($dateSelected);
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
 <!-- DataTables JS -->
-<script src="../assets/js/jquery.dataTables.min.js"></script>
-<script src="../assets/js/dataTables.bootstrap5.min.js"></script>
-<script src="../assets/js/dataTables.responsive.min.js"></script>
-<script src="../assets/js/responsive.bootstrap5.min.js"></script>
+<script src="../node_modules/datatables.net/js/dataTables.min.js"></script>
+<script src="../node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="../node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../node_modules/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
 
 <!-- Imprimir tabla -->
 <script src="../node_modules/jspdf/dist/jspdf.umd.min.js"></script>
@@ -409,7 +409,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                 autoWidth: false,
                 paging: false, // <- muestra todas las filas
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 }
             });
         });
@@ -426,7 +426,7 @@ $asistencias = getAsistenciasFecha($dateSelected);
                 autoWidth: false,
                 paging: false, // <- muestra todas las filas
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 },
                 columnDefs: [{
                         width: "150px",

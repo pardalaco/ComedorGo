@@ -18,8 +18,8 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 
     <!-- Tabla -->
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="../assets/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="../assets/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="../node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="../node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css">
 
 </head>
 <!--end::Head-->
@@ -28,10 +28,10 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
 
 <!-- DataTables JS -->
-<script src="../assets/js/jquery.dataTables.min.js"></script>
-<script src="../assets/js/dataTables.bootstrap5.min.js"></script>
-<script src="../assets/js/dataTables.responsive.min.js"></script>
-<script src="../assets/js/responsive.bootstrap5.min.js"></script>
+<script src="../node_modules/datatables.net/js/dataTables.min.js"></script>
+<script src="../node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="../node_modules/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../node_modules/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
 
 
 <!--begin::Body-->
@@ -163,7 +163,7 @@ $activePage = 'alumnos'; // Para resaltar la página activa en el sidebar
                 autoWidth: false,
                 pageLength: 25,
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+                    url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
                 }
             });
         });
