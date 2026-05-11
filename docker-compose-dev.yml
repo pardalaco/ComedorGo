@@ -1,12 +1,14 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: dockerfile.dev
     container_name: mi_app_php
     ports:
       - "8080:80"
     volumes:
       - ./src:/var/www/html
-      - /var/www/html/node_modules # Volumen anónimo para proteger los node_modules del contenedor
+      - ./node_modules:/var/www/html/node_modules
     restart: always
     depends_on:
       - db
