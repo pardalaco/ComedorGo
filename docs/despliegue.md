@@ -28,19 +28,25 @@ El entorno de desarrollo está configurado para facilitar el desarrollo continuo
    cd ComedorGo
    ```
 
-2. Levantar los contenedores usando el archivo de desarrollo:
+2. Instalar dependencias de Node.js en el host (requerido debido al montaje de ./node_modules):
+
+   ```bash
+   npm install
+   ```
+
+3. Levantar los contenedores usando el archivo de desarrollo:
 
    ```bash
    docker compose -f docker-compose-dev.yml up -d --build
    ```
 
-3. Verificar que los contenedores están corriendo:
+4. Verificar que los contenedores están corriendo:
 
    ```bash
    docker compose -f docker-compose-dev.yml ps
    ```
 
-4. Abrir la aplicación en el navegador:
+5. Abrir la aplicación en el navegador:
    ```
    http://localhost:8080
    ```
