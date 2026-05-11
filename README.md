@@ -16,8 +16,10 @@ Este proyecto contiene una aplicación PHP con Apache y MySQL lista para ejecuta
 .
 ├── config           # Configuración, p.ej. db.php
 ├── db               # Inicialización de base de datos (init.sql)
-├── docker-compose.yml
+├── docker-compose.yml         # Producción
+├── docker-compose-dev.yml     # Desarrollo
 ├── dockerfile
+├── dockerfile.dev
 ├── index.php
 ├── src               # Código PHP
 ├── templates         # Plantillas y recursos
@@ -32,8 +34,8 @@ Este proyecto contiene una aplicación PHP con Apache y MySQL lista para ejecuta
 1. Clonar el proyecto (si no lo has hecho):
 
 ```bash
-git clone <URL_DEL_REPOSITORIO>
-cd <NOMBRE_PROYECTO>
+git clone https://github.com/pardalaco/ComedorGo
+cd ComedorGo
 ```
 
 2. Construir y levantar los contenedores:
@@ -113,3 +115,7 @@ docker compose up -d --build
 ```
 
 - Todos los `include` de PHP deben usar rutas absolutas o `__DIR__` para funcionar correctamente dentro de Docker.
+
+## Docs
+
+Para más información detallada sobre despliegue (desarrollo, producción, configuración, etc.), consulte la carpeta `/docs`.
